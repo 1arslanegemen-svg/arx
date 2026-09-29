@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0a0d14">
+<meta name="theme-color" content="#0b0a17">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ARX">
 <title>ARX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=Figtree:wght@400;500;600;700&display=swap">
@@ -159,6 +166,15 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:var(-
 .seg button{flex:1;padding:8px;border-radius:9px;font-weight:600;font-size:14px;color:var(--muted)}
 .seg button.on{background:var(--surface2);color:var(--fg)}
 
+/* pwa */
+.inst{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px;margin:-8px 0 20px}
+.inst img{border-radius:10px;flex:none}
+.inst-t{flex:1;min-width:0;font-size:13px;color:var(--muted);line-height:1.35}
+.inst-t b{display:block;color:var(--fg);font-size:14px}
+.inst-go{background:var(--accent);color:var(--accent-ink);font-weight:700;border-radius:10px;padding:8px 14px;font-size:14px;flex:none}
+.inst-x{color:var(--muted);font-size:22px;width:28px;height:28px;flex:none;line-height:1}
+.ios-steps{background:var(--bg);border-radius:14px;padding:14px;line-height:1.7;font-size:14px}
+.ios-steps b{color:var(--accent)}
 /* v3 features */
 .top-r{display:flex;gap:8px}
 .bell{position:relative}
@@ -452,7 +468,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 <div class="auth" id="auth" hidden>
   <div class="auth-in">
     <div class="auth-brand">
-      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="10" fill="var(--accent)"/><path d="M9 23 L16 8 L23 23" fill="none" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M11.8 18h8.4" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linecap="round"/></svg>
+      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><radialGradient id="lgA1" cx=".3" cy=".25" r="1"><stop offset="0" stop-color="#2a1d4e"/><stop offset="1" stop-color="#0b0a17"/></radialGradient><linearGradient id="lgB1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b58cff"/><stop offset="1" stop-color="#5de0c5"/></linearGradient></defs><rect width="100" height="100" rx="24" fill="url(#lgA1)"/><path d="M26 74 L50 26 L74 74" fill="none" stroke="url(#lgB1)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="60" r="7" fill="url(#lgB1)"/></svg>
       <div class="auth-name">ARX</div>
       <p>Kripto al, sat, takas et. Sanal bakiyeyle risksiz dene.</p>
     </div>
@@ -497,9 +513,15 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 <!-- HOME -->
 <div class="screen" id="s-home">
   <div class="top">
-    <div class="logo"><svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="10" fill="var(--accent)"/><path d="M9 23 L16 8 L23 23" fill="none" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round"/><path d="M11.8 18h8.4" stroke="var(--accent-ink)" stroke-width="3.4" stroke-linecap="round"/></svg>ARX<span class="demo-tag">Demo</span></div>
+    <div class="logo"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><radialGradient id="lgA2" cx=".3" cy=".25" r="1"><stop offset="0" stop-color="#2a1d4e"/><stop offset="1" stop-color="#0b0a17"/></radialGradient><linearGradient id="lgB2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b58cff"/><stop offset="1" stop-color="#5de0c5"/></linearGradient></defs><rect width="100" height="100" rx="24" fill="url(#lgA2)"/><path d="M26 74 L50 26 L74 74" fill="none" stroke="url(#lgB2)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><circle cx="50" cy="60" r="7" fill="url(#lgB2)"/></svg>ARX<span class="demo-tag">Demo</span></div>
     <div class="top-r"><button class="icon-btn bell" type="button" data-open="notifs" aria-label="Bildirimler"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg><span class="badge" id="notifBadge" hidden>0</span></button>
     <button class="icon-btn" id="themeBtn" type="button" aria-label="Temayı değiştir"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg></button></div>
+  </div>
+  <div class="inst" id="inst" hidden>
+    <img src="apple-touch-icon.png" alt="" width="40" height="40">
+    <div class="inst-t"><b>ARX'i ana ekrana ekle</b><span id="instTxt">Uygulama gibi tam ekran açılsın.</span></div>
+    <button type="button" class="inst-go" id="instGo">Ekle</button>
+    <button type="button" class="inst-x" id="instX" aria-label="Kapat">×</button>
   </div>
   <div class="bal">
     <div>
@@ -831,6 +853,14 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <label class="fld"><span>Yeni şifre (tekrar)</span><input id="pwNew2" type="password" autocomplete="new-password"></label>
   <div class="err" id="pwErr"></div>
   <button class="btn btn-accent full" type="button" id="pwGo">Şifreyi güncelle</button>
+</div>
+
+<div class="sheet" id="sh-install" role="dialog" aria-label="Ana ekrana ekle">
+  <div class="grab"></div>
+  <h3>ARX'i ana ekrana ekle</h3>
+  <div class="sub">Safari'de üç adımda:</div>
+  <div class="ios-steps">1. <b>Paylaş</b> simgesine dokun (yukarı ok olan kare). Görmüyorsan önce adres çubuğundaki <b>⋯</b> ya da <b>≡</b> menüsünü aç.<br>2. Listeyi kaydırıp <b>Ana Ekrana Ekle</b>'yi seç.<br>3. Sağ üstte <b>Ekle</b>'ye dokun.</div>
+  <p class="hint" style="margin-top:12px">Sonra ARX'i ana ekrandaki simgeden aç; tarayıcı çubukları olmadan tam ekran çalışır.</p>
 </div>
 
 <div class="sheet" id="sh-pick" role="dialog" aria-label="Token seç">
@@ -1487,6 +1517,19 @@ $("pwOld").closest(".sheet").addEventListener("input",()=>$("pwErr").textContent
 $("logoutBtn").onclick=async()=>{closeSheet();sb.removeAllChannels();await sb.auth.signOut();me=null;st=fresh();LB=[];showAuth("login");$("liId").value=""};
 let recovering=false;
 sb.auth.onAuthStateChange((ev,session)=>{if(ev==="PASSWORD_RECOVERY"){recovering=true;setTimeout(()=>{openSheet("pw");$("pwOld").closest("label").hidden=true;toast("Yeni şifreni belirle")},400)}});
+// ---------- pwa
+const standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+let deferredPrompt=null;
+function instDismissed(){try{return localStorage.getItem("arx-inst-x")==="1"}catch(e){return false}}
+function showInst(){if(standalone||instDismissed())return;if(isIOS||deferredPrompt)$("inst").hidden=false}
+addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;showInst()});
+addEventListener("appinstalled",()=>{$("inst").hidden=true;toast("ARX ana ekrana eklendi")});
+$("instGo").onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();const r=await deferredPrompt.userChoice;deferredPrompt=null;if(r.outcome==="accepted")$("inst").hidden=true}else openSheet("install")};
+$("instX").onclick=()=>{$("inst").hidden=true;try{localStorage.setItem("arx-inst-x","1")}catch(e){}};
+if(isIOS)$("instTxt").textContent="Paylaş → Ana Ekrana Ekle ile uygulama gibi açılsın.";
+showInst();
+if("serviceWorker" in navigator&&location.protocol==="https:"){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
 // boot
 (async function boot(){
   const {data}=await sb.auth.getSession();
