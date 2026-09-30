@@ -467,9 +467,15 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 .flip svg{width:18px;height:18px}
 .pick-list{max-height:340px;overflow:auto}
 
-.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translate(-50%,-150%);background:var(--surface2);border:1px solid var(--line);color:var(--fg);padding:12px 18px;border-radius:14px;font-weight:600;font-size:14px;z-index:60;transition:transform .3s cubic-bezier(.2,.8,.2,1);box-shadow:var(--shadow);max-width:calc(100% - 32px);display:flex;align-items:center;gap:10px}
-.toast.show{transform:translate(-50%,0)}
-.toast i{width:8px;height:8px;border-radius:50%;background:var(--up);flex:none}
+.toast{position:fixed;left:50%;top:calc(10px + env(safe-area-inset-top,0px));transform:translateX(-50%) scale(.6);transform-origin:top center;opacity:0;pointer-events:none;background:#000;color:#fff;z-index:60;display:flex;align-items:center;gap:10px;width:126px;min-height:37px;padding:0 14px;border-radius:20px;font-weight:600;font-size:14px;line-height:1.35;overflow:hidden;box-shadow:0 12px 32px rgba(0,0,0,.45);transition:width .42s cubic-bezier(.2,.9,.25,1.15),min-height .42s cubic-bezier(.2,.9,.25,1.15),padding .42s,border-radius .42s,transform .42s cubic-bezier(.2,.9,.25,1.15),opacity .18s}
+.toast.show{opacity:1;transform:translateX(-50%) scale(1);width:min(372px,calc(100vw - 24px));min-height:56px;padding:12px 18px;border-radius:28px}
+.toast i{width:9px;height:9px;border-radius:50%;background:#3ccf8e;flex:none;box-shadow:0 0 10px #3ccf8e}
+.toast span{opacity:0;transition:opacity .15s;min-width:0}
+.toast.show span{opacity:1;transition:opacity .25s .18s}
+/* Dynamic Island'lı iPhone'larda (14 Pro ve sonrası, 17 Pro Max) bildirim adanın içinden büyür */
+.island .toast{top:11px;transform:translateX(-50%);opacity:1;visibility:hidden}
+.island .toast.show{visibility:visible}
+.island .toast:not(.show){transition:width .38s cubic-bezier(.4,0,.2,1),min-height .38s cubic-bezier(.4,0,.2,1),padding .38s,border-radius .38s,visibility 0s .38s}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -1581,6 +1587,9 @@ $("pwOld").closest(".sheet").addEventListener("input",()=>$("pwErr").textContent
 $("logoutBtn").onclick=async()=>{closeSheet();sb.removeAllChannels();await sb.auth.signOut();me=null;st=fresh();LB=[];showAuth("login");$("liId").value=""};
 let recovering=false;
 sb.auth.onAuthStateChange((ev,session)=>{if(ev==="PASSWORD_RECOVERY"){recovering=true;setTimeout(()=>{openSheet("pw");$("pwOld").closest("label").hidden=true;toast("Yeni şifreni belirle")},400)}});
+// ---------- device: Dynamic Island tespiti (ana ekran uygulamasında üst güvenli alan ≥ 54pt)
+(function(){try{const p=document.createElement("div");p.style.cssText="position:fixed;top:0;left:0;width:1px;height:env(safe-area-inset-top,0px);visibility:hidden;pointer-events:none";document.body.appendChild(p);const h=p.offsetHeight;p.remove();
+  if(h>=54)document.documentElement.classList.add("island");else if(h>=40)document.documentElement.classList.add("notch")}catch(e){}})();
 // ---------- pwa
 const standalone=matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
 const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
