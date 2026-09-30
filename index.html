@@ -1501,7 +1501,7 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
       txt:x.kind==="swap"?(x.note||"")+" takas":x.kind==="perp_open"?`${x.symbol} ${x.note||""} açıldı`:x.kind==="perp_close"?`${x.symbol} pozisyonu kapatıldı`:x.kind==="liquidation"?`${x.symbol} likide oldu`:x.kind==="reward"?(String(x.note||"").startsWith("Kampanya")?x.note:rewardName(x.note)):""}));
     st.friendsP=fp;st.friends=fp.map(p=>p.username);st.followers=fer;
     st.admin=adm;st.camps=(cmp||[]).map(c=>({...c,my_volume:+c.my_volume,participants:+c.participants,tiers:Array.isArray(c.tiers)?c.tiers:[],claimed:c.claimed||[]}));st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
-    pCh.t=0;
+    for(const k in PCH)PCH[k].t=0;
     if(prof){st.prof={fb:+prof.follower_bonus||0,gb:+prof.following_bonus||0,name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1,avatar:prof.avatar_url||""};st.onboarded=prof.onboarded}
   }catch(err){console.error(err);toast("Veriler yüklenemedi: "+errText(err))}
   renderAll();if(view==="rank")renderRank();if(openId==="notifs")renderNotifs();if(openId==="rewards")renderRewards();
@@ -1523,15 +1523,16 @@ const esc=x=>String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 function ago(ms){const m=Math.floor(ms/60000);if(m<1)return"1 dk'dan az";if(m<60)return m+" dk";const h=Math.floor(m/60);if(h<24)return h+" sa";return Math.floor(h/24)+" gün"}
 function tradeCount(){return st.hist.filter(h=>h.k==="buy"||h.k==="sell"||h.k==="swap"||h.k==="perp").length}
 // Pozisyon grafiği: sunucudaki gerçek geçmiş (nakit hariç coin + vadeli değeri)
-let pCh={r:null,t:0,pts:null,busy:false},pMarks=[];
+let PCH={},pMarks=[];
 const P_RANGE={"24s":"24h","7g":"7d","30g":"30d","Tümü":"all"};
 function posNow(){let v=0;for(const[s,q]of Object.entries(st.h)){const t=find(s);if(t)v+=q*t.p}
   st.orders.forEach(o=>{if(o.side==="sell"){const t=find(o.s);if(t)v+=o.q*t.p}});
   st.perps.forEach(p=>{const t=find(p.s);if(t)v+=Math.max(0,p.margin+p.side*(t.p-p.entry)*p.qty)});return v}
-async function loadPChart(force){const r=P_RANGE[pRange];if(!me||pCh.busy)return;if(!force&&pCh.r===r&&Date.now()-pCh.t<60000)return;pCh.busy=true;
-  try{const {data,error}=await sb.rpc("profile_chart",{p_user:me.id,p_range:r});
-    if(!error&&Array.isArray(data)){pCh.r=r;pCh.t=Date.now();pCh.pts=data.filter(x=>x.pos_value!=null).map(x=>({t:Date.parse(x.at),v:+x.pos_value,m:x.mark||null,mu:+x.mark_usd||0,ms:x.mark_symbol||"",c:x.comp||null}));
-      setTimeout(()=>{if(view==="profile")renderProfile()},0)}}finally{pCh.busy=false}}
+async function loadPChart(force){const r=P_RANGE[pRange];if(!me)return;const e=PCH[r]||(PCH[r]={t:0,pts:null,busy:false});
+  if(e.busy)return;if(!force&&e.pts&&Date.now()-e.t<60000)return;e.busy=true;const who=me.id;
+  try{const {data,error}=await sb.rpc("profile_chart",{p_user:who,p_range:r});
+    if(!error&&Array.isArray(data)&&me&&me.id===who){e.t=Date.now();e.pts=data.filter(x=>x.pos_value!=null).map(x=>({t:Date.parse(x.at),v:+x.pos_value,m:x.mark||null,mu:+x.mark_usd||0,ms:x.mark_symbol||"",c:x.comp||null}));
+      if(view==="profile"&&P_RANGE[pRange]===r)setTimeout(renderProfile,0)}}finally{e.busy=false}}
 // Değer = elindeki coinler × o anki gerçek fiyat (işlemler arasında elindekiler değişmez)
 const P_SPAN={"24h":864e5,"7d":6048e5,"30d":2592e6,"all":3024e6},P_STEP={"24h":6e5,"7d":36e5,"30d":144e5,"all":216e5};
 function interpAt(a,t){if(!a.length||t<a[0][0]-9e5||t>a[a.length-1][0]+54e5)return null;let lo=0,hi=a.length-1;if(t<=a[0][0])return +a[0][1];if(t>=a[hi][0])return +a[hi][1];
@@ -1548,10 +1549,11 @@ function compVal(c,t){let v=0;for(const[k,q]of Object.entries(c.h||{})){const p=
   for(const x of c.p||[]){const p=priceAt(x.s,t);if(p==null)return null;v+=Math.max(0,+x.m+x.sd*(p-x.e)*x.q)}return v}
 function warmProfileHist(){const r=P_RANGE[pRange],rg=r==="24h"?"1G":r==="7d"?"1H":"1A",syms=new Set(Object.keys(st.h));
   st.perps.forEach(p=>syms.add(p.s));st.orders.forEach(o=>{if(o.side==="sell")syms.add(o.s)});
-  (pCh.pts||[]).forEach(p=>{if(p.c){Object.keys(p.c.h||{}).forEach(k=>syms.add(k));(p.c.p||[]).forEach(x=>syms.add(x.s))}});
+  ((PCH[r]||{}).pts||[]).forEach(p=>{if(p.c){Object.keys(p.c.h||{}).forEach(k=>syms.add(k));(p.c.p||[]).forEach(x=>syms.add(x.s))}});
   [...syms].slice(0,8).forEach(k=>{const t=find(k);if(t)loadHist(t,rg)})}
 function valueSeries(){const r=P_RANGE[pRange],now=Date.now(),pv=posNow(),span=P_SPAN[r],step=P_STEP[r],t0=now-span;
-  const sp=pCh.r===r&&pCh.pts?pCh.pts:[];
+  const e=PCH[r];if(!e||!e.pts)return undefined;   // veri gelene kadar eski çizim kalsın
+  const sp=e.pts;
   if(!sp.length&&pv<=0)return null;
   const lastTrade=sp.reduce((a,p)=>p.m?Math.max(a,p.t):a,0),comps=sp.filter(p=>p.c);
   const compAt=t=>{if(t>=lastTrade)return compNow();let b=null;for(const x of comps){if(x.t<=t)b=x;else break}return b&&b.c};
@@ -1560,7 +1562,7 @@ function valueSeries(){const r=P_RANGE[pRange],now=Date.now(),pv=posNow(),span=P
   const out=grid.slice();
   sp.forEach((p,i)=>{const nxt=sp[i+1],isBefore=nxt&&nxt.m&&nxt.t-p.t<5000;
     if(p.m||isBefore||!grid.some(g=>Math.abs(g.t-p.t)<step))out.push(p)});
-  out.sort((a,b)=>a.t-b.t);out.push({t:now,v:pv});
+  out.sort((a,b)=>a.t-b.t);if(out.length&&out[0].t>t0+step)out.unshift({t:t0,v:out[0].v});out.push({t:now,v:pv});
   return out.length>1?out:[{t:t0,v:pv},{t:now,v:pv}]}
 function drawPortfolio(pts){
   const c=$("pChart"),g=c.getContext("2d"),dpr=devicePixelRatio||1,W=c.clientWidth,H=c.clientHeight;pMarks=[];if(!W)return;
@@ -1596,9 +1598,10 @@ function renderProfile(){
   if(held.length){const firsts=held.map(s=>{const b=st.hist.filter(h=>(h.k==="buy"||h.k==="swap")&&h.s===s).pop();return b?b.t:Date.now()});
     $("pHold").textContent="Ort. tutma "+ago(Date.now()-firsts.reduce((a,b)=>a+b,0)/firsts.length)}else $("pHold").textContent="Tutma süresi yok";
   loadPChart();warmProfileHist();const v=posNow();const[a,b]=fmtN(v,2).split(",");$("pVal").innerHTML=`$${a}<span>,${b}</span>`;
-  const d=valueSeries();$("pEmpty").hidden=!!d;drawPortfolio(d);
+  const d=valueSeries();if(d!==undefined){$("pEmpty").hidden=!!d;drawPortfolio(d)}
   const chgEl=$("pChg");
-  if(!d){chgEl.textContent="--";chgEl.className="p-chg"}
+  if(d===undefined){}
+  else if(!d){chgEl.textContent="--";chgEl.className="p-chg"}
   else{const base=d[0].v,diff=v-base,dp=base>0?diff/base*100:null;chgEl.textContent=`${diff>=0?"+":"-"}${usd(Math.abs(diff))}${dp==null?"":` (${fmtN(Math.abs(dp),2)}%)`}`;chgEl.className="p-chg "+(diff>=0?"up":"down")}
   $("pCount").textContent=held.length;
   $("holdList").innerHTML=Object.entries(st.h).sort((x,y)=>y[1]*find(y[0]).p-x[1]*find(x[0]).p).map(([s,q])=>{const t=find(s),val=q*t.p,pl=val-(st.cost[s]||0),pp=st.cost[s]?pl/st.cost[s]*100:0;return `<button type="button" class="tok" data-open-tok="${s}">${coinHTML(t)}<div class="mid"><div class="sym">${s}</div><div class="sub">${fmtN(q,6)} ${s}</div></div><div class="rt"><div class="px">${usd(val)}</div><div class="ch ${pl>=0?"up":"down"}">${pl>=0?"+":"-"}${usd(Math.abs(pl))} (${fmtN(Math.abs(pp),1)}%)</div></div></button>`}).join("")
@@ -2394,7 +2397,7 @@ $("pwGo").onclick=()=>busy($("pwGo"),async()=>{const e=$("pwErr"),o=$("pwOld").v
   const {error}=await sb.auth.updateUser({password:n});if(error)return e.textContent=errText(error);
   ["pwOld","pwNew","pwNew2"].forEach(i=>$(i).value="");recovering=false;$("pwOld").closest("label").hidden=false;closeSheet();toast("Şifren güncellendi")});
 $("pwOld").closest(".sheet").addEventListener("input",()=>$("pwErr").textContent="");
-$("logoutBtn").onclick=async()=>{closeSheet();closeUser();closeComm();for(const k in ADDR)delete ADDR[k];pCh={r:null,t:0,pts:null,busy:false};VIP=new Set();sb.removeAllChannels();await sb.auth.signOut();me=null;st=fresh();LB=[];showAuth("login");$("liId").value=""};
+$("logoutBtn").onclick=async()=>{closeSheet();closeUser();closeComm();for(const k in ADDR)delete ADDR[k];PCH={};VIP=new Set();sb.removeAllChannels();await sb.auth.signOut();me=null;st=fresh();LB=[];showAuth("login");$("liId").value=""};
 let recovering=false;
 sb.auth.onAuthStateChange((ev,session)=>{if(ev==="PASSWORD_RECOVERY"){recovering=true;setTimeout(()=>{openSheet("pw");$("pwOld").closest("label").hidden=true;toast("Yeni şifreni belirle")},400)}});
 // ---------- device: Dynamic Island tespiti (ana ekran uygulamasında üst güvenli alan ≥ 54pt)
