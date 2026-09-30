@@ -264,6 +264,13 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .news-join b{display:block;font-size:18px;margin:8px 0 6px}
 .news-join p{color:var(--muted);line-height:1.5;margin:0 0 16px;font-size:14px}
 #commPage .post{background:none}
+/* pull to refresh */
+.ptr{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 6px);width:40px;height:40px;margin-left:-20px;border-radius:50%;background:var(--surface);box-shadow:0 4px 18px rgba(0,0,0,.35);display:grid;place-items:center;color:var(--accent);z-index:60;opacity:0;transform:translateY(-60px);pointer-events:none}
+.ptr svg{width:20px;height:20px;transition:transform .15s}
+.ptr.ready svg{transform:rotate(180deg)}
+.ptr.back{transition:transform .25s,opacity .25s}
+.ptr.spin svg{animation:ptrspin .8s linear infinite}
+@keyframes ptrspin{to{transform:rotate(360deg)}}
 /* VIP */
 .lbr .nm b.nm-v{display:flex;align-items:center;min-width:0;overflow:visible}
 .lbr .nm b.nm-v>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
@@ -1237,6 +1244,8 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <h3>Token seç</h3>
   <div class="pick-list" id="pickList"></div>
 </div>
+
+<div class="ptr" id="ptr" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v12M6 11l6 6 6-6"/></svg></div>
 
 <div class="toast" id="toast"><i></i><span id="toastT"></span></div>
 
@@ -2326,6 +2335,28 @@ $("instGo").onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();const r
 $("instX").onclick=()=>{$("inst").hidden=true;try{localStorage.setItem("arx-inst-x","1")}catch(e){}};
 if(isIOS)$("instTxt").textContent="Paylaş → Ana Ekrana Ekle ile uygulama gibi açılsın.";
 showInst();
+// ---------- aşağı çekip yenile
+(function(){const el=$("ptr"),TH=72,MAX=110,ARROW=el.innerHTML,SPIN=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-9-9"/></svg>`;let y0=null,dy=0,sc=null,busyR=false;
+  const scroller=()=>!$("userPage").hidden?$("userPage"):!$("commPage").hidden?$("commPage"):null;
+  const top=()=>{const s=scroller();return s?s.scrollTop:(window.scrollY||document.documentElement.scrollTop)};
+  const blocked=t=>openId||!me||!$("auth").hidden||t.closest(".sheet,canvas,.rail,input,textarea,select,.up-chart,.xf-list,.onb")||(document.querySelector(".onb")&&!document.querySelector(".onb").hidden);
+  const show=d=>{const p=Math.min(d,MAX);el.classList.remove("back");el.style.opacity=Math.min(1,p/TH);el.style.transform=`translateY(${p*.7}px)`;el.classList.toggle("ready",p>=TH)};
+  const hide=()=>{el.classList.add("back");el.style.opacity=0;el.style.transform="translateY(-60px)";el.classList.remove("ready","spin");if(el.innerHTML!==ARROW)setTimeout(()=>{if(!el.classList.contains("spin"))el.innerHTML=ARROW},260)};
+  addEventListener("touchstart",e=>{if(busyR||e.touches.length!==1||blocked(e.target)||top()>0){y0=null;return}y0=e.touches[0].clientY;dy=0;sc=scroller()},{passive:true});
+  addEventListener("touchmove",e=>{if(y0==null)return;dy=e.touches[0].clientY-y0;if(dy<=0||top()>0){if(dy<0)y0=null;hide();return}if(e.cancelable)e.preventDefault();show(dy)},{passive:false});
+  addEventListener("touchend",async()=>{if(y0==null)return;y0=null;if(dy<TH){hide();return}
+    busyR=true;el.classList.remove("ready");el.innerHTML=SPIN;el.classList.add("spin");el.style.opacity=1;el.style.transform="translateY(46px)";
+    try{await pullRefresh()}catch(err){}finally{busyR=false;setTimeout(hide,250)}},{passive:true});
+})();
+async function pullRefresh(){
+  // Uygulamanın yeni sürümü varsa sayfayı baştan yükle
+  try{const reg=await navigator.serviceWorker?.getRegistration?.();if(reg){await reg.update();if(reg.installing||reg.waiting){location.reload();return}}}catch(e){}
+  const jobs=[loadPrices(),loadAll(),loadLB()];
+  if(userOpen)jobs.push(loadUser(userOpen));
+  if(commOpen)jobs.push(loadComm(commOpen));
+  else if(view==="rank"&&rTab==="feed"){jobs.push(fScope==="comms"?loadComms():loadFeed(true))}
+  await Promise.all(jobs.map(j=>Promise.resolve(j).catch(()=>{})));
+  renderAll();if(view==="rank")renderRank();toast("Güncellendi")}
 if("serviceWorker" in navigator&&location.protocol==="https:"){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
 // boot
 (async function boot(){
