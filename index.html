@@ -251,6 +251,19 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .cn-col button{width:32px;height:32px;border-radius:50%}
 .cn-col button.on{box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--fg)}
 .cm-desc{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:15px;margin-bottom:6px}
+.news{display:block;padding:14px 16px;border-radius:18px;background:var(--surface);margin-bottom:10px;color:inherit;text-decoration:none}
+.news-h{display:flex;align-items:center;gap:6px;font-size:13px}
+.news-src{font-weight:800;color:var(--accent)}
+.news-tr{font-size:10px;font-weight:800;padding:1px 5px;border-radius:5px;background:#e3061322;color:#ff5b5b}
+.news-t{font-weight:700;font-size:16.5px;line-height:1.35;margin-top:6px;overflow-wrap:anywhere}
+.news-s{color:var(--muted);font-size:14px;line-height:1.45;margin-top:6px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.news-img{display:block;width:100%;max-height:200px;object-fit:cover;border-radius:12px;margin-top:10px;background:var(--surface2)}
+.news-go{margin-top:10px;font-size:13px;font-weight:700;color:var(--accent)}
+.news-lang{display:flex;gap:8px;margin:0 0 12px}
+.news-join{text-align:center;padding:26px 18px;border-radius:20px;background:var(--surface)}
+.news-join b{display:block;font-size:18px;margin:8px 0 6px}
+.news-join p{color:var(--muted);line-height:1.5;margin:0 0 16px;font-size:14px}
+#commPage .post{background:none}
 /* VIP */
 .lbr .nm b.nm-v{display:flex;align-items:center;min-width:0;overflow:visible}
 .lbr .nm b.nm-v>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
@@ -1470,6 +1483,7 @@ function newTok(r){const p=+r.price,at=r.listed_at?new Date(r.listed_at).getTime
   return {s:r.symbol,n:r.name||r.symbol,p,mc:+(r.market_cap||0),c:colorFor(r.symbol),d:decFor(p),age:fresh?at/1e10:0,dyn:1,about:`${r.name||r.symbol}, ${r.symbol} sembolüyle işlem gören bir ${r.category==="meme"?"meme coin":"kripto varlık"}.`}}
 function subscribe(){sb.removeAllChannels();
   sb.channel("arx-prices").on("postgres_changes",{event:"UPDATE",schema:"public",table:"prices"},({new:r})=>{const t=find(r.symbol);if(!t&&r.listed){loadPrices().then(renderAll);return}if(t){t.p=+r.price;t.open=+(r.open_24h||r.price);if(r.market_cap)t.mc=+r.market_cap}}).subscribe();
+  sb.channel("cf-news").on("postgres_changes",{event:"INSERT",schema:"public",table:"news_items"},()=>{clearTimeout(window.__nT);window.__nT=setTimeout(onNewsItem,1500)}).subscribe();
   sb.channel("cf-posts").on("postgres_changes",{event:"INSERT",schema:"public",table:"posts"},({new:p})=>onNewPost(p)).subscribe();
   sb.channel("arx-notifs-"+me.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"notifications",filter:"user_id=eq."+me.id},({new:n})=>{toast(n.body);loadAll()}).subscribe()}
 
@@ -1683,7 +1697,7 @@ function postHTML(p,big){POSTS[p.id]=p;const mine=me&&p.user_id===me.id,canDel=m
       ${p.community_id&&!commOpen?`<span class="post-c" data-comm="${p.community_id}" style="background:${p.community_color}22;color:${p.community_color}">${esc(p.community_emoji||"")} ${esc(p.community_name||"")}</span>`:""}
       <div class="post-b">${fmtBody(p.body)}</div>
       ${p.symbol?symChip(p.symbol):""}
-      <div class="post-a">${p.parent_id?"":`<button type="button" data-preply="${p.id}" aria-label="Yanıtla">${IC.reply}${p.reply_count||""}</button>`}
+      <div class="post-a">${p.parent_id||(p.community_read_only&&!st.admin)?"":`<button type="button" data-preply="${p.id}" aria-label="Yanıtla">${IC.reply}${p.reply_count||""}</button>`}
         <button type="button" data-plike="${p.id}" class="${p.liked?"on":""}" aria-label="Beğen">${p.liked?IC.liked:IC.like}<span>${p.like_count||""}</span></button>
         ${p.parent_id?"":`<button type="button" data-pshare="${p.id}" aria-label="Paylaş">${IC.share}</button>`}</div>
     </div></article>`}
@@ -1701,18 +1715,18 @@ $("fMore").onclick=()=>loadFeed(false);
 $("fNew").onclick=()=>{window.scrollTo({top:0,behavior:"smooth"});loadFeed(true)};
 function onNewPost(p){if(!me||p.user_id===me.id)return;
   if(p.parent_id){if(thOpen===p.parent_id&&openId==="thread")openThread(thOpen,true);return}
-  if(commOpen&&p.community_id===commOpen)loadComm(commOpen,true);
+  if(commOpen&&p.community_id===commOpen){if(commData&&commData.kind==="news")loadNews(true);else loadComm(commOpen,true)}
   if(view==="rank"&&rTab==="feed"&&fScope==="all"){fNewN++;$("fNew").textContent=`${fNewN} yeni gönderi`;$("fNew").hidden=false}}
 async function loadUserPosts(uid){const rows=await feedRows("user",uid,null,20);if(!$("upPosts")||userOpen!==uid)return;$("upPosts").innerHTML=rows&&rows.length?rows.map(p=>postHTML(p)).join(""):`<div class="hint" style="padding:12px 0">Henüz gönderisi yok.</div>`}
 // ---- tek gönderi + yanıtlar
 async function openThread(id,keep){thOpen=id;if(!keep){$("thBody").innerHTML=`<div class="empty">Yükleniyor…</div>`;openSheet("thread")}
   const rows=await feedRows("thread",id,null,100);if(thOpen!==id||!rows)return;const main=rows.find(r=>r.id===id);if(!main){$("thBody").innerHTML=`<div class="empty">Gönderi silinmiş.</div>`;return}
   const reps=rows.filter(r=>r.id!==id);
-  $("thBody").innerHTML=postHTML(main,true)+composerHTML("r:"+id,"Yanıtını yaz")+(reps.length?`<div class="th-rep">${reps.map(r=>postHTML(r)).join("")}</div>`:`<div class="hint" style="padding:10px 0">Henüz yanıt yok.</div>`)}
+  $("thBody").innerHTML=postHTML(main,true)+(main.community_read_only&&!st.admin?`<div class="hint" style="padding:8px 0 12px">Bu grupta sadece yöneticiler yanıt yazabilir.</div>`:composerHTML("r:"+id,"Yanıtını yaz"))+(reps.length?`<div class="th-rep">${reps.map(r=>postHTML(r)).join("")}</div>`:`<div class="hint" style="padding:10px 0">Henüz yanıt yok.</div>`)}
 // ---- topluluklar
 async function loadComms(){$("cList").innerHTML=`<div class="empty">Yükleniyor…</div>`;const {data,error}=await sb.rpc("communities_list",{p_id:null});if(error)return $("cList").innerHTML=`<div class="empty">${esc(errText(error))}</div>`;
   $("cList").innerHTML=(data||[]).map(commCard).join("")||`<div class="empty" style="padding:30px 10px">Henüz topluluk yok. İlk topluluğu sen kur!</div>`}
-function commCard(c){return `<div class="comm" data-comm="${c.id}"><div class="comm-ic" style="background:${c.color}33">${esc(c.emoji)}</div><div class="mid"><b>${esc(c.name)}</b>${c.description?`<small>${esc(c.description)}</small>`:""}<em>${c.members} üye · ${c.posts} gönderi</em></div>
+function commCard(c){return `<div class="comm" data-comm="${c.id}"><div class="comm-ic" style="background:${c.color}33">${esc(c.emoji)}</div><div class="mid"><b>${esc(c.name)}</b>${c.description?`<small>${esc(c.description)}</small>`:""}<em>${c.kind==="news"?"📡 Canlı haber akışı · ":""}${c.members} üye${c.kind==="news"?"":` · ${c.posts} gönderi`}</em></div>
   <button type="button" class="comm-btn${c.is_member?" in":""}" data-cjoin="${c.id}" data-in="${c.is_member?1:0}">${c.is_member?"Üyesin":"Katıl"}</button></div>`}
 async function openComm(id){closeSheet();closeUser();commOpen=id;commData=null;$("commBody").innerHTML=`<div class="empty" style="margin-top:40px">Yükleniyor…</div>`;$("commPage").hidden=false;$("commPage").scrollTop=0;document.documentElement.style.overflow="hidden";loadComm(id)}
 function closeComm(){if($("commPage").hidden)return;$("commPage").hidden=true;commOpen=null;commData=null;document.documentElement.style.overflow=""}
@@ -1722,7 +1736,8 @@ async function loadComm(id,postsOnly){const {data,error}=await sb.rpc("communiti
   if(!postsOnly)$("commBody").innerHTML=`<div class="cp-head" style="background:linear-gradient(145deg,${c.color}55,${c.color}18)"><div class="comm-ic">${esc(c.emoji)}</div><h2>${esc(c.name)}</h2>${c.description?`<p>${esc(c.description)}</p>`:""}
       <div class="cp-meta">${c.members} üye · ${c.posts} gönderi · kurucu <a data-mention="${esc(c.owner_username||"")}" style="font-weight:700">@${esc(c.owner_username||"?")}</a></div>
       <div class="cp-acts">${own?"":`<button type="button" class="btn ${c.is_member?"btn-ghost":"btn-accent"}" data-cjoin="${c.id}" data-in="${c.is_member?1:0}">${c.is_member?"Ayrıl":"Katıl"}</button>`}${own||st.admin?`<button type="button" class="btn btn-ghost" data-cdel="${c.id}" style="color:var(--down)">Topluluğu sil</button>`:""}</div></div>
-    <div id="cpCompose">${c.is_member?composerHTML("c:"+c.id,"Toplulukla paylaş"):`<div class="hint" style="padding:6px 0 14px">Paylaşım yapmak için topluluğa katıl.</div>`}</div><div id="cpList"><div class="empty">Yükleniyor…</div></div><button type="button" class="btn btn-ghost full f-more" id="cpMore" hidden>Daha fazla göster</button>`;
+    ${c.kind==="news"?newsBody(c):`<div id="cpCompose">${c.is_member?composerHTML("c:"+c.id,"Toplulukla paylaş"):`<div class="hint" style="padding:6px 0 14px">Paylaşım yapmak için topluluğa katıl.</div>`}</div><div id="cpList"><div class="empty">Yükleniyor…</div></div><button type="button" class="btn btn-ghost full f-more" id="cpMore" hidden>Daha fazla göster</button>`}`;
+  if(c.kind==="news")return loadNews(true);
   commLast=null;const rows=await feedRows("community",id,null,25);if(commOpen!==id||!rows)return;
   $("cpList").innerHTML=rows.map(p=>postHTML(p)).join("")||`<div class="empty" style="padding:24px 10px">Bu toplulukta henüz gönderi yok.</div>`;if(rows.length)commLast=rows[rows.length-1].created_at;$("cpMore").hidden=rows.length<25}
 $("commBack").onclick=closeComm;
@@ -1734,6 +1749,27 @@ $("cmEmo").addEventListener("click",e=>{const b=e.target.closest("[data-ce]");if
 $("cmCol").addEventListener("click",e=>{const b=e.target.closest("[data-cc]");if(b)[...$("cmCol").children].forEach(x=>x.classList.toggle("on",x===b))});
 $("cmGo").onclick=()=>busy($("cmGo"),async()=>{$("cmErr").textContent="";const r=await call("create_community",{p_name:$("cmName").value,p_description:$("cmDesc").value,p_emoji:$("cmEmo").querySelector(".on")?.dataset.ce||"💬",p_color:$("cmCol").querySelector(".on")?.dataset.cc||"#8e5cf7"},"cmErr");if(r.err)return;
   toast("Topluluk kuruldu");closeSheet();if(fScope==="comms")loadComms();openComm(r.data)});
+// ---- haber grubu
+let newsLast=null,newsLang="all",NEWS=[],newsPosts=[];
+function newsBody(c){if(!c.is_member&&!st.admin)return `<div class="news-join"><div style="font-size:40px">📰</div><b>Güncel kripto haberleri burada</b><p>BTCHaber, CoinDesk, Cointelegraph, Decrypt ve The Block'tan gelen haberler birkaç dakikada bir güncellenir. Görmek için gruba katıl.</p><button type="button" class="btn btn-accent" data-cjoin="${c.id}" data-in="0">Gruba katıl</button></div>`;
+  return `${st.admin?`<div id="cpCompose">${composerHTML("c:"+c.id,"Duyuru paylaş (sadece yöneticiler)")}</div>`:`<div class="hint" style="padding:0 0 10px">🔒 Bu grupta sadece yöneticiler paylaşım yapar.</div>`}
+    <div class="news-lang" id="newsLang"><button type="button" data-nl="all" class="chip on">Tümü</button><button type="button" data-nl="tr" class="chip">Türkçe</button><button type="button" data-nl="en" class="chip">English</button></div>
+    <div id="cpList"><div class="empty">Haberler yükleniyor…</div></div><button type="button" class="btn btn-ghost full f-more" id="newsMore" hidden>Daha fazla haber</button>`}
+function newsHTML(n){const u=/^https:\/\//.test(n.url)?esc(n.url):"#",img=/^https:\/\//.test(n.image_url||"")?esc(n.image_url):"";
+  return `<a class="news" href="${u}" target="_blank" rel="noopener noreferrer"><div class="news-h"><span class="news-src">${esc(n.source)}</span>${n.lang==="tr"?`<span class="news-tr">TR</span>`:""}<span class="muted">· ${tAgo(n.published_at)}</span></div>
+    <div class="news-t">${esc(n.title)}</div>${n.summary?`<div class="news-s">${esc(n.summary)}</div>`:""}${img?`<img class="news-img" src="${img}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:""}<div class="news-go">Habere git ↗</div></a>`}
+function renderNews(){if(!$("cpList"))return;const list=NEWS.filter(n=>newsLang==="all"||n.lang===newsLang).map(n=>({t:n.published_at,h:newsHTML(n)}));
+  const oldest=NEWS.length?NEWS[NEWS.length-1].published_at:null;
+  newsPosts.filter(p=>!oldest||p.created_at>=oldest).forEach(p=>list.push({t:p.created_at,h:postHTML(p)}));
+  list.sort((a,b)=>a.t<b.t?1:-1);$("cpList").innerHTML=list.map(x=>x.h).join("")||`<div class="empty" style="padding:24px 10px">Henüz haber gelmedi. Haberler birkaç dakika içinde görünmeye başlar.</div>`}
+async function loadNews(reset){const cid=commOpen;if(!commData||(!commData.is_member&&!st.admin))return;
+  if(reset){newsLast=null;NEWS=[];const r=await feedRows("community",cid,null,30);newsPosts=r||[]}
+  const {data,error}=await sb.rpc("news_feed",{p_before:newsLast,p_limit:40});if(commOpen!==cid)return;
+  if(error){$("cpList").innerHTML=`<div class="empty">${esc(errText(error))}</div>`;return}
+  NEWS=NEWS.concat(data||[]);if(data&&data.length)newsLast=data[data.length-1].published_at;$("newsMore").hidden=!data||data.length<40;renderNews()}
+document.addEventListener("click",e=>{const l=e.target.closest("[data-nl]");if(l){newsLang=l.dataset.nl;$("newsLang").querySelectorAll("[data-nl]").forEach(b=>b.classList.toggle("on",b===l));renderNews();return}
+  if(e.target.closest("#newsMore"))loadNews(false)});
+function onNewsItem(){if(commOpen&&commData&&commData.kind==="news"&&(commData.is_member||st.admin)&&($("commPage").scrollTop<200))loadNews(true)}
 // ---- ortak tıklama ve yazma işlemleri (akış, topluluk sayfası, gönderi, kullanıcı sayfası)
 function cmpState(box){const ta=box.querySelector("textarea"),n=500-ta.value.length,sm=box.querySelector(".cmp-bar small"),go=box.querySelector("[data-cmpgo]");sm.textContent=n;sm.classList.toggle("over",n<20);go.disabled=!ta.value.trim()}
 document.addEventListener("input",e=>{const box=e.target.closest(".cmp");if(box&&e.target.matches("textarea")){cmpState(box);e.target.style.height="auto";e.target.style.height=Math.min(220,e.target.scrollHeight)+"px"}});
@@ -1743,7 +1779,7 @@ async function submitCmp(box,btn){const ctx=box.dataset.cmp,ta=box.querySelector
   const {error}=await sb.rpc("create_post",args);if(error){err.textContent=errText(error);return}
   ta.value="";ta.style.height="";cmpState(box);toast(args.p_parent?"Yanıtın gönderildi":"Paylaşıldı");
   if(args.p_parent){const p=POSTS[args.p_parent];if(p)p.reply_count=(p.reply_count||0)+1;openThread(args.p_parent,true);if(fScope!=="comms"&&view==="rank")loadFeed(true);if(commOpen)loadComm(commOpen,true)}
-  else if(args.p_community){loadComm(args.p_community,true)}else loadFeed(true)}
+  else if(args.p_community){if(commData&&commData.kind==="news")loadNews(true);else loadComm(args.p_community,true)}else loadFeed(true)}
 async function gotoHandle(h){const {data}=await sb.from("profiles").select("id").ilike("username",h).maybeSingle();if(data&&data.id)openUser(data.id);else toast("@"+h+" bulunamadı")}
 function gotoCoin(s){closeSheet();closeUser();closeComm();if(s==="USDT")return;if(view!=="detail")prev=view;go("detail",s)}
 document.addEventListener("click",async e=>{
