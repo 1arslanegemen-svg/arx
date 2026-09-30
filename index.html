@@ -1354,7 +1354,7 @@ function loadHist(t,r){if(!t||!t.cg)return;const days=R_DAYS[r],key=t.cg+"|"+day
   fetch(`https://api.coingecko.com/api/v3/coins/${encodeURIComponent(t.cg)}/market_chart?vs_currency=usd&days=${days}`)
     .then(x=>x.ok?x.json():Promise.reject(x.status)).then(j=>{HIST[key]={t:Date.now(),data:(j.prices||[]).filter(p=>p[1]>0)}})
     .catch(()=>{HIST[key]={t:Date.now()-(days===1?9e4:54e4),data:c&&c.data,err:1}})
-    .finally(()=>{if(view==="detail"&&cur===t.s)drawChart()})}
+    .finally(()=>{if(view==="detail"&&cur===t.s)drawChart();if(view==="profile")renderProfile()})}
 function rangeData(t){return rangeDataFor(t,range)}
 function rangeDataFor(t,range){
   const c=t.cg&&HIST[t.cg+"|"+R_DAYS[range]];
@@ -1530,18 +1530,46 @@ function posNow(){let v=0;for(const[s,q]of Object.entries(st.h)){const t=find(s)
   st.perps.forEach(p=>{const t=find(p.s);if(t)v+=Math.max(0,p.margin+p.side*(t.p-p.entry)*p.qty)});return v}
 async function loadPChart(force){const r=P_RANGE[pRange];if(!me||pCh.busy)return;if(!force&&pCh.r===r&&Date.now()-pCh.t<60000)return;pCh.busy=true;
   try{const {data,error}=await sb.rpc("profile_chart",{p_user:me.id,p_range:r});
-    if(!error&&Array.isArray(data)){pCh.r=r;pCh.t=Date.now();pCh.pts=data.filter(x=>x.pos_value!=null).map(x=>({t:Date.parse(x.at),v:+x.pos_value,m:x.mark||null,mu:+x.mark_usd||0,ms:x.mark_symbol||""}));
+    if(!error&&Array.isArray(data)){pCh.r=r;pCh.t=Date.now();pCh.pts=data.filter(x=>x.pos_value!=null).map(x=>({t:Date.parse(x.at),v:+x.pos_value,m:x.mark||null,mu:+x.mark_usd||0,ms:x.mark_symbol||"",c:x.comp||null}));
       setTimeout(()=>{if(view==="profile")renderProfile()},0)}}finally{pCh.busy=false}}
-function valueSeries(){const r=P_RANGE[pRange],now=Date.now(),pv=posNow();
-  let pts=pCh.r===r&&pCh.pts?pCh.pts.slice():[];
-  if(!pts.length&&pv<=0)return null;
-  if(!pts.length){const span={"24h":864e5,"7d":6048e5,"30d":2592e6,"all":3024e6}[r];pts=[{t:now-span,v:pv}]}
-  pts.push({t:now,v:pv});return pts}
+// Değer = elindeki coinler × o anki gerçek fiyat (işlemler arasında elindekiler değişmez)
+const P_SPAN={"24h":864e5,"7d":6048e5,"30d":2592e6,"all":3024e6},P_STEP={"24h":6e5,"7d":36e5,"30d":144e5,"all":216e5};
+function interpAt(a,t){if(!a.length||t<a[0][0]-9e5||t>a[a.length-1][0]+54e5)return null;let lo=0,hi=a.length-1;if(t<=a[0][0])return +a[0][1];if(t>=a[hi][0])return +a[hi][1];
+  while(hi-lo>1){const m=(lo+hi)>>1;if(a[m][0]<=t)lo=m;else hi=m}const f=(t-a[lo][0])/(a[hi][0]-a[lo][0]||1);return +a[lo][1]+(a[hi][1]-a[lo][1])*f}
+function priceAt(sym,t){if(sym==="USDT")return 1;const tk=find(sym);if(!tk)return null;if(Date.now()-t<9e4)return tk.p;
+  const hs=d=>{const c=tk.cg&&HIST[tk.cg+"|"+d];return c&&c.data&&c.data.length>1?interpAt(c.data,t):null};
+  let v=hs(1);if(v==null)v=hs(7);
+  if(v==null&&tk.spark7&&tk.spark7.length>24){const n=tk.spark7.length,end=Date.now();v=interpAt(tk.spark7.map((p,i)=>[end-(n-1-i)*36e5,p]),t)}
+  if(v==null)v=hs(30);return v}
+function compNow(){const h={},o={};for(const[k,q]of Object.entries(st.h))h[k]=q;st.orders.forEach(x=>{if(x.side==="sell")o[x.s]=(o[x.s]||0)+x.q});
+  return{h,o,p:st.perps.map(x=>({s:x.s,sd:x.side,q:x.qty,e:x.entry,m:x.margin}))}}
+function compVal(c,t){let v=0;for(const[k,q]of Object.entries(c.h||{})){const p=priceAt(k,t);if(p==null)return null;v+=q*p}
+  for(const[k,q]of Object.entries(c.o||{})){const p=priceAt(k,t);if(p==null)return null;v+=q*p}
+  for(const x of c.p||[]){const p=priceAt(x.s,t);if(p==null)return null;v+=Math.max(0,+x.m+x.sd*(p-x.e)*x.q)}return v}
+function warmProfileHist(){const r=P_RANGE[pRange],rg=r==="24h"?"1G":r==="7d"?"1H":"1A",syms=new Set(Object.keys(st.h));
+  st.perps.forEach(p=>syms.add(p.s));st.orders.forEach(o=>{if(o.side==="sell")syms.add(o.s)});
+  (pCh.pts||[]).forEach(p=>{if(p.c){Object.keys(p.c.h||{}).forEach(k=>syms.add(k));(p.c.p||[]).forEach(x=>syms.add(x.s))}});
+  [...syms].slice(0,8).forEach(k=>{const t=find(k);if(t)loadHist(t,rg)})}
+function valueSeries(){const r=P_RANGE[pRange],now=Date.now(),pv=posNow(),span=P_SPAN[r],step=P_STEP[r],t0=now-span;
+  const sp=pCh.r===r&&pCh.pts?pCh.pts:[];
+  if(!sp.length&&pv<=0)return null;
+  const lastTrade=sp.reduce((a,p)=>p.m?Math.max(a,p.t):a,0),comps=sp.filter(p=>p.c);
+  const compAt=t=>{if(t>=lastTrade)return compNow();let b=null;for(const x of comps){if(x.t<=t)b=x;else break}return b&&b.c};
+  const start=sp.length?Math.max(t0,sp[0].t):t0,grid=[];
+  for(let t=start;t<now-step/3;t+=step){const c=compAt(t);if(!c)continue;const v=compVal(c,t);if(v!=null)grid.push({t,v})}
+  const out=grid.slice();
+  sp.forEach((p,i)=>{const nxt=sp[i+1],isBefore=nxt&&nxt.m&&nxt.t-p.t<5000;
+    if(p.m||isBefore||!grid.some(g=>Math.abs(g.t-p.t)<step))out.push(p)});
+  out.sort((a,b)=>a.t-b.t);out.push({t:now,v:pv});
+  return out.length>1?out:[{t:t0,v:pv},{t:now,v:pv}]}
 function drawPortfolio(pts){
   const c=$("pChart"),g=c.getContext("2d"),dpr=devicePixelRatio||1,W=c.clientWidth,H=c.clientHeight;pMarks=[];if(!W)return;
   c.width=W*dpr;c.height=H*dpr;g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);if(!pts)return;
-  const vs=pts.map(p=>p.v),mn=Math.min(...vs),mx=Math.max(...vs),pad=18,t0=pts[0].t,t1=pts[pts.length-1].t;
-  const y=v=>pad+(mx-v)/(mx-mn||1)*(H-pad*2),x=t=>4+(t-t0)/(t1-t0||1)*(W-12);
+  const vs=pts.map(p=>p.v),t0=pts[0].t,t1=pts[pts.length-1].t,pad=18;
+  // Ölçek: ilk alımdan önceki 0 değerleri ölçeği ezmesin; hareket net görünsün
+  let lead=vs.findIndex(v=>v>0.005);if(lead<0)lead=0;const sv=vs.slice(lead);
+  let mn=Math.min(...sv),mx=Math.max(...sv);const minR=Math.max(mx*0.004,0.01);if(mx-mn<minR){const c=(mx+mn)/2;mn=c-minR/2;mx=c+minR/2}
+  const y=v=>Math.min(H-2,Math.max(2,pad+(mx-v)/(mx-mn||1)*(H-pad*2))),x=t=>4+(t-t0)/(t1-t0||1)*(W-12);
   const col=css(vs[vs.length-1]>=vs[0]?"--up":"--down"),gr=g.createLinearGradient(0,0,0,H);gr.addColorStop(0,col+"40");gr.addColorStop(1,col+"00");
   const path=()=>{g.beginPath();pts.forEach((p,i)=>i?g.lineTo(x(p.t),y(p.v)):g.moveTo(x(p.t),y(p.v)))};
   path();g.lineTo(x(t1),H);g.lineTo(x(t0),H);g.closePath();g.fillStyle=gr;g.fill();
@@ -1567,7 +1595,7 @@ function renderProfile(){
   const held=Object.keys(st.h);
   if(held.length){const firsts=held.map(s=>{const b=st.hist.filter(h=>(h.k==="buy"||h.k==="swap")&&h.s===s).pop();return b?b.t:Date.now()});
     $("pHold").textContent="Ort. tutma "+ago(Date.now()-firsts.reduce((a,b)=>a+b,0)/firsts.length)}else $("pHold").textContent="Tutma süresi yok";
-  loadPChart();const v=posNow();const[a,b]=fmtN(v,2).split(",");$("pVal").innerHTML=`$${a}<span>,${b}</span>`;
+  loadPChart();warmProfileHist();const v=posNow();const[a,b]=fmtN(v,2).split(",");$("pVal").innerHTML=`$${a}<span>,${b}</span>`;
   const d=valueSeries();$("pEmpty").hidden=!!d;drawPortfolio(d);
   const chgEl=$("pChg");
   if(!d){chgEl.textContent="--";chgEl.className="p-chg"}
