@@ -73,7 +73,14 @@ h2{font-size:20px;font-weight:700;margin:6px 0 14px;text-wrap:balance}
 .tcard{flex:0 0 196px;scroll-snap-align:start;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;text-align:left}
 .tcard .who{display:flex;align-items:center;gap:8px;padding:11px 12px;font-weight:600;font-size:14px;border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tcard .res{display:flex;align-items:center;gap:8px;padding:12px;font-weight:700;font-size:15px;white-space:nowrap}
-.av{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff}
+.av{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;overflow:hidden}
+.av-img{width:100%;height:100%;object-fit:cover;display:block;border-radius:50%}
+.ed-av{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.ed-av-img{width:76px;height:76px;border-radius:50%;background:linear-gradient(145deg,var(--accent),var(--accent-2));display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:28px;color:var(--accent-ink);overflow:hidden;flex:none}
+.ed-av-btns{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.ed-pick{padding:10px 16px;font-size:14px;border-radius:12px;cursor:pointer;display:inline-block}
+.ed-rm{color:var(--down);font-size:13px;font-weight:600}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}
 
 /* tabs & chips */
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line);margin:26px -16px 14px;padding-inline:16px}
@@ -355,7 +362,7 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .p-tool{width:44px;height:44px;border-radius:50%;background:var(--surface2);border:1px solid var(--line);display:grid;place-items:center}
 .p-tool svg{width:21px;height:21px}
 .p-idrow{display:flex;align-items:flex-end;justify-content:space-between;margin-top:-46px;margin-bottom:12px;position:relative}
-.p-avatar{position:relative;width:88px;height:88px;border-radius:50%;background:linear-gradient(145deg,var(--accent),var(--accent-2));border:4px solid var(--bg);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:32px;color:var(--accent-ink)}
+.p-avatar{overflow:visible;position:relative;width:88px;height:88px;border-radius:50%;background:linear-gradient(145deg,var(--accent),var(--accent-2));border:4px solid var(--bg);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:32px;color:var(--accent-ink)}
 .p-avatar i{position:absolute;right:-2px;bottom:2px;width:26px;height:26px;border-radius:50%;background:var(--fg);color:var(--bg);display:grid;place-items:center;border:3px solid var(--bg)}
 .p-avatar i svg{width:12px;height:12px}
 .btn-rew{position:relative;display:flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);font-weight:700;padding:11px 18px;border-radius:14px;margin-bottom:34px}
@@ -394,7 +401,8 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .promo-art .coin{position:absolute;border:2px solid var(--surface)}
 .promo-art .coin i{display:none}
 .p-dep{padding:17px;font-size:17px;margin-bottom:8px}
-.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,var(--accent),var(--accent-2));color:var(--accent-ink);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:13px}
+.p-av-in{width:100%;height:100%;border-radius:50%;overflow:hidden;display:grid;place-items:center}
+.nav-av{overflow:hidden;width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,var(--accent),var(--accent-2));color:var(--accent-ink);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:13px}
 nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--accent)}
 .fld{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;font-size:13px;color:var(--muted)}
 .fld input,.fld textarea{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--fg);font:inherit;font-size:16px;resize:none;width:100%}
@@ -635,7 +643,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
     </div>
   </div>
   <div class="p-idrow">
-    <button class="p-avatar" type="button" data-open="edit" aria-label="Profili düzenle"><span id="pAv">E</span><i><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 20h4L19 9l-4-4L4 16zM16.5 3.5l4 4 1-1a2 2 0 0 0-4-4z"/></svg></i></button>
+    <button class="p-avatar" type="button" data-open="edit" aria-label="Profili düzenle"><span id="pAv" class="p-av-in">E</span><i><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 20h4L19 9l-4-4L4 16zM16.5 3.5l4 4 1-1a2 2 0 0 0-4-4z"/></svg></i></button>
     <button class="btn-rew" type="button" data-open="rewards"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 7h-2.2A3 3 0 0 0 12 4.4 3 3 0 0 0 6.2 7H4a1 1 0 0 0-1 1v3h8V7h2v4h8V8a1 1 0 0 0-1-1zM9 7a1 1 0 1 1 1-1v1zm5 0V6a1 1 0 1 1 1 1zM4 13v6a2 2 0 0 0 2 2h5v-8zm9 8h5a2 2 0 0 0 2-2v-6h-7z"/></svg>Ödüller<span class="rew-dot" id="rewDot" hidden></span></button>
   </div>
   <div class="p-name" id="pName"></div>
@@ -762,6 +770,14 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <div class="grab"></div>
   <h3>Profili düzenle</h3>
   <div class="sub">Profilin diğer kullanıcılara görünür.</div>
+  <div class="ed-av">
+    <div class="ed-av-img" id="edAv">E</div>
+    <div class="ed-av-btns">
+      <label class="btn btn-ghost ed-pick" for="edFile">Fotoğraf seç</label>
+      <input type="file" id="edFile" class="vh" accept="image/*">
+      <button type="button" class="ed-rm" id="edRm" hidden>Fotoğrafı kaldır</button>
+    </div>
+  </div>
   <label class="fld"><span>Ad</span><input id="edName" maxlength="24" autocomplete="off"></label>
   <label class="fld"><span>Kullanıcı adı</span><div class="fld-at"><b>@</b><input id="edHandle" maxlength="20" autocomplete="off" readonly aria-readonly="true"></div><small style="color:var(--faint)">Kullanıcı adı hesabına bağlı, değiştirilemez.</small></label>
   <label class="fld"><span>Bio</span><textarea id="edBio" maxlength="120" rows="3" placeholder="Kendinden kısaca bahset"></textarea></label>
@@ -935,7 +951,7 @@ function renderBal(){
 // ---------- top trades
 function colorFor(h){let x=0;for(const c of String(h))x=(x*31+c.charCodeAt(0))>>>0;return ["#8e5cf7","#e84393","#2e86de","#e6a817","#27ae60","#e67e22","#d9534f","#16a085","#6c5ce7","#00a8a8"][x%10]}
 function renderTop(){const top=LB.filter(r=>r.g>0).slice(0,6);$("topWrap").hidden=!top.length;
-  $("topRail").innerHTML=top.map(r=>`<button type="button" class="tcard" data-go="rank"><div class="who"><span class="av" style="background:${colorFor(r.h)}">${esc(initial(r.n))}</span>${esc(r.h)}</div><div class="res"><span class="up">+${usd(r.g)}</span></div></button>`).join("")}
+  $("topRail").innerHTML=top.map(r=>`<button type="button" class="tcard" data-go="rank"><div class="who">${avHTML(r)}${esc(r.h)}</div><div class="res"><span class="up">+${usd(r.g)}</span></div></button>`).join("")}
 function initial(n){return (String(n||"?").trim().charAt(0)||"?").toLocaleUpperCase("tr-TR")}
 
 // ---------- token list
@@ -1023,17 +1039,19 @@ $("q").addEventListener("input",renderSearch);
 
 // ---------- rank
 let LB=[],rFilter="all",rTab="board";const rPeriod="24s";
-async function loadLB(){const {data,error}=await sb.rpc("leaderboard",{p_limit:100});if(!error&&data){LB=data.map(r=>({id:r.user_id,n:r.full_name||r.username,h:r.username,g:+r.pnl,eq:+r.equity}))}renderTop();if(view==="rank")renderRank()}
+async function loadLB(){const {data,error}=await sb.rpc("leaderboard",{p_limit:100});if(!error&&data){LB=data.map(r=>({id:r.user_id,n:r.full_name||r.username,h:r.username,g:+r.pnl,eq:+r.equity,a:r.avatar_url}))}renderTop();if(view==="rank")renderRank()}
 function myPnl(){const{v}=portfolio();const rew=st.hist.filter(h=>h.k==="rew").reduce((a,h)=>a+h.v,0);return v-st.dep-rew}
 function laurel(n){const col=["#f2b705","#b8c2cc","#d0803a"][n-1];
   const leaf=`<g fill="${col}"><path d="M8 26c-4-3-5.5-8-4-13 1 4 3 7 6 9z"/><path d="M5 12c-.5-3 .5-6 3-8 0 3-.5 5-2 7z"/><path d="M4.5 18c-2-1-3-3.5-3-6 1.5 1 2.5 3 3.5 5z"/></g>`;
   return `<span class="laurel"><svg viewBox="0 0 40 30" aria-hidden="true">${leaf}<g transform="translate(40 0) scale(-1 1)">${leaf}</g></svg><b style="color:${col}">${n}</b></span>`}
-const avHTML=(p,style="")=>`<span class="av av-g" style="background-color:${colorFor(p.h)};${style}">${esc(initial(p.n))}</span>`;
+const safeUrl=u=>/^https:\/\//.test(u||"")?String(u).replace(/"/g,"%22"):"";
+const avHTML=(p,style="")=>`<span class="av av-g" style="background-color:${colorFor(p.h)};${style}">${safeUrl(p.a)?`<img class="av-img" src="${safeUrl(p.a)}" alt="" loading="lazy">`:esc(initial(p.n))}</span>`;
+function setAv(el,url,ini){if(!el)return;const u=safeUrl(url);el.innerHTML=u?`<img class="av-img" src="${u}" alt="">`:esc(ini)}
 function renderRank(){
   $("fCount").textContent=st.friends.length;
   let list=LB.slice();if(rFilter==="friends")list=list.filter(p=>st.friends.includes(p.h)||(me&&p.id===me.id));
   const myIdx=LB.findIndex(p=>me&&p.id===me.id),pnl=myPnl();
-  $("meAv").textContent=initial(st.prof.name);
+  setAv($("meAv"),st.prof.avatar,initial(st.prof.name));
   $("meRank").innerHTML=`<b>#</b> ${myIdx>=0?myIdx+1:"-"}`;
   const mv=$("meVal");mv.textContent=(pnl>0.005?"+":pnl<-0.005?"-":"")+usd(Math.abs(pnl));mv.className="me-val "+(pnl>0.005?"up":pnl<-0.005?"down":"");
   $("lbList").innerHTML=list.length?list.map((p,i)=>{const mine=me&&p.id===me.id;return `<div class="lbr${mine?" me":""}"><span class="rk">${i<3?laurel(i+1):i+1+"."}</span>${avHTML(p)}<div class="nm"><b>${esc(p.n)}${mine?" (sen)":""}</b><small>@${esc(p.h)}</small></div><div class="rt"><span class="g ${p.g>=0?"up":"down"}">${p.g>=0?"+":"-"}${usd(Math.abs(p.g))}</span></div></div>`}).join("")
@@ -1041,7 +1059,7 @@ function renderRank(){
   renderFriends();
 }
 function renderFriends(){
-  $("friendList").innerHTML=st.friendsP.length?st.friendsP.map(p=>{const r=LB.find(x=>x.id===p.id),q={n:p.full_name||p.username,h:p.username};return `<div class="lbr">${avHTML(q)}<div class="nm"><b>${esc(q.n)}</b><small>@${esc(q.h)}</small></div><div class="rt">${r?`<span class="g ${r.g>=0?"up":"down"}">${r.g>=0?"+":"-"}${usd(Math.abs(r.g))}</span>`:`<span class="muted" style="font-size:13px">Sıralamada değil</span>`}<button type="button" class="fr-btn" data-unf="${p.id}">Takipten çık</button></div></div>`}).join(""):`<div class="empty">Henüz kimseyi takip etmiyorsun.</div>`;
+  $("friendList").innerHTML=st.friendsP.length?st.friendsP.map(p=>{const r=LB.find(x=>x.id===p.id),q={n:p.full_name||p.username,h:p.username,a:p.avatar_url};return `<div class="lbr">${avHTML(q)}<div class="nm"><b>${esc(q.n)}</b><small>@${esc(q.h)}</small></div><div class="rt">${r?`<span class="g ${r.g>=0?"up":"down"}">${r.g>=0?"+":"-"}${usd(Math.abs(r.g))}</span>`:`<span class="muted" style="font-size:13px">Sıralamada değil</span>`}<button type="button" class="fr-btn" data-unf="${p.id}">Takipten çık</button></div></div>`}).join(""):`<div class="empty">Henüz kimseyi takip etmiyorsun.</div>`;
   const sug=LB.filter(p=>!(me&&p.id===me.id)&&!st.friendsP.some(f=>f.id===p.id)).slice(0,5);
   $("suggestList").innerHTML=sug.length?sug.map(p=>`<div class="lbr">${avHTML(p)}<div class="nm"><b>${esc(p.n)}</b><small>@${esc(p.h)}</small></div><button type="button" class="fr-btn add" data-fol="${p.id}">Takip et</button></div>`).join(""):`<div class="empty" style="padding:16px">Şu an öneri yok.</div>`;
 }
@@ -1085,7 +1103,7 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
       q(sb.from("lessons_done").select("lesson").eq("user_id",uid)),
       q(sb.from("reward_claims").select("reward").eq("user_id",uid)),
       q(sb.from("profiles").select("*").eq("id",uid).maybeSingle())]);
-    const ids=fol.map(f=>f.followee);const fp=ids.length?await q(sb.from("profiles").select("id,username,full_name").in("id",ids)):[];
+    const ids=fol.map(f=>f.followee);const fp=ids.length?await q(sb.from("profiles").select("id,username,full_name,avatar_url").in("id",ids)):[];
     st.usdt=+(acc?acc.usdt:0);st.dep=+(acc?acc.deposited:0);
     st.h={};st.cost={};hold.forEach(h=>{if(find(h.symbol)){st.h[h.symbol]=+h.qty;st.cost[h.symbol]=+h.cost}});
     st.orders=ord.map(o=>({id:o.id,s:o.symbol,side:o.side,type:o.type,px:+o.trigger_price,q:+o.qty,res:+o.reserved_usdt,cost:+o.reserved_cost}));
@@ -1097,7 +1115,7 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
       txt:x.kind==="swap"?(x.note||"")+" takas":x.kind==="perp_open"?`${x.symbol} ${x.note||""} açıldı`:x.kind==="perp_close"?`${x.symbol} pozisyonu kapatıldı`:x.kind==="liquidation"?`${x.symbol} likide oldu`:x.kind==="reward"?rewardName(x.note):""}));
     st.friendsP=fp;st.friends=fp.map(p=>p.username);st.followers=fer;
     st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
-    if(prof){st.prof={name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1};st.onboarded=prof.onboarded}
+    if(prof){st.prof={name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1,avatar:prof.avatar_url||""};st.onboarded=prof.onboarded}
   }catch(err){console.error(err);toast("Veriler yüklenemedi: "+errText(err))}
   renderAll();if(view==="rank")renderRank();if(openId==="notifs")renderNotifs();if(openId==="rewards")renderRewards();
 }
@@ -1129,7 +1147,7 @@ function drawPortfolio(d){
 }
 function renderProfile(){
   const p=st.prof,ini=(p.name||"?").trim().charAt(0).toLocaleUpperCase("tr-TR")||"?";
-  $("pAv").textContent=ini;$("navAv").textContent=ini;
+  setAv($("pAv"),st.prof.avatar,ini);setAv($("navAv"),st.prof.avatar,ini);
   $("pName").textContent=p.name;$("pFollowing").textContent=st.friends.length;$("pFollowers").textContent=st.followers||0;$("pHandle").textContent="@"+p.handle;
   $("pBio").innerHTML=p.bio?esc(p.bio):`<button type="button" class="bio-add" data-open="edit"><i>+</i>Bio ekle</button>`;
   const tc=tradeCount();$("pTrades").textContent=tc+" işlem";
@@ -1166,11 +1184,31 @@ $("resetBtn").onclick=()=>{$("resetConfirm").hidden=false};
 $("resetNo").onclick=()=>{$("resetConfirm").hidden=true};
 $("resetYes").onclick=()=>busy($("resetYes"),async()=>{const r=await call("reset_account");if(r.err)return;$("resetConfirm").hidden=true;closeSheet();await loadAll();toast("Hesabın sıfırlandı")});
 // edit
-function fillEdit(){$("edName").value=st.prof.name;$("edHandle").value=st.prof.handle;$("edBio").value=st.prof.bio;$("edErr").textContent=""}
+function fillEdit(){setAv($("edAv"),st.prof.avatar,initial(st.prof.name));$("edRm").hidden=!st.prof.avatar;$("edName").value=st.prof.name;$("edHandle").value=st.prof.handle;$("edBio").value=st.prof.bio;$("edErr").textContent=""}
 $("edSave").onclick=()=>busy($("edSave"),async()=>{const n=$("edName").value.trim(),bio=$("edBio").value.trim();
   if(!n)return $("edErr").textContent="Ad boş olamaz.";
   const {error}=await sb.from("profiles").update({full_name:n,bio}).eq("id",me.id);if(error)return $("edErr").textContent=errText(error);
   closeSheet();await loadAll();toast("Profil güncellendi")});
+// avatar upload
+function squareJpeg(file,size=320){return new Promise((res,rej)=>{const url=URL.createObjectURL(file),img=new Image();
+  img.onload=()=>{const s=Math.min(img.naturalWidth,img.naturalHeight),c=document.createElement("canvas");c.width=c.height=size;const g=c.getContext("2d");
+    g.drawImage(img,(img.naturalWidth-s)/2,(img.naturalHeight-s)/2,s,s,0,0,size,size);URL.revokeObjectURL(url);c.toBlob(b=>b?res(b):rej(new Error("Resim işlenemedi")),"image/jpeg",.86)};
+  img.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("Bu dosya açılamadı. JPG veya PNG bir fotoğraf seç."))};img.src=url})}
+function avatarPath(u){const m=String(u||"").match(/\/object\/public\/avatars\/(.+)$/);return m?decodeURIComponent(m[1].split("?")[0]):null}
+$("edFile").addEventListener("change",async e=>{const f=e.target.files&&e.target.files[0];e.target.value="";if(!f||!me)return;
+  if(!/^image\//.test(f.type||"image/"))return $("edErr").textContent="Lütfen bir fotoğraf seç.";
+  if(f.size>15e6)return $("edErr").textContent="Fotoğraf çok büyük (en fazla 15 MB).";
+  $("edErr").textContent="";const pick=document.querySelector(".ed-pick");pick.textContent="Yükleniyor…";
+  try{const blob=await squareJpeg(f);const path=`${me.id}/avatar-${Date.now()}.jpg`;
+    const up=await sb.storage.from("avatars").upload(path,blob,{contentType:"image/jpeg",upsert:true,cacheControl:"3600"});if(up.error)throw up.error;
+    const url=sb.storage.from("avatars").getPublicUrl(path).data.publicUrl;
+    const {error}=await sb.from("profiles").update({avatar_url:url}).eq("id",me.id);if(error)throw error;
+    const old=avatarPath(st.prof.avatar);if(old)sb.storage.from("avatars").remove([old]).then(()=>{});
+    st.prof.avatar=url;fillEdit();renderProfile();renderAll();toast("Profil fotoğrafın güncellendi")}
+  catch(err){$("edErr").textContent=errText(err)}finally{pick.textContent="Fotoğraf seç"}});
+$("edRm").onclick=()=>busy($("edRm"),async()=>{const old=avatarPath(st.prof.avatar);
+  const {error}=await sb.from("profiles").update({avatar_url:null}).eq("id",me.id);if(error)return $("edErr").textContent=errText(error);
+  if(old)sb.storage.from("avatars").remove([old]).then(()=>{});st.prof.avatar="";fillEdit();renderProfile();renderAll();toast("Profil fotoğrafı kaldırıldı")});
 // rewards
 function rewards(){const tc=tradeCount();return[
   {id:"dep",ic:"$",t:"İlk bakiye yüklemeni yap",r:10,p:st.dep>0?1:0,n:1},
@@ -1318,7 +1356,7 @@ function tick(){tickN++;
 }
 function renderTradeSoft(){const e=$("trErr").textContent;renderTrade();$("trErr").textContent=e}
 function renderSwapSoft(){const e=$("swErr").textContent;renderSwap();$("swErr").textContent=e}
-function renderAll(){renderBal();renderTop();renderPromoArt();$("navAv").textContent=(st.prof.name||"?").trim().charAt(0).toLocaleUpperCase("tr-TR");renderList();if(view==="detail")renderDetail();if(view==="profile")renderProfile();if(view==="search")renderSearch();renderBadge()}
+function renderAll(){renderBal();renderTop();renderPromoArt();setAv($("navAv"),st.prof.avatar,initial(st.prof.name));renderList();if(view==="detail")renderDetail();if(view==="profile")renderProfile();if(view==="search")renderSearch();renderBadge()}
 // ---------- engine: orders, alerts, perps
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const maxLev=t=>t.maxLev||(t.mc>5e10?50:t.mc>5e9?25:10);
