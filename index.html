@@ -576,6 +576,7 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .hist .mid{flex:1;min-width:0}
 .hist small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
 .set-row{display:flex;align-items:center;justify-content:space-between;padding:15px 0;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.set-lang{padding:9px 0;gap:10px}.lang-seg{margin:0;flex:0 0 auto}.lang-seg button{padding:7px 12px;font-size:13px}
 
 /* profile */
 .p-band{margin:-14px -16px 0;height:128px;background:radial-gradient(120% 90% at 85% 0%,var(--accent-soft),transparent 60%),var(--surface);border-bottom:1px solid var(--line);position:relative}
@@ -853,7 +854,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
     <button type="button" class="chip" data-f="held">En yüksek hacim</button>
     <button type="button" class="chip" data-f="new">Yeni listelenen</button>
   </div>
-  <div class="note"><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent)"><path d="M3 11V4a1 1 0 0 1 1-1h7l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5" fill="var(--surface)"/></svg><span id="noteText"><b>%0,08 komisyon</b> ile büyük coinlerde en düşük ücret.</span></div>
+  <div class="note"><svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent)"><path d="M3 11V4a1 1 0 0 1 1-1h7l10 10-8 8z"/><circle cx="7.5" cy="7.5" r="1.5" fill="var(--surface)"/></svg><span id="noteText" data-en="&lt;b&gt;0.08% fee&lt;/b&gt; — the lowest on major coins."><b>%0,08 komisyon</b> ile büyük coinlerde en düşük ücret.</span></div>
   <div id="perpPos"></div>
   <div id="tokList"></div>
   </div></div>
@@ -873,8 +874,8 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <div class="cols d-cols"><div class="col-a">
   <div class="ctype" id="ctype"><button type="button" data-ct="line" class="on">Çizgi</button><button type="button" data-ct="candle">Mum</button></div>
   <canvas class="chart" id="chart" aria-label="Fiyat grafiği"></canvas>
-  <div class="ranges" id="ranges">
-    <button type="button" data-r="1S">1S</button><button type="button" data-r="1G" class="on">1G</button><button type="button" data-r="1H">1H</button><button type="button" data-r="1A">1A</button><button type="button" data-r="1Y">1Y</button><button type="button" data-r="Tümü">Tümü</button>
+  <div class="ranges" id="ranges" translate="no">
+    <button type="button" data-r="1S" data-en="1H">1S</button><button type="button" data-r="1G" data-en="1D" class="on">1G</button><button type="button" data-r="1H" data-en="1W">1H</button><button type="button" data-r="1A" data-en="1M">1A</button><button type="button" data-r="1Y">1Y</button><button type="button" data-r="Tümü" data-en="All">Tümü</button>
   </div>
   <div class="act-inline"><button class="btn btn-sell" type="button" data-trade="sell">Sat</button><button class="btn btn-buy" type="button" data-trade="buy">Al</button></div>
   </div><div class="col-b">
@@ -887,7 +888,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <p class="about" id="dAbout"></p>
   <div class="sec-t" style="margin-top:18px">Topluluk işlemleri</div>
   <div id="dTrades"><div class="hint">Yükleniyor…</div></div>
-  <p class="disclaim">Fiyat verisi <a href="https://www.coingecko.com/" target="_blank" rel="noopener" style="color:inherit">CoinGecko</a> tarafından sağlanır ve ~30 saniye gecikmeli olabilir. Hiçbir içerik yatırım tavsiyesi değildir.</p>
+  <p class="disclaim" data-en="Price data is provided by &lt;a href=&quot;https://www.coingecko.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; style=&quot;color:inherit&quot;&gt;CoinGecko&lt;/a&gt; and may be delayed ~30 seconds. Nothing here is investment advice.">Fiyat verisi <a href="https://www.coingecko.com/" target="_blank" rel="noopener" style="color:inherit">CoinGecko</a> tarafından sağlanır ve ~30 saniye gecikmeli olabilir. Hiçbir içerik yatırım tavsiyesi değildir.</p>
   </div></div>
 </div>
 
@@ -1101,6 +1102,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <div class="sub">Hesap tercihlerin.</div>
   <button class="set-row" type="button" data-open="edit"><span>Profili düzenle</span><span class="muted">›</span></button>
   <button class="set-row" type="button" id="setTheme"><span>Tema</span><span class="muted" id="setThemeVal">Koyu</span></button>
+  <div class="set-row set-lang"><span>Dil / Language</span><div class="seg lang-seg" id="setLang" translate="no"><button type="button" data-lang="tr">Türkçe</button><button type="button" data-lang="en">English</button></div></div>
   <button class="set-row" type="button" data-open="about"><span>Hakkında ve uyarılar</span><span class="muted">›</span></button>
   <button class="set-row" type="button" data-open="pw"><span>Şifreyi değiştir</span><span class="muted">›</span></button>
   <button class="set-row" type="button" id="logoutBtn"><span>Oturumu kapat</span><span class="muted" id="logoutWho"></span></button>
@@ -1198,7 +1200,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <div class="grab"></div>
   <h3>COINFORCE hakkında</h3>
   <div class="about" style="margin-top:10px">
-    <p>COINFORCE, kripto alım-satımını risksiz öğrenmen için yapılmış bir <b>sanal işlem</b> uygulamasıdır. Yüklediğin bakiye, kazançlar ve ödüller sanaldır; gerçek paraya çevrilemez ve gerçek para yatırılamaz.</p>
+    <p data-en="COINFORCE is a &lt;b&gt;virtual trading&lt;/b&gt; app built so you can learn crypto trading without risk. Your balance, gains and rewards are virtual; they can't be converted to real money and real money can't be deposited.">COINFORCE, kripto alım-satımını risksiz öğrenmen için yapılmış bir <b>sanal işlem</b> uygulamasıdır. Yüklediğin bakiye, kazançlar ve ödüller sanaldır; gerçek paraya çevrilemez ve gerçek para yatırılamaz.</p>
     <p>Fiyat verisi CoinGecko tarafından sağlanır ve yaklaşık 30 saniyede bir güncellenir. Uygulamadaki hiçbir içerik yatırım tavsiyesi değildir.</p>
     <p>Hesabın ve işlemlerin COINFORCE sunucusunda saklanır; her cihazdan aynı hesapla giriş yapabilirsin.</p>
     <p class="muted" style="font-size:12px">Coin logoları ve adları ilgili projelerin markalarıdır; yalnızca coinleri tanıtmak için gösterilir ve bir ortaklık anlamına gelmez. Logolar ve fiyat verisi CoinGecko üzerinden alınır.</p>
@@ -1231,7 +1233,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <div class="grab"></div>
   <h3>COINFORCE'u ana ekrana ekle</h3>
   <div class="sub">Safari'de üç adımda:</div>
-  <div class="ios-steps">1. <b>Paylaş</b> simgesine dokun (yukarı ok olan kare). Görmüyorsan önce adres çubuğundaki <b>⋯</b> ya da <b>≡</b> menüsünü aç.<br>2. Listeyi kaydırıp <b>Ana Ekrana Ekle</b>'yi seç.<br>3. Sağ üstte <b>Ekle</b>'ye dokun.</div>
+  <div class="ios-steps" data-en="1. Tap the &lt;b&gt;Share&lt;/b&gt; icon (the square with an up arrow). If you don't see it, first open the &lt;b&gt;⋯&lt;/b&gt; or &lt;b&gt;≡&lt;/b&gt; menu in the address bar.&lt;br&gt;2. Scroll the list and choose &lt;b&gt;Add to Home Screen&lt;/b&gt;.&lt;br&gt;3. Tap &lt;b&gt;Add&lt;/b&gt; in the top right.">1. <b>Paylaş</b> simgesine dokun (yukarı ok olan kare). Görmüyorsan önce adres çubuğundaki <b>⋯</b> ya da <b>≡</b> menüsünü aç.<br>2. Listeyi kaydırıp <b>Ana Ekrana Ekle</b>'yi seç.<br>3. Sağ üstte <b>Ekle</b>'ye dokun.</div>
   <p class="hint" style="margin-top:12px">Sonra COINFORCE'u ana ekrandaki simgeden aç; tarayıcı çubukları olmadan tam ekran çalışır.</p>
 </div>
 
@@ -1293,6 +1295,162 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 
 <div class="toast" id="toast"><i></i><span id="toastT"></span></div>
 
+<script>
+/*I18N*/
+var LANG=(function(){try{return localStorage.getItem("cf_lang")==="en"?"en":"tr"}catch(e){return "tr"}})();
+var EN=LANG==="en",LOC=EN?"en-US":"tr-TR",DEC=EN?".":",";
+var RX_Z0=EN?/\.0$/:/,0$/,RX_TZ=EN?/\.?0+$/:/,?0+$/,RX_TZ2=EN?/(\.\d*?)0+$/:/(,\d*?)0+$/,RX_TD=EN?/\.$/:/,$/;
+var I18N=(function(){
+  if(!EN)return{t:function(s){return s},run:function(){}};
+  document.documentElement.lang="en";
+  var D={"5 işlem tamamla": "Complete 5 trades", "Şifreyi değiştir": "Change password", "Coin logoları ve adları ilgili projelerin markalarıdır; yalnızca coinleri tanıtmak için gösterilir ve bir ortaklık anlamına gelmez. Logolar ve fiyat verisi CoinGecko üzerinden alınır.": "Coin logos and names are trademarks of their projects; they are shown only to identify the coins and don't imply any partnership. Logos and price data come from CoinGecko.", "Sıralaman kopyalandı": "Your rank was copied", "Zaten takip ediyorsun.": "You already follow them.", "Sunucuya ulaşılamadı. İnternet bağlantını kontrol et.": "Couldn't reach the server. Check your internet connection.", "Bir hata oluştu, tekrar dene.": "Something went wrong, try again.", "E-posta/kullanıcı adı veya şifre hatalı.": "Wrong email/username or password.", "Bu senin kendi adresin.": "This is your own address.", "\" için sonuç yok.": "\".", "$1.000 yükle": "Load $1,000", "'yi seç.": ".", "+ Yeni": "+ New", "+ Topluluk kur": "+ Create community", ". Fiyat": ". Price", "0 işlem": "0 trades", "1 ay": "1 month", "1 dk'dan az": "under 1 min", "1 hafta": "1 week", "1 yıl": "1 year", "1.000$'lık bir alışta %0,08 komisyon ne kadardır?": "How much is a 0.08% fee on a $1,000 buy?", "2 dk": "2 min", "3 dk": "3 min", "4 dk": "4 min", "2. Listeyi kaydırıp": "2. Scroll the list and tap", "20x long pozisyonda fiyat yaklaşık yüzde kaç düşerse likide olursun?": "In a 20x long, roughly how far does the price have to fall before you're liquidated?", "3. Sağ üstte": "3. Tap", "Ad": "First name", "Ad boş olamaz.": "Name can't be empty.", "Adres": "Address", "Adres kopyalandı": "Address copied", "Adresi kopyala": "Copy address", "Adını ve soyadını gir.": "Enter your first and last name.", "Akademi'de kısa dersleri bitir, görevlerle ödül kazan, sıralamada arkadaşlarınla yarış.": "Finish short lessons in the Academy, earn rewards from tasks and compete with friends on the leaderboard.", "Akademi'de 3 ders bitir": "Finish 3 lessons in the Academy", "Akış": "Feed", "Al": "Buy", "Al veya sat": "Buy or sell", "Al, sat, emir ver": "Buy, sell, place orders", "Alacağın tutar": "You'll receive", "Alarm fiyatı": "Alert price", "Alarm fiyatı şu anki fiyata çok yakın.": "The alert price is too close to the current price.", "Alarm kur": "Set alert", "Alıcı adresi": "Recipient address", "Alıcı adresini gir.": "Enter the recipient address.", "Alıcıya ulaşacak": "Recipient gets", "Alım": "Buy", "Alınacak miktar": "Amount to buy", "Alınacak ödül var": "Rewards to claim", "Alındı": "Received", "Alış": "Buy", "Ana Ekrana Ekle": "Add to Home Screen", "Ana ekrana ekle": "Add to home screen", "Ana gezinme": "Main navigation", "Ana sayfa": "Home", "Ana topluluk": "Main community", "Anında, piyasa fiyatından çevir.": "Convert instantly at market price.", "Aralık": "December", "Arkadaşlarını davet et; yaptıkları her işlemin ücretinin %25'i otomatik olarak hesabına geçsin.": "Invite your friends and automatically get 25% of the fee on every trade they make.", "ATH'den uzaklık": "From ATH", "Ay": "Month", "Ayarlar": "Settings", "Ayrıl": "Leave", "Ayrılacak bakiye": "Balance to use", "Açık": "Light", "Açık emirler": "Open orders", "Açık emirler (": "Open orders (", "Açık pozisyonların (": "Your open positions (", "Açık pozisyonu yok.": "No open positions.", "Açıklama": "Description", "Ağ": "Network", "Ağ ücreti": "Network fee", "Ağustos": "August", "Bakiye yükle": "Load balance", "Bakiye yükle (yönetici)": "Load balance (admin)", "Bakiye yükleme": "Balance top-up", "Bakiye yükleme sadece yönetici tarafından yapılabilir.": "Only an admin can load balance.", "Bakiye yükleme sadece yönetici tarafından yapılabilir": "Only an admin can load balance", "Bakiye yükleme şu an sadece COINFORCE yöneticisi tarafından yapılıyor. Bakiye almak için yöneticiye kullanıcı adını ilet:": "Right now only the COINFORCE admin can load balance. To get a balance, send the admin your username:", "Bakiye yükleyip işlem yapan kullanıcılar burada görünür.": "Users who have a balance and trade show up here.", "Bakiye:": "Balance:", "Bakiyen bu emir için yetmiyor.": "Your balance isn't enough for this order.", "Bakiyen yetmiyor. Tutarı düşür ya da bakiye yükle.": "Your balance isn't enough. Lower the amount or load balance.", "Bakiyenle başla": "Start with your balance", "Bağlantı kütüphanesi yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.": "The connection library couldn't load. Check your internet connection and refresh the page.", "Başka bir COINFORCE kullanıcısının adresine coin gönder.": "Send coins to another COINFORCE user's address.", "Başla": "Start", "Başlık": "Title", "Beğen": "Like", "Bildirim yok.": "No notifications.", "Bildirimler": "Notifications", "Bio": "Bio", "Bio ekle": "Add bio", "Bir kullanıcıya": "To a user", "Bir limit veya stop emri ver": "Place a limit or stop order", "Bir takas yap": "Make a swap", "Bir tetik fiyatı gir.": "Enter a trigger price.", "Bir tokenin sayfasında yıldıza dokunarak ekle.": "Add one by tapping the star on a token's page.", "Bir tutar seç ya da yaz.": "Pick or type an amount.", "BTC 80.000$ iken 78.000$'dan limit alış emri verdin. Ne olur?": "BTC is at $80,000 and you place a limit buy at $78,000. What happens?", "BTCHaber, CoinDesk, Cointelegraph, Decrypt ve The Block'tan gelen haberler birkaç dakikada bir güncellenir. Görmek için gruba katıl.": "News from BTCHaber, CoinDesk, Cointelegraph, Decrypt and The Block, refreshed every few minutes. Join the group to see it.", "Bu adres bulunamadı.": "Address not found.", "Bu adrese yalnızca başka bir COINFORCE hesabından,": "Only send to this address from another COINFORCE account, choosing the", "Bu coin gönderilemiyor.": "This coin can't be sent.", "Bu coin için ağ bulunamadı.": "No network found for this coin.", "Bu coinde henüz topluluk işlemi yok.": "No community trades in this coin yet.", "Bu dosya açılamadı. JPG veya PNG bir fotoğraf seç.": "This file couldn't be opened. Pick a JPG or PNG photo.", "Bu e-posta ile zaten bir hesap var. Oturum aç sekmesinden giriş yapabilirsin.": "An account with this email already exists. You can log in from the Log in tab.", "Bu grupta sadece yöneticiler yanıt yazabilir.": "Only admins can reply in this group.", "Bu gönderi silinsin mi?": "Delete this post?", "Bu kişiyi zaten takip ediyorsun.": "You already follow this person.", "Bu kullanıcı adı alınmış. Başka bir tane dene.": "This username is taken. Try another.", "Bu kullanıcı adıyla kimse yok.": "No one has this username.", "Bu satır anlaşılmadı: \"": "Couldn't read this line: \"", "Bu satırdaki sayılar hatalı: \"": "The numbers on this line are wrong: \"", "Bu tarih geçerli değil. Günü kontrol et.": "This date isn't valid. Check the day.", "Bu tokende pozisyonun yok": "You have no position in this token", "Bu toplulukta henüz gönderi yok.": "No posts in this community yet.", "Büyüklük": "Size", "CF… ile başlayan adres": "Address starting with CF…", "COINFORCE hakkında": "About COINFORCE", "COINFORCE sanal parayla çalışan bir alım-satım uygulamasıdır. Gerçek para yatırılamaz veya çekilemez. Hiçbir içerik yatırım tavsiyesi değildir.": "COINFORCE is a trading app that runs on virtual money. Real money can't be deposited or withdrawn. Nothing here is investment advice.", "COINFORCE Akademi": "COINFORCE Academy", "COINFORCE Genel": "COINFORCE General", "COINFORCE'u ana ekrana ekle": "Add COINFORCE to your home screen", "COINFORCE'a katıl: kripto al-sat, yarış, topluluk. Davet linkim:": "Join COINFORCE: trade crypto, compete, community. My invite link:", "COINFORCE'ta bir tokenin sayfasında Al'a dokunup Limit sekmesini seçerek deneyebilirsin.": "On COINFORCE, try it by tapping Buy on a token's page and choosing the Limit tab.", "COINFORCE'u kullanmak için 18 yaşında veya daha büyük olmalısın.": "You must be 18 or older to use COINFORCE.", "COINFORCE, kripto alım-satımını risksiz öğrenmen için yapılmış bir": "COINFORCE is a", "uygulamasıdır. Yüklediğin bakiye, kazançlar ve ödüller sanaldır; gerçek paraya çevrilemez ve gerçek para yatırılamaz.": "app built to let you learn crypto trading risk-free. Your balance, gains and rewards are virtual; they can't be converted to real money and real money can't be deposited.", "Coin": "Coin", "Coin ara": "Search coins", "Coin logoları ve adları ilgili projelerin markalarıdır; yalnızca coinleri tanıtmak için gösterilir ve bir ortaklık anlamına gelmez.": "Coin logos and names are trademarks of their projects; they are shown only to identify the coins and don't imply any partnership.", "Daha fazla göster": "Show more", "Daha fazla haber": "More news", "Davet et, arkadaşlarının işlem ücretlerinin %25'ini kazan": "Invite friends, earn 25% of their trading fees", "Davet kodun varsa (kullanıcı adı)": "Invite code, if you have one (username)", "Davet linkin kopyalandı": "Invite link copied", "Davet linkini paylaş": "Share your invite link", "Davetler": "Invites", "Denge kuralı: bir kademeye kadar verilen toplam ödül, o hacmin komisyonunun yarısını geçemez (her $10.000 hacim için en fazla $4). Böylece sadece ödül için al-sat yapmak zarar ettirir.": "Balance rule: total rewards up to a tier can't exceed half the fees on that volume (at most $4 per $10,000 of volume). That way trading only for rewards loses money.", "Ders": "Lesson", "Ders tamamlandı": "Lesson complete", "Doğru! Ders tamamlandı.": "Correct! Lesson complete.", "Doğum tarihi": "Date of birth", "Doğum tarihinde gün, ay ve yılı seç.": "Pick the day, month and year of your birth date.", "Dolaşımdaki arz": "Circulating supply", "Duyuru paylaş (sadece yöneticiler)": "Post an announcement (admins only)", "E-posta (Gmail)": "Email (Gmail)", "E-posta veya kullanıcı adı": "Email or username", "E-posta ya da kullanıcı adını ve şifreni gir.": "Enter your email or username and your password.", "Ekim": "October", "Ekle": "Add", "Emir iptal edildi": "Order cancelled", "Emir iptal edilir": "The order is cancelled", "Emir tipi": "Order type", "Emirlerin gerçekleşince ve alarmların çalınca burada görürsün.": "You'll see it here when your orders fill and your alerts go off.", "En az 3 karakterlik bir başlık yaz.": "Write a title of at least 3 characters.", "En az 8 karakter, harf ve rakam": "At least 8 characters, letters and numbers", "En az bir kademe gir.": "Enter at least one tier.", "En iyi yatırımcılar": "Top traders", "En yüksek hacim": "Top volume", "En çok yükselen": "Top gainers", "Eylül": "September", "Farklı varlıklara dağıtmak riski azaltır. Profil sayfandaki dağılım çubuğu portföyünün ne kadar yoğunlaştığını gösterir.": "Spreading across different assets lowers risk. The allocation bar on your profile shows how concentrated your portfolio is.", "Fiyat": "Price", "Fiyat 78.000$ veya altına inince alınır": "It buys when the price drops to $78,000 or below", "Fiyat alarmları": "Price alerts", "Fiyat alarmı": "Price alert", "Fiyat alarmı kur": "Set a price alert", "Fiyat bu seviyeye veya altına inince alınır. Şu an:": "Buys when the price drops to this level or below. Now:", "Fiyat bu seviyeye veya üstüne çıkınca satılır. Şu an:": "Sells when the price rises to this level or above. Now:", "Fiyat bu seviyeyi yukarı kırınca piyasadan alınır. Şu an:": "Buys at market when the price breaks above this level. Now:", "Fiyat grafiği": "Price chart", "Fiyat seçtiğin seviyeye gelince bildirim alırsın.": "You'll get a notification when the price reaches your level.", "Fiyat tetik seviyesine inince": "When the price falls to the trigger level", "Fiyat tetik seviyesinin üstüne çıkınca": "When the price rises above the trigger level", "Fiyat verisi": "Price data", "Fiyat verisi CoinGecko tarafından sağlanır ve yaklaşık 30 saniyede bir güncellenir. Uygulamadaki hiçbir içerik yatırım tavsiyesi değildir.": "Price data is provided by CoinGecko and refreshed roughly every 30 seconds. Nothing in the app is investment advice.", "Fotoğraf seç": "Choose photo", "Fotoğraf çok büyük (en fazla 15 MB).": "Photo is too large (max 15 MB).", "Fotoğrafı kaldır": "Remove photo", "Geri": "Back", "Geç": "Skip", "Geçerli bir e-posta adresi gir (ör. ornek@gmail.com).": "Enter a valid email address (e.g. name@gmail.com).", "Geçerli bir kullanıcı adı gir (3-20 karakter).": "Enter a valid username (3-20 characters).", "Geçerli bir kullanıcı adı yaz.": "Type a valid username.", "Giriş": "Entry", "Grafik birkaç dakika içinde oluşmaya başlar. Varlık her 10 dakikada bir kaydediliyor.": "The chart starts forming within a few minutes. Holdings are recorded every 10 minutes.", "Grafik yükleniyor…": "Loading chart…", "Gruba katıl": "Join group", "Gönder": "Send", "Gönderi": "Post", "Gönderi kopyalandı": "Post copied", "Gönderi silindi": "Post deleted", "Gönderi silinmiş.": "Post deleted.", "Gönderilecek miktar": "Amount to send", "Gönderiler": "Posts", "Gönderebileceğin bir varlık yok.": "You have nothing you can send.", "Görev ödülleri": "Task rewards", "Görevler": "Tasks", "Görevler ve kampanyalar": "Tasks and campaigns", "Gün": "Day", "Gün sonunda": "At the end of the day", "Güncel kripto haberleri burada": "The latest crypto news is here", "Güncel kripto haberleri. Sadece yöneticiler paylaşım yapar.": "The latest crypto news. Only admins post.", "Güncellendi": "Updated", "Günün kaybedenleri": "Today's losers", "Günün kazananları": "Today's winners", "Habere git ↗": "Read story ↗", "Haberler yükleniyor…": "Loading news…", "Hacim kampanyaları": "Volume campaigns", "Hacim sıralaması": "Volume ranking", "Hacmin": "Your volume", "Haftalık Hacim Yarışı": "Weekly Volume Race", "Hakkında": "About", "Hakkında ve uyarılar": "About and disclaimers", "Haziran": "June", "Hemen 80.000$'dan alınır": "It buys right away at $80,000", "Henüz alım-satım yok.": "No trades yet.", "Henüz gönderi yok. İlk paylaşımı sen yap!": "No posts yet. Be the first to post!", "Henüz gönderisi yok.": "No posts yet.", "Henüz haber gelmedi. Haberler birkaç dakika içinde görünmeye başlar.": "No news yet. Stories start appearing within a few minutes.", "Henüz işlem yapmamış.": "No trades yet.", "Henüz işlem yok.": "No trades yet.", "Henüz kimse işlem yapmadı. İlk sen ol!": "Nobody has traded yet. Be the first!", "Henüz kimseyi takip etmiyorsun.": "You're not following anyone yet.", "Henüz pozisyon yok": "No positions yet", "Henüz topluluk yok. İlk topluluğu sen kur!": "No communities yet. Create the first one!", "Henüz yanıt yok.": "No replies yet.", "Her işlemde küçük bir": "On every trade you pay a small", "ödersin. COINFORCE'ta spot işlemlerde %0,08, vadelide %0,05.": ". On COINFORCE it's 0.08% for spot trades and 0.05% for futures.", "Hesaba USDT eklenir.": "USDT is added to the account.", "Hesabı sıfırla": "Reset account", "Hesabım": "My account", "Hesabın oluşturuldu.": "Your account has been created.", "Hesabın oluşturuldu. Şimdi şifrenle oturum açabilirsin.": "Your account has been created. You can now log in with your password.", "Hesabın sıfırlandı": "Your account has been reset", "Hesabın yok mu?": "No account yet?", "Hesabın ve işlemlerin COINFORCE sunucusunda saklanır; her cihazdan aynı hesapla giriş yapabilirsin.": "Your account and trades are stored on the COINFORCE server; you can log in with the same account from any device.", "Hesabına USDT yüklendiğinde alım-satıma başlarsın.": "You can start trading once USDT is loaded to your account.", "Hesabına ilk bakiyen yüklensin": "Get your first balance loaded", "Ödül: Hesabına ilk bakiyen yüklensin": "Reward: Get your first balance loaded", "Hesap oluştur": "Create account", "Hesap tercihlerin.": "Your account preferences.", "Hoş geldin,": "Welcome,", "Kaldıraç": "Leverage", "Kaldıraç ve likidasyon": "Leverage and liquidation", "Kaldıraçlı sürekli vadeli işlem": "Leveraged perpetual futures", "Kampanya": "Campaign", "Kampanya bitirildi": "Campaign ended", "Kampanya süresince yaptığın alım, satım, takas ve vadeli işlemler hacmine sayılır. Kademelere ulaştıkça ödül al.": "Buys, sells, swaps and futures trades during the campaign count toward your volume. Earn rewards as you reach each tier.", "Kampanya ödülü: +": "Campaign reward: +", "Kampanyayı başlat": "Start campaign", "Kapalı": "Closed", "Kapanmış pozisyonu yok.": "No closed positions.", "Kapat": "Close", "Kapatıldı": "Closed", "Kasım": "November", "Katıl": "Join", "Katılım": "Joined", "Kaydet": "Save", "Kaydol": "Sign up", "Kazancı garanti etmek": "Guarantee profit", "Kazanç da zarar da kaldıraçla büyür. 10x'te fiyat sana karşı %10 hareket ederse teminatın neredeyse tamamen gider.": "Leverage magnifies both gains and losses. At 10x, a 10% move against you wipes out almost all your margin.", "Kazanılan": "Earned", "Kademeler (her satıra hacim = ödül)": "Tiers (one per line: volume = reward)", "Kendi topluluğunu kur, insanlar katılıp paylaşım yapsın.": "Create your own community for people to join and post in.", "Kendime": "To myself", "Kendinden kısaca bahset": "Tell people a bit about yourself", "Keşfet": "Explore", "Kilitli": "Locked", "Klan": "Clan", "Klanlar": "Clans", "Komisyon": "Fee", "Komisyon (%0,08)": "Fee (0.08%)", "Komisyon (ilk alım ücretsiz)": "Fee (first buy free)", "Komisyon ve maliyet": "Fees and costs", "Komisyonu azaltmak": "Reduce fees", "Koyu": "Dark", "Kripto": "Crypto", "Kripto Haberler": "Crypto News", "Kripto al, sat, takas et. Piyasayı canlı takip et.": "Buy, sell and swap crypto. Follow the market live.", "Kripto gönder": "Send crypto", "Kripto yatır": "Deposit crypto", "Kullanıcı adı": "Username", "Kullanıcı adı hesabına bağlı, değiştirilemez.": "Your username is tied to your account and can't be changed.", "Kullanıcı adı veya şifre hatalı.": "Wrong username or password.", "Kullanıcı adımı kopyala": "Copy my username", "Kullanıcı adıyla takip et": "Follow by username", "Kullanıcı profili": "User profile", "Kullanılabilir": "Available", "Kullanılabilir nakit": "Available cash", "Kullanılabilir:": "Available:", "Kur": "Create", "Kurulu alarmlar": "Active alerts", "Kâr / zarar": "Profit / loss", "Kâr/zarar": "P/L", "Kâr = toplam portföy değeri − yüklenen bakiye − ödüller. Sadece bakiye yüklemiş kullanıcılar listelenir.": "Profit = total portfolio value − loaded balance − rewards. Only users who have loaded a balance are listed.", "Kısa açıklama (isteğe bağlı)": "Short description (optional)", "Likidasyon": "Liquidation", "Likidasyon fiyatı": "Liquidation price", "Likide oldu": "Liquidated", "Limit": "Limit", "Limit alış": "Limit buy", "Limit satış": "Limit sell", "Limit alış emri ver": "Place limit buy order", "Limit satış emri ver": "Place limit sell order", "Limit emri": "Limit order", "Limit emrin verildi": "Your limit order is placed", "Stop emrin verildi": "Your stop order is placed", "LİMİT AL": "LIMIT BUY", "LİMİT SAT": "LIMIT SELL", "Long (yükseliş)": "Long (up)", "Long aç": "Open long", "Short aç": "Open short", "Lütfen bir fotoğraf seç.": "Please choose a photo.", "LİMİT": "LIMIT", "Maks": "Max", "Mart": "March", "Mayıs": "May", "Meme": "Meme", "Merkeziyetsiz vadeli işlem borsasının tokeni. Zincir üstü emir defteriyle çalışıyor.": "Token of a decentralized perpetuals exchange that runs on an on-chain order book.", "Mevcut şifre": "Current password", "Mevcut şifre hatalı.": "Current password is wrong.", "Minimum": "Minimum", "Minimum yatırma": "Minimum deposit", "Miktar": "Amount", "Miktar gir.": "Enter an amount.", "Mum": "Candles", "Nakitte (USDT) bir miktar tutmak, düşüşlerde alım fırsatı bırakır.": "Keeping some cash (USDT) leaves room to buy the dips.", "Neler oluyor? $BTC gibi coin etiketle": "What's happening? Tag coins like $BTC", "Nisan": "April", "Ocak": "January", "Oluşturduğunda tüm kullanıcılara bildirim gider ve kampanya hemen başlar.": "When you create it, every user gets notified and the campaign starts right away.", "Onayla": "Confirm", "Oturum aç": "Log in", "Oturumu kapat": "Log out", "Para yatır": "Deposit", "Paralel işlem yürütmeye odaklanan, Move diliyle geliştirilen katman-1 ağ.": "A layer-1 network focused on parallel transaction execution, built with the Move language.", "Paylaş": "Share", "Paylaş → Ana Ekrana Ekle ile uygulama gibi açılsın.": "Use Share → Add to Home Screen to open it like an app.", "Paylaşıldı": "Posted", "Paylaşım yapmak için topluluğa katıl.": "Join the community to post.", "Piyasa": "Market", "Piyasa değeri": "Market cap", "Piyasa emri": "Market order", "Piyasa emri ve limit emri": "Market orders and limit orders", "Piyasalar": "Markets", "Portföy değeri grafiği": "Portfolio value chart", "Pozisyon büyüklüğü": "Position size", "Pozisyon değeri": "Position value", "Pozisyon kapatıldı:": "Position closed:", "Pozisyonlar (": "Positions (", "Pozisyonu kapat": "Close position", "Pozisyonun": "Your position", "Profil bağlantısı kopyalandı": "Profile link copied", "Profil fotoğrafın güncellendi": "Profile photo updated", "Profil güncellendi": "Profile updated", "Profil yükleniyor…": "Loading profile…", "Profili düzenle": "Edit profile", "Profili paylaş": "Share profile", "Profilin diğer kullanıcılara görünür.": "Your profile is visible to other users.", "QR hazırlanıyor…": "Preparing QR…", "QR kod": "QR code", "QR oluşturulamadı": "Couldn't create QR", "QR: metin çok uzun": "QR: text too long", "Renk": "Color", "Resim işlenemedi": "Couldn't process the image", "Sadece COINFORCE içinde geçerli.": "Only valid inside COINFORCE.", "Safari'de üç adımda:": "In Safari, three steps:", "Sat": "Sell", "Satım": "Sell", "Senin sıran": "Your rank", "Short (düşüş)": "Short (down)", "Sil": "Delete", "Simge": "Icon", "Son işlemler": "Recent trades", "Sonra COINFORCE'u ana ekrandaki simgeden aç; tarayıcı çubukları olmadan tam ekran çalışır.": "Then open COINFORCE from the home screen icon; it runs full screen without browser bars.", "Soyad": "Last name", "Stop": "Stop", "Stop (zarar durdur)": "Stop (stop loss)", "Stop emri garanti değildir: hızlı düşüşlerde tetik fiyatının biraz altında gerçekleşebilir.": "A stop isn't guaranteed: in fast drops it can fill a little below the trigger price.", "emri, fiyat belirlediğin seviyeye gelince piyasa emrine dönüşür.": "order turns into a market order when the price reaches your level.", "Stop emriyle zararı sınırla": "Limit losses with stop orders", "Stop satış emri ne zaman tetiklenir?": "When does a stop sell order trigger?", "Süre (gün)": "Duration (days)", "Süre 1 ile 90 gün arasında olmalı.": "Duration must be between 1 and 90 days.", "Süre 1 ile 90 gün arasında olmalı": "Duration must be between 1 and 90 days", "Sıfır bilgi ispatlarıyla gizli işlem yapılabilen, gizlilik odaklı kripto para.": "A privacy-focused cryptocurrency that supports shielded transactions using zero-knowledge proofs.", "Sıfırla": "Reset", "Sıralama": "Leaderboard", "Sıralama henüz boş.": "The leaderboard is empty for now.", "Sıralama yükleniyor…": "Loading leaderboard…", "Sıralamadan öneriler": "Suggestions from the leaderboard", "Sıralamanı paylaş": "Share your rank", "Takas": "Swap", "Takas et": "Swap", "Takip": "Following", "Takip (": "Following (", "Takip edildi": "Followed", "Takip edilen": "Following", "Takip et": "Follow", "Takip ettiklerim": "Following", "Takip ettiklerin henüz paylaşım yapmadı.": "People you follow haven't posted yet.", "Takip ettiğin kimse sıralamada değil.": "No one you follow is on the leaderboard.", "Takipten çık": "Unfollow", "Takipten çıkıldı": "Unfollowed", "Takiptesin": "Following", "Takipçi": "Followers", "Tam değil, metni tekrar oku ve yeniden dene.": "Not quite. Read the text again and try once more.", "Tamamen satıldı": "Fully sold", "Tek bir varlığın düşüşünün etkisini azaltmak": "Reduce the impact of a single asset falling", "Tema": "Theme", "Temayı değiştir": "Change theme", "Teminat": "Margin", "Teminat (USDT)": "Margin (USDT)", "Teminat belli bir seviyenin altına düşünce pozisyon": "When margin falls below a certain level, the position gets", "olur, yani zorla kapatılır. Kaldıraç ne kadar yüksekse likidasyon fiyatı o kadar yakındır.": ", meaning it's force-closed. The higher the leverage, the closer the liquidation price.", ", teminatından daha büyük bir pozisyon açmanı sağlar. 100$ teminat ve 10x kaldıraçla 1.000$'lık pozisyon açarsın.": "lets you open a position bigger than your margin. With $100 margin and 10x leverage you open a $1,000 position.", "Teminat gir.": "Enter margin.", "Temizle": "Clear", "Temmuz": "July", "Tetik fiyatı": "Trigger price", "Token": "Token", "Token adı veya sembol": "Token name or symbol", "Token ara": "Search tokens", "Token seç": "Choose token", "Tokenler": "Tokens", "Toplam kazanç": "Total earned", "Toplam kâr": "Total profit", "Toplam nakit": "Total cash", "Toplam ödeme": "Total cost", "Topluluk": "Community", "Topluluk bulunamadı.": "Community not found.", "Topluluk işlemleri": "Community trades", "Topluluk kur": "Create community", "Topluluk kuruldu": "Community created", "Topluluk ne hakkında?": "What's the community about?", "Topluluk silindi": "Community deleted", "Topluluk ve içindeki tüm gönderiler silinsin mi?": "Delete the community and all its posts?", "Topluluklar": "Communities", "Toplulukla paylaş": "Share with the community", "Topluluktan ayrıldın": "You left the community", "Topluluğa katıldın": "You joined the community", "Topluluğu sil": "Delete community", "Trend": "Trending", "Tutar": "Amount", "Tutar gir": "Enter amount", "Tutar seç": "Choose amount", "Tutma süresi yok": "No holding time", "Tüm alanları doldur.": "Fill in all fields.", "Tüm bakiye, pozisyonlar ve geçmiş silinecek.": "Your whole balance, positions and history will be deleted.", "Tüm bakiyeni tek bir coine yatırmak, o coin düştüğünde bütün portföyünün düşmesi demektir.": "Putting your whole balance into one coin means your entire portfolio drops when that coin does.", "Tüm coinler": "All coins", "Tüm coinlerdeki işlemler sayılır": "Trades in all coins count", "Tüm kademeler tamam": "All tiers complete", "Tüm zamanların zirvesi": "All-time high", "Tümü": "All", "Türkçe": "Türkçe", "English": "English", "USD ile gir": "Enter in USD", "USDT Gönder": "Send USDT", "USDT Yatır": "Deposit USDT", "USDT gönderildi": "USDT sent", "Uygulama gibi tam ekran açılsın.": "Open full screen like an app.", "Vadeli": "Futures", "Vadeli açılış": "Futures open", "Vadeli işlem": "Futures", "Vadeli kapanış": "Futures close", "Vadeli pozisyonlar": "Futures positions", "Varlık grafiği": "Holdings chart", "Varış süresi": "Arrival time", "Vazgeç": "Cancel", "Veriler yüklenemedi:": "Couldn't load data:", "VIP++": "VIP++", "Yaklaşık": "About", "Yaklaşık %4,5-5": "About 4.5-5%", "Yakında": "Coming soon", "Yanıtla": "Reply", "Yanıtın gönderildi": "Your reply was sent", "Yanıtını yaz": "Write your reply", "Yapıştır": "Paste", "Yatır": "Deposit", "Yatırmak istediğin coini seç. Adresini başka bir COINFORCE kullanıcısına verirsen sana coin gönderebilir.": "Choose the coin you want to deposit. Give your address to another COINFORCE user and they can send you coins.", "Yeni": "New", "Yeni hacim kampanyası": "New volume campaign", "Yeni kampanya": "New campaign", "Yeni listelenen": "Newly listed", "Yeni şifre": "New password", "Yeni şifre (tekrar)": "New password (again)", "Yeni şifre en az 8 karakter olmalı, harf ve rakam içermeli.": "The new password must be at least 8 characters and contain letters and numbers.", "Yeni şifreler eşleşmiyor.": "The new passwords don't match.", "Yeni şifreni belirle": "Set your new password", "Yenile": "Refresh", "Yoldaki transferlerin": "Your transfers in transit", "Yönetici": "Admin", "Yönetici olarak kendine ya da bir kullanıcıya USDT yükleyebilirsin.": "As an admin you can load USDT to yourself or to a user.", "Yönü değiştir": "Switch direction", "Yüklemeler, alım-satımlar, takaslar ve ödüller.": "Top-ups, trades, swaps and rewards.", "Yüklenecek tutar": "Amount to load", "Yükleniyor…": "Loading…", "Yüksek hız ve düşük ücretleriyle bilinen katman-1 blokzincir. Meme coin ve DeFi hacminde öne çıkıyor.": "A layer-1 blockchain known for high speed and low fees. It stands out in meme coin and DeFi volume.", "Yıl": "Year", "Yıldızladığın tokenler burada listelenir.": "Tokens you star are listed here.", "Zarar durdur: fiyat bu seviyeye inince piyasadan satılır. Şu an:": "Stop loss: sells at market when the price drops to this level. Now:", "Zaten hesabın var mı?": "Already have an account?", "adresine gönderdiğimiz bağlantıya tıklayıp hesabını doğrula, sonra buradan oturum aç.": "— click the link we sent there to verify your account, then log in here.", "altına inince": "falls below", "alım": "buy", "alındı": "bought", "alış": "buy", "aç": "open", "açıldı": "opened", "ağı seçilerek": "network.", "bu hafta": "this week", "belirlediğin fiyatta ya da daha iyisinde gerçekleşir. Alışta fiyatın inmesini, satışta çıkmasını bekler. Fiyat oraya hiç gelmezse emir bekler.": "fills at your price or better. For a buy it waits for the price to drop, for a sell it waits for it to rise. If the price never gets there, the order keeps waiting.", "o anki en iyi fiyattan hemen gerçekleşir. Hızlıdır ama fiyatı sen seçemezsin.": "fills immediately at the best current price. It's fast, but you don't pick the price.", "değişim henüz yok": "no change yet", "dk": "min", "dk kaldı": "min left", "fiyat alarmı": "price alert", "gönderildi · yaklaşık": "sent · about", "gönderilebilen bir ağa ait değil.": "can be sent on.", "gün": "days", "haber vereceğiz (": "we'll let you know (", "hacim: toplam ödül": "volume: total reward", "hesabına": "to account", "ile büyük coinlerde en düşük ücret.": "— the lowest fee on major coins.", "ile gir": "enter in", "izleme listesinden çıkarıldı": "removed from watchlist", "izleme listesine eklendi": "added to watchlist", "işlem": "trades", "katılımcı · toplam": "participants · total", "kripto varlık": "crypto asset", "kullanıcı adı": "username", "kullanılabilir": "available", "komisyon": "fee", "likide": "liquidated", "menüsünü aç.": "menu.", "pozisyonu kapatıldı": "position closed", "sa": "h", "sa kaldı": "h left", "sanal işlem": "virtual trading", "satıldı": "sold", "satış": "sell", "sembolüyle işlem gören bir": "is a", "sembolüyle işlem gören bir kripto varlık.": "is a crypto asset trading under this symbol.", "simgesine dokun (yukarı ok olan kare). Görmüyorsan önce adres çubuğundaki": "icon (the square with an up arrow). If you don't see it, first open the", "tarafından sağlanır ve ~30 saniye gecikmeli olabilir. Hiçbir içerik yatırım tavsiyesi değildir.": "and may be delayed ~30 seconds. Nothing here is investment advice.", "tüm zamanlar": "all time", "var.": ".", "veya kendin yaz": "or type your own", "ya da": "or", "yeni gönderi": "new posts", "yok.": "none.", "yükle": "load", "yüklendi": "loaded", "yükleyebilirsin.": "at a time.", "· Bitiş:": "· Ends:", "· Portföy": "· Portfolio", "· Şu an": "· Now", "Çeşitlendirme": "Diversification", "Çeşitlendirmenin temel amacı nedir?": "What is the main goal of diversification?", "Çizgi": "Line", "Çok sık alıp satmak, küçük komisyonların birikerek kârı eritmesine yol açabilir.": "Trading too often lets small fees pile up and eat into your profit.", "Ödül": "Reward", "Ödül:": "Reward:", "Ödül: +": "Reward: +", "Ödüller": "Rewards", "Önce Yatır ile bakiye yükle.": "Load a balance with Deposit first.", "Örn. Meme Avcıları": "e.g. Meme Hunters", "Örneğin 100$'dan aldığın bir token için 90$'a stop satış koyarsan, fiyat 90$'a düşünce otomatik satılır ve zararın yaklaşık %10'da kalır.": "For example, if you bought a token at $100 and set a stop sell at $90, it sells automatically when the price drops to $90 and your loss stays around 10%.", "Öğren ve yarış": "Learn and compete", "Üyelerin toplam kazancına göre sıralı.": "Ranked by members' total profit.", "Üyesin": "Joined", "ödül": "reward", "ödül hesabına eklendi": "added to your account as a reward", "önce": "ago", "ör. BTC Haftası": "e.g. BTC Week", "üstüne çıkınca": "rises above", "üye ·": "members ·", "İleri": "Next", "İlk alımında komisyon yok": "No fee on your first buy", "İlk tokenini al": "Buy your first token", "İlk ve en büyük kripto para. Sabit 21 milyon arzıyla dijital değer saklama aracı olarak görülüyor.": "The first and largest cryptocurrency. With a fixed supply of 21 million, it's seen as a digital store of value.", "Akıllı sözleşme platformu. Merkeziyetsiz uygulamaların ve tokenlerin büyük kısmı Ethereum üzerinde çalışıyor.": "A smart contract platform. Most decentralized apps and tokens run on Ethereum.", "Hızlı ve düşük maliyetli uluslararası ödemeler için tasarlanmış bir ağın yerel varlığı.": "The native asset of a network designed for fast, low-cost international payments.", "BNB Chain ağının yerel tokeni. İşlem ücretleri ve ekosistemdeki uygulamalarda kullanılıyor.": "The native token of BNB Chain, used for transaction fees and across apps in the ecosystem.", "Şaka olarak başlayıp en büyük meme coin haline gelen, geniş topluluğa sahip kripto para.": "A cryptocurrency that started as a joke and became the biggest meme coin, with a huge community.", "İptal": "Cancel", "İstatistikler": "Stats", "İzleme": "Watchlist", "İzleme listen boş.": "Your watchlist is empty.", "İzleme listesine ekle": "Add to watchlist", "İşlem ekranındaki özet, ödeyeceğin komisyonu işlemden önce gösterir.": "The summary on the trade screen shows the fee you'll pay before you trade.", "İşlem geçmişi": "Transaction history", "İşlem ücreti (%0,05)": "Trading fee (0.05%)", "İşlemler": "Trades", "Şifre": "Password", "Şifre en az 8 karakter olmalı ve harf ile rakam içermeli.": "Password must be at least 8 characters and contain letters and numbers.", "Şifre sıfırlama bağlantısı e-postana gönderildi.": "A password reset link was sent to your email.", "Şifremi unuttum": "Forgot password", "Şifren": "Your password", "Şifreyi gizle": "Hide password", "Şifreyi göster": "Show password", "Şifreyi güncelle": "Update password", "Şimdi al": "Buy now", "Şu an": "Now", "Şu an aktif kampanya yok.": "No active campaigns right now.", "Şu an öneri yok.": "No suggestions right now.", "Şubat": "February", "şimdi": "now", "📡 Canlı haber akışı ·": "📡 Live news feed ·", "📰 Kripto Haberler": "📰 Crypto News", "🔒 Bu grupta sadece yöneticiler paylaşım yapar.": "🔒 Only admins post in this group.", "Ort. tutma 1 dk'dan az": "Avg. hold under 1 min", "24s": "24h", "7g": "7d", "30g": "30d", "24s düşük": "24h low", "24s yüksek": "24h high", "24s hacim": "24h volume", "Kademeler hatalı": "Tiers are invalid", "Dil": "Language", "Dil / Language": "Language", "Uygulama dili": "App language", "Adres bulunamadı. Adresi kontrol et.": "Address not found. Check the address.", "Bakiye yetersiz": "Insufficient balance", "Bilinmeyen ağ": "Unknown network", "Bilinmeyen ödül": "Unknown reward", "Bir miktar gir": "Enter an amount", "Bir tutar gir": "Enter an amount", "Bir şeyler yaz": "Write something", "Bu davet koduyla bir kullanıcı yok": "No user has this invite code", "Bu grupta sadece yöneticiler paylaşım yapabilir": "Only admins can post in this group", "Bu gönderiyi silme yetkin yok": "You can't delete this post", "Bu görevi henüz tamamlamadın": "You haven't completed this task yet", "Bu isimde bir topluluk zaten var": "A community with this name already exists", "Bu işlem sadece yönetici içindir": "This action is for admins only", "Bu kademe için hacmin henüz yeterli değil": "Your volume isn't enough for this tier yet", "Bu kampanyanın ödül alma süresi doldu": "The claim period for this campaign has ended", "Bu kullanıcı adıyla bir hesap yok": "No account has this username", "Bu toplulukta paylaşmak için önce katılmalısın": "You need to join this community to post", "Bu topluluğu silme yetkin yok": "You can't delete this community", "Bu ödülü zaten aldın": "You already claimed this reward", "Davet kodu sadece ilk 7 gün içinde girilebilir": "An invite code can only be entered in the first 7 days", "Emir bulunamadı": "Order not found", "En az 1$ teminat": "Minimum $1 margin", "En fazla 20 fiyat alarmı kurabilirsin": "You can set at most 20 price alerts", "En fazla 3 topluluk kurabilirsin": "You can create at most 3 communities", "En fazla 50 açık emir": "At most 50 open orders", "Fiyat ve miktar gir": "Enter price and amount", "Geçersiz emir": "Invalid order", "Geçersiz kademe": "Invalid tier", "Geçersiz takas": "Invalid swap", "Geçersiz yön": "Invalid direction", "Gönderi bulunamadı": "Post not found", "Gönderi en fazla 500 karakter olabilir": "Posts can be at most 500 characters", "Haberleri görmek için Kripto Haberler grubuna katıl": "Join the Crypto News group to see the news", "Kademe hacimleri küçükten büyüğe sıralı olmalı": "Tier volumes must be in ascending order", "Kampanya bulunamadı": "Campaign not found", "Kampanya henüz başlamadı": "The campaign hasn't started yet", "Kampanyaları sadece yönetici oluşturabilir": "Only admins can create campaigns", "Kendi adresine gönderemezsin": "You can't send to your own address", "Kendini davet edemezsin": "You can't invite yourself", "Kullanıcı bulunamadı": "User not found", "Kurucu topluluktan ayrılamaz; istersen topluluğu silebilirsin": "The founder can't leave the community; you can delete it instead", "Limit alış fiyatı şu anki fiyatın altında olmalı; hemen almak için Piyasa emri kullan": "A limit buy price must be below the current price; use a Market order to buy now", "Limit satış fiyatı şu anki fiyatın üstünde olmalı; hemen satmak için Piyasa emri kullan": "A limit sell price must be above the current price; use a Market order to sell now", "Miktar gir": "Enter an amount", "Oturum açmalısın": "You need to log in", "Pozisyon bulunamadı": "Position not found", "Saatte en fazla 30 transfer yapabilirsin": "You can make at most 30 transfers an hour", "Stop alış fiyatı şu anki fiyatın üstünde olmalı": "A stop buy price must be above the current price", "Stop satış fiyatı şu anki fiyatın altında olmalı": "A stop sell price must be below the current price", "Topluluk adı 3 ile 40 karakter arasında olmalı": "Community name must be 3 to 40 characters", "Topluluk bulunamadı": "Community not found", "Tutar 0 ile 10.000.000 arasında olmalı": "Amount must be between 0 and 10,000,000", "Yanıtlanan gönderi bulunamadı": "The post you're replying to wasn't found", "Zaten bir davet kodun var": "You already have an invite code", "Çok hızlı paylaşıyorsun, biraz bekle": "You're posting too fast, wait a moment", "Ödül 0 ile 100.000 arasında olmalı": "Reward must be between 0 and 100,000", "Ödül alabilmek için hesabına önce bakiye yüklenmiş olmalı": "Your account needs a loaded balance before you can claim rewards", "Ödül negatif olamaz": "Reward can't be negative", "1 ile 6 arasında kademe gir": "Enter 1 to 6 tiers", "Invalid login credentials": "Invalid login credentials"};
+  var t;
+  var up=function(s){return s.charAt(0).toUpperCase()+s.slice(1)};
+  var R=[
+    [/^(Limit|Stop) emrin gerçekleşti: (.+) (alındı|satıldı) \((.+)\)$/,function(m,a,b,c,d){return "Your "+a.toLowerCase()+" order filled: "+b+(c==="alındı"?" bought":" sold")+" ("+d+")"}],
+    [/^(\d+) dk önce$/,"$1 min ago"],[/^(\d+) sa önce$/,"$1 h ago"],[/^(\d+) (?:g|gün) önce$/,"$1 d ago"],
+    [/^· (.+)$/,function(m,a){return "· "+t(a)}],
+    [/^(\d+) dk$/,"$1 min"],[/^~(\d+) dk$/,"~$1 min"],[/^(\d+) sa$/,"$1 h"],[/^(\d+) g$/,"$1 d"],[/^(\d+) gün$/,"$1 days"],
+    [/^(\d+)g (\d+)sa kaldı$/,"$1d $2h left"],[/^(\d+)sa (\d+)dk kaldı$/,"$1h $2m left"],[/^(\d+)dk kaldı$/,"$1m left"],
+    [/^Yaklaşık (\d+) dakika$/,"About $1 min"],
+    [/^(\d+) dk · (\d+) soru$/,function(m,a,b){return a+" min · "+b+(b==="1"?" question":" questions")}],
+    [/^(\d+) dk · Tamamlandı$/,"$1 min · Completed"],
+    [/^Ders (\d+) \/ (\d+) · (\d+) dk$/,"Lesson $1 / $2 · $3 min"],
+    [/^Ort\. tutma (.+)$/,function(m,a){return "Avg. hold "+t(a)}],
+    [/^([\d.,]+[KM]?) işlem$/,function(m,a){return a+(a==="1"?" trade":" trades")}],
+    [/^(\d+) davet$/,function(m,a){return a+(a==="1"?" invite":" invites")}],
+    [/^(\d+) üye · (\d+) gönderi( · kurucu)?$/,function(m,a,b,c){return a+(a==="1"?" member":" members")+" · "+b+(b==="1"?" post":" posts")+(c?" · founder":"")}],
+    [/^📡 Canlı haber akışı · (\d+) üye$/,function(m,a){return "📡 Live news feed · "+a+(a==="1"?" member":" members")}],
+    [/^(\d+) yeni gönderi$/,function(m,a){return a+(a==="1"?" new post":" new posts")}],
+    [/^(.+) · (\d+) katılımcı · toplam (.+) ödül$/,function(m,a,b,c){return t(a)+" · "+b+(b==="1"?" participant":" participants")+" · "+c+" in rewards"}],
+    [/^(\S+) işlemleri sayılır$/,"$1 trades count"],[/^(\S+) işlemleri$/,"$1 trades"],
+    [/^Kullanılabilir: (.+)$/,"Available: $1"],[/^(.+) kullanılabilir$/,"$1 available"],
+    [/^Bakiye: (.+)$/,"Balance: $1"],[/^Elindeki: (.+)$/,"Holding: $1"],[/^Elinde (.+) var\.$/,"You have $1."],
+    [/^Yeterli (.+?) yok\.?$/,"Not enough $1"],
+    [/^(.+) hacim ·$/,"$1 vol ·"],[/^(.+) hacim$/,"$1 volume"],[/^(.+) PD$/,"$1 mcap"],
+    [/^(.+) 24s$/,"$1 24h"],
+    [/^%([\d,]+) komisyon$/,function(m,a){return a.replace(",",".")+"% fee"}],
+    [/^([+-])%(\d+)$/,"$1$2%"],[/^%(\d+)$/,"$1%"],
+    [/^(\S+) ile gir$/,"Enter in $1"],
+    [/^(.+) bakiye eklendi$/,"$1 balance added"],
+    [/^Tek seferde en fazla (.+) yükleyebilirsin\.$/,"You can load at most $1 at a time."],
+    [/^@(\S+) hesabına (.+) yüklendi$/,"Loaded $2 to @$1"],
+    [/^Hesabına (.+) sanal bakiye yüklendi\.$/,"$1 of virtual balance was loaded to your account."],
+    [/^Hesabına (.+) bakiye yüklendi\.$/,"$1 of balance was loaded to your account."],
+    [/^Hesabına (.+) bakiye yüklendi$/,"$1 of balance was loaded to your account"],
+    [/^(.+) ödül hesabına eklendi$/,"$1 added to your account as a reward"],
+    [/^Kampanya ödülü: \+(.+)$/,"Campaign reward: +$1"],
+    [/^Ödül: \+(.+?)(?: · (.+) kaldı)?$/,function(m,a,b){return "Reward: +"+a+(b?" · "+b+" to go":"")}],
+    [/^(.+) · Bitiş: (.+)$/,function(m,a,b){return t(a)+" · Ends: "+b}],
+    [/^Bu satır anlaşılmadı: "(.*)"\. Örnek: (.+)$/,"Couldn't read this line: \"$1\". Example: $2"],
+    [/^Bu satırdaki sayılar hatalı: "(.*)"$/,"The numbers on this line are wrong: \"$1\""],[/^Ödül: (.+)$/,function(m,a){return "Reward: "+t(a)}],
+    [/^Sonraki: (.+) →$/,"Next: $1 →"],
+    [/^(.+) hacim: toplam ödül (.+) \/ en fazla (.+?)( \(fazla, düşür\))?$/,function(m,a,b,c,d){return a+" volume: total reward "+b+" / max "+c+(d?" (too much, lower it)":"")}],
+    [/^(.+) kaldı$/,"$1 to go"],
+    [/^(\S+) yükle$/,"Load $1"],
+    [/^(\S+) al$/,"Buy $1"],[/^(\S+) sat$/,"Sell $1"],
+    [/^(.+) alındı \((.+)\)$/,function(m,a,b){return a+" bought ("+t(b)+")"}],[/^(.+) satıldı \((.+)\)$/,function(m,a,b){return a+" sold ("+t(b)+")"}],
+    [/^(.+) alındı$/,"$1 bought"],[/^(.+) satıldı$/,"$1 sold"],
+    [/^(.+) gönderildi · yaklaşık (\d+) dk$/,"$1 sent · about $2 min"],[/^(.+) gönderildi$/,"$1 sent"],
+    [/^(.+) transfer olarak geldi$/,"$1 received by transfer"],
+    [/^(\S+) vadeli$/,"$1 futures"],
+    [/^(\S+) (\d+x) (long|short) açıldı$/,"$1 $2 $3 opened"],
+    [/^(\d+x) (Long|Short) aç$/,"Open $1 $2"],
+    [/^(\S+) pozisyonu kapatıldı$/,"$1 position closed"],
+    [/^Pozisyon kapatıldı: (.+)$/,"Position closed: $1"],
+    [/^Giriş (.+) · Şu an (.+)$/,"Entry $1 · Now $2"],
+    [/^Şu an (.+) · (.+)% uzakta$/,"Now $1 · $2% away"],
+    [/^Şu an (.+)\. Fiyat (.+) (üstüne çıkınca|altına inince) haber vereceğiz \((.+)\)\.$/,function(m,a,b,c,d){return "Now "+a+". We'll let you know when the price "+(c==="üstüne çıkınca"?"rises above ":"falls below ")+b+" ("+d+")."}],
+    [/^Şu an (.+)\.$/,"Now $1."],[/^Şu an (\S+)$/,"Now $1"],
+    [/^Fiyat bu seviyeye veya altına inince alınır\. Şu an: (.+)$/,"Buys when the price drops to this level or below. Now: $1"],
+    [/^Fiyat bu seviyeye veya üstüne çıkınca satılır\. Şu an: (.+)$/,"Sells when the price rises to this level or above. Now: $1"],
+    [/^Fiyat bu seviyeyi yukarı kırınca piyasadan alınır\. Şu an: (.+)$/,"Buys at market when the price breaks above this level. Now: $1"],
+    [/^Zarar durdur: fiyat bu seviyeye inince piyasadan satılır\. Şu an: (.+)$/,"Stop loss: sells at market when the price drops to this level. Now: $1"],
+    [/^(\S+) fiyat alarmı$/,"$1 price alert"],[/^Alarm kuruldu: (.+)$/,"Alert set: $1"],
+    [/^Açık emirler \((\d+)\)$/,"Open orders ($1)"],[/^Açık pozisyonların \((\d+)\)$/,"Your open positions ($1)"],[/^Pozisyonlar \((\d+)\)$/,"Positions ($1)"],
+    [/^Takip \((\d+)\)$/,"Following ($1)"],[/^Takipçi \((\d+)\)$/,"Followers ($1)"],
+    [/^(\S+) → (\S+) takas$/,"$1 → $2 swap"],
+    [/^(\S+) Yatır$/,"Deposit $1"],[/^(\S+) Gönder$/,"Send $1"],
+    [/^(\S+) izleme listesinden çıkarıldı$/,"$1 removed from watchlist"],[/^(\S+) izleme listesine eklendi$/,"$1 added to watchlist"],
+    [/^Bu adres (\S+) gönderilebilen bir ağa ait değil\.$/,"This address isn't on a network that can receive $1."],
+    [/^"(.*)" için sonuç yok\.$/,"No results for \"$1\"."],
+    [/^(.+), (\S+) sembolüyle işlem gören bir kripto varlık\.$/,"$1 is a crypto asset that trades as $2."],
+    [/^(.+), (\S+) sembolüyle işlem gören bir (.+)\.$/,function(m,a,b,c){return a+" is a "+t(c)+" that trades as "+b+"."}],
+    [/^(LİMİT|STOP) (AL|SAT)$/,function(m,a,b){return (a==="LİMİT"?"LIMIT":"STOP")+" "+(b==="AL"?"BUY":"SELL")}],
+    [/^(Limit|Stop) (alış|satış)( emri ver)?$/,function(m,a,b,c){return (c?"Place ":"")+a.toLowerCase().replace(/^./,function(x){return c?x:x.toUpperCase()})+" "+(b==="alış"?"buy":"sell")+(c?" order":"")}],
+    [/^(\S+) (\d+x) (long|short) pozisyonun likide oldu\. Teminat: (.+)$/,"Your $1 $2 $3 position was liquidated. Margin: $4"],
+    [/^(\S+) (yükseldi|düştü): (.+) \(alarm: (.+)\)$/,function(m,a,b,c,d){return a+(b==="yükseldi"?" rose":" fell")+": "+c+" (alert: "+d+")"}],
+    [/^(.+) hesabına ulaştı \((.+)\)$/,"$1 arrived in your account ($2)"],
+    [/^Gönderdiğin (\S+) alıcıya ulaştı \((.+)\)$/,"The $1 you sent reached the recipient ($2)"],
+    [/^@(\S+) gönderine yanıt verdi: ([\s\S]*)$/,"@$1 replied to your post: $2"],
+    [/^Yeni hacim kampanyası: (.*)$/,"New volume campaign: $1"],[/^Kampanya başladı: (.*)$/,"Campaign started: $1"],
+    [/^Hoş geldin, (.+)$/,"Welcome, $1"],
+    [/^Katılım (.+)$/,"Joined $1"],
+    [/^(.+) \(sen\)$/,"$1 (you)"],
+    [/^(.+) içinde$/,function(m,a){return "in "+t(a)}],
+    [/^#(\d+) Tüm zamanlar$/,"#$1 All time"],
+    [/^(\S+) değişim henüz yok$/,function(m,a){return t(a)+" no change yet"}],
+    [/^(@\S+) bulunamadı$/,"$1 not found"],
+    [/^Veriler yüklenemedi: (.+)$/,function(m,a){return "Couldn't load data: "+t(a)}],
+    [/^Hesabın oluşturuldu\. (\S+) adresine gönderdiğimiz bağlantıya tıklayıp hesabını doğrula, sonra buradan oturum aç\.$/,"Your account has been created. Click the link we sent to $1 to verify your account, then log in here."],
+    [/^COINFORCE profilim: @(\S+) · Portföy (.+) · (\S+) işlem$/,"My COINFORCE profile: @$1 · Portfolio $2 · $3 trades"],
+    [/^COINFORCE sıralaması: @(\S+) · (.+)$/,"My COINFORCE rank: @$1 · $2"],
+    [/^(\S+) bu ağda gönderilemez$/,"$1 can't be sent on this network"],
+    [/^(\S+) henüz işleme açılmadı, fiyatı bekleniyor$/,"$1 isn't tradable yet, waiting for its price"],
+    [/^Bilinmeyen token: (.+)$/,"Unknown token: $1"],
+    [/^Bu adres (\S+) ağına ait\. Aynı ağı seçmelisin\.$/,"This address is on the $1 network. Choose the same network."],
+    [/^Bu token için kaldıraç en fazla (\d+)x$/,"Max leverage for this token is $1x"],
+    [/^En az \$(.+) değerinde göndermelisin$/,"You must send at least $$$1 worth"],
+    [/^\$(.+) hacme kadar toplam ödül en fazla \$(.+) olabilir \(şu an \$(.+)\)\. Ödülü düşür ya da hacmi artır\.$/,"Up to $$$1 volume, total rewards can be at most $$$2 (now $$$3). Lower the reward or raise the volume."],
+    [/^(\S+) Haftası$/,"$1 Week"],[/^↑ ÜSTÜ$/,"↑ ABOVE"],[/^↓ ALTI$/,"↓ BELOW"]
+  ];
+  var memo=new Map(),FR=null;
+  function frag(s){
+    if(!FR){var ks=Object.keys(D).filter(function(k){return /\S\s+\S/.test(k)&&/[a-zçğıöşü]{2}/i.test(k)&&D[k]!==k}).sort(function(a,b){return b.length-a.length});
+      FR=new RegExp("(^|[^\\p{L}\\p{N}])("+ks.map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")}).join("|")+")(?![\\p{L}\\p{N}])","gu")}
+    return s.replace(FR,function(m,p,k){return p+D[k]});
+  }
+  function core(s){
+    if(Object.prototype.hasOwnProperty.call(D,s))return D[s];
+    for(var i=0;i<R.length;i++){var m=s.match(R[i][0]);if(m){var r=R[i][1];return typeof r==="function"?r.apply(null,m):s.replace(R[i][0],r)}}
+    return /[çğıöşüÇĞİÖŞÜ]|\b(ve|bir|ile|için|yok|var|önce|Al|Sat)\b/.test(s)?frag(s):s;
+  }
+  t=function(s){
+    if(s==null)return s;s=String(s);
+    var m=/^(\s*)([\s\S]*?)(\s*)$/.exec(s),c=m[2];
+    if(!c||!/[A-Za-zÇĞİÖŞÜçğıöşü%]/.test(c))return s;
+    var r=memo.get(c);if(r===undefined){r=core(c);if(memo.size>6000)memo.clear();memo.set(c,r);var rc=r.trim();if(rc&&!memo.has(rc))memo.set(rc,rc)}
+    return r===c?s:m[1]+r+m[3];
+  };
+  var SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,svg:1,CODE:1};
+  function skip(el){return !el||SKIP[el.nodeName]||(el.closest&&el.closest('[translate="no"],svg'))}
+  function txt(n){if(skip(n.parentElement))return;var v=n.data,r=t(v);if(r!==v)n.data=r}
+  var ATTRS=["placeholder","aria-label","title"];
+  function attrs(el){if(el.closest&&el.closest('[translate="no"]'))return;for(var i=0;i<ATTRS.length;i++){var a=el.getAttribute(ATTRS[i]);if(a){var r=t(a);if(r!==a)el.setAttribute(ATTRS[i],r)}}}
+  function walk(root){
+    if(root.nodeType===3){txt(root);return}
+    if(root.nodeType!==1)return;
+    attrs(root);
+    if(root.querySelectorAll){var els=root.querySelectorAll("[placeholder],[aria-label],[title]");for(var i=0;i<els.length;i++)attrs(els[i])}
+    if(skip(root))return;
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),n;while((n=w.nextNode()))txt(n);
+  }
+  function run(){
+    document.querySelectorAll("[data-en]").forEach(function(e){e.innerHTML=e.getAttribute("data-en")});
+    walk(document.body);
+    new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var m=ms[i];
+      if(m.type==="characterData")txt(m.target);
+      else if(m.type==="attributes")attrs(m.target);
+      else for(var j=0;j<m.addedNodes.length;j++)walk(m.addedNodes[j]);}})
+    .observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:ATTRS});
+    var oc=window.confirm.bind(window);window.confirm=function(m){return oc(t(m))};
+    var oa=window.alert.bind(window);window.alert=function(m){return oa(t(m))};
+  }
+  return{t:t,run:run};
+})();
+I18N.run();
+
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 (function(){
@@ -1321,8 +1479,8 @@ T.forEach(t=>{t.open=t.p*(1-(Math.random()-.45)*.05);t.hist=genHist(t.p,t.open);
 function genHist(p,open){const a=[];let v=open;for(let i=0;i<120;i++){v*=1+(Math.random()-.5)*.012;a.push(v)}const a0=a[0],aN=a[a.length-1],n=a.length-1;return a.map((x,i)=>x*Math.pow(open/a0,1-i/n)*Math.pow(p/aN,i/n))}
 const TRADERS=[["kayaboy",62,"#d9534f"],["mert.eth",210,"#5b8def"],["defne_trades",18,"#9b59b6"],["sol_avcısı",150,"#1abc9c"],["ozan.btc",33,"#e67e22"],["zeynepfx",285,"#e84393"],["whale_ist",45,"#2e86de"],["cemre",120,"#27ae60"]];
 const $=id=>document.getElementById(id);
-const cnt=n=>{n=+n||0;return n>=1e6?fmtN(n/1e6,1).replace(/,0$/,"")+"M":n>=1e4?fmtN(n/1e3,1).replace(/,0$/,"")+"K":fmtN(n,0)};
-const fmtN=(v,d=2)=>Number(v).toLocaleString("tr-TR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const cnt=n=>{n=+n||0;return n>=1e6?fmtN(n/1e6,1).replace(RX_Z0,"")+"M":n>=1e4?fmtN(n/1e3,1).replace(RX_Z0,"")+"K":fmtN(n,0)};
+const fmtN=(v,d=2)=>Number(v).toLocaleString(LOC,{minimumFractionDigits:d,maximumFractionDigits:d});
 const usd=(v,d=2)=>(v<0?"-":"")+"$"+fmtN(Math.abs(v),d);
 const big=v=>v>=1e12?"$"+fmtN(v/1e12,1)+"T":v>=1e9?"$"+fmtN(v/1e9,1)+"B":v>=1e6?"$"+fmtN(v/1e6,1)+"M":"$"+fmtN(v,0);
 const chg=t=>(t.p/t.open-1)*100;
@@ -1346,8 +1504,8 @@ function portfolio(){let v=st.usdt,v0=st.usdt;for(const[s,q]of Object.entries(st
   (st.orders||[]).forEach(o=>{const t=find(o.s);if(o.side==="buy"){v+=o.res;v0+=o.res}else{v+=o.q*t.p;v0+=o.q*t.open}});
   (st.perps||[]).forEach(p=>{const e=perpEq(p);v+=e;v0+=e});return{v,v0}}
 function renderBal(){
-  const{v,v0}=portfolio();const[a,b]=fmtN(v,2).split(",");
-  $("balNum").innerHTML=`$${a}<span>,${b}</span>`;
+  const{v,v0}=portfolio();const[a,b]=fmtN(v,2).split(DEC);
+  $("balNum").innerHTML=`$${a}<span>${DEC}${b}</span>`;
   const d=v-v0,dp=v0?d/v0*100:0,el=$("balChg");
   if(v===0){el.textContent="-- 24s";el.className="bal-chg muted"}
   else{el.textContent=`${d>=0?"+":"-"}${usd(Math.abs(d))} (${fmtN(Math.abs(dp),2)}%) 24s`;el.className="bal-chg "+(d>=0?"up":"down")}
@@ -1380,7 +1538,7 @@ function renderList(){
   }
   if(tab==="perps")arr=arr.slice(0,10);
   $("chips").hidden=tab==="watch";
-  $("noteText").innerHTML=tab==="perps"?"<b>50x'e kadar</b> kaldıraçla long ya da short aç. Bir tokene dokun.":tab==="watch"?"Yıldızladığın tokenler burada listelenir.":"<b>%0,08 komisyon</b> ile büyük coinlerde en düşük ücret.";
+  $("noteText").innerHTML=EN?(tab==="perps"?"Go long or short with <b>up to 50x</b> leverage. Tap a token.":tab==="watch"?"Tokens you star are listed here.":"<b>0.08% fee</b> — the lowest on major coins."):tab==="perps"?"<b>50x'e kadar</b> kaldıraçla long ya da short aç. Bir tokene dokun.":tab==="watch"?"Yıldızladığın tokenler burada listelenir.":"<b>%0,08 komisyon</b> ile büyük coinlerde en düşük ücret.";
   renderPerpPos();
   $("tokList").innerHTML=arr.length?arr.map(t=>tokRow(t,{perp:tab==="perps"})).join(""):`<div class="empty">İzleme listen boş.<br>Bir tokenin sayfasında yıldıza dokunarak ekle.</div>`;
 }
@@ -1493,7 +1651,7 @@ $("rTabs").addEventListener("click",e=>{const b=e.target.closest("[data-rt]");if
 $("ddBtn").onclick=e=>{e.stopPropagation();const m=$("ddMenu");m.hidden=!m.hidden;$("ddBtn").setAttribute("aria-expanded",!m.hidden)};
 $("ddMenu").addEventListener("click",e=>{const d=e.target.dataset.dd;if(!d)return;rFilter=d;$("ddVal").textContent=e.target.textContent;[...$("ddMenu").children].forEach(b=>b.classList.toggle("on",b===e.target));$("ddMenu").hidden=true;renderRank()});
 document.addEventListener("click",e=>{if(!e.target.closest(".r-dd"))$("ddMenu").hidden=true});
-$("meShare").onclick=()=>{const pnl=myPnl();const txt=`COINFORCE sıralaması: @${st.prof.handle} · ${pnl>=0?"+":"-"}${usd(Math.abs(pnl))}`;try{navigator.clipboard.writeText(txt).then(()=>toast("Sıralaman kopyalandı"),()=>toast(txt))}catch(err){toast(txt)}};
+$("meShare").onclick=()=>{const pnl=myPnl();const txt=`COINFORCE sıralaması: @${st.prof.handle} · ${pnl>=0?"+":"-"}${usd(Math.abs(pnl))}`;const tx=I18N.t(txt);try{navigator.clipboard.writeText(tx).then(()=>toast("Sıralaman kopyalandı"),()=>toast(tx))}catch(err){toast(txt)}};
 async function follow(id){const {error}=await sb.from("follows").insert({follower:me.id,followee:id});if(error){toast(error.code==="23505"?"Zaten takip ediyorsun.":errText(error));return}await loadAll();toast("Takip edildi")}
 async function unfollow(id){const {error}=await sb.from("follows").delete().eq("follower",me.id).eq("followee",id);if(error)return toast(errText(error));await loadAll();toast("Takipten çıkıldı")}
 document.addEventListener("click",e=>{
@@ -1628,18 +1786,18 @@ function drawPortfolio(pts){
 }
 $("pChart").addEventListener("click",e=>{const r=$("pChart").getBoundingClientRect(),ex=e.clientX-r.left,ey=e.clientY-r.top;
   let best=null,bd=22;pMarks.forEach(m=>{const d=Math.hypot(m.x-ex,m.y-ey);if(d<bd){bd=d;best=m}});if(!best)return;const p=best.p;
-  toast(`${p.ms||""} ${p.m==="sell"?"satış":"alım"} · ${usd(p.mu)} · ${new Date(p.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}`)});
+  toast(`${p.ms||""} ${p.m==="sell"?"satış":"alım"} · ${usd(p.mu)} · ${new Date(p.t).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}`)});
 function renderProfile(){
   const p=st.prof,ini=(p.name||"?").trim().charAt(0).toLocaleUpperCase("tr-TR")||"?";
   setAv($("pAv"),st.prof.avatar,ini);setAv($("navAv"),st.prof.avatar,ini);
   $("pName").innerHTML=esc(p.name)+(me?vipTag(me.id):"");$("pFollowing").textContent=cnt(st.friends.length+(p.gb||0));$("pFollowers").textContent=cnt((st.followers||0)+(p.fb||0));$("pHandle").textContent="@"+p.handle;
-  $("pBio").innerHTML=p.bio?esc(p.bio):`<button type="button" class="bio-add" data-open="edit"><i>+</i>Bio ekle</button>`;
+  $("pBio").innerHTML=p.bio?`<span translate="no">${esc(p.bio)}</span>`:`<button type="button" class="bio-add" data-open="edit"><i>+</i>Bio ekle</button>`;
   const tc=tradeCount();$("pTrades").textContent=tc+" işlem";
-  $("pJoined").textContent="Katılım "+new Date(p.joined).toLocaleDateString("tr-TR",{month:"short",year:"numeric"});
+  $("pJoined").textContent="Katılım "+new Date(p.joined).toLocaleDateString(LOC,{month:"short",year:"numeric"});
   const held=Object.keys(st.h);
   if(held.length){const firsts=held.map(s=>{const b=st.hist.filter(h=>(h.k==="buy"||h.k==="swap")&&h.s===s).pop();return b?b.t:Date.now()});
     $("pHold").textContent="Ort. tutma "+ago(Date.now()-firsts.reduce((a,b)=>a+b,0)/firsts.length)}else $("pHold").textContent="Tutma süresi yok";
-  loadPChart();warmProfileHist();const v=posNow();const[a,b]=fmtN(v,2).split(",");$("pVal").innerHTML=`$${a}<span>,${b}</span>`;
+  loadPChart();warmProfileHist();const v=posNow();const[a,b]=fmtN(v,2).split(DEC);$("pVal").innerHTML=`$${a}<span>${DEC}${b}</span>`;
   const d=valueSeries();if(d!==undefined){$("pEmpty").hidden=!!d;drawPortfolio(d)}
   const chgEl=$("pChg");
   if(d===undefined){}
@@ -1655,17 +1813,19 @@ function renderProfile(){
 }
 function renderHistory(){
   $("histList").innerHTML=st.hist.slice(0,40).map(h=>{const cash=h.k==="dep"||h.k==="rew"||((h.k==="tin"||h.k==="tout")&&h.s==="USDT");const title={dep:"Bakiye yükleme",rew:"Ödül: "+(h.txt||""),buy:h.s+" alındı"+(h.ot?` (${h.ot})`:""),sell:h.s+" satıldı"+(h.ot?` (${h.ot})`:""),swap:h.txt,perp:h.txt,tout:h.s+" gönderildi",tin:h.s+" transfer olarak geldi"}[h.k]||h.txt||"";
-    if(h.k==="tout")return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span>-${usd(Math.abs(h.v))}</span></div>`;
-    return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span class="${h.k==="sell"||cash?"up":""}">${h.k==="buy"?"-":h.k==="swap"?"":h.k==="perp"?(h.v>=0?"+":"-"):"+"}${usd(Math.abs(h.v))}</span></div>`}).join("")||`<div class="empty" style="padding:30px 10px">Henüz işlem yok.</div>`}
+    if(h.k==="tout")return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span>-${usd(Math.abs(h.v))}</span></div>`;
+    return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span class="${h.k==="sell"||cash?"up":""}">${h.k==="buy"?"-":h.k==="swap"?"":h.k==="perp"?(h.v>=0?"+":"-"):"+"}${usd(Math.abs(h.v))}</span></div>`}).join("")||`<div class="empty" style="padding:30px 10px">Henüz işlem yok.</div>`}
 $("pRanges").addEventListener("click",e=>{const r=e.target.dataset.r;if(!r)return;pRange=r;[...$("pRanges").children].forEach(b=>b.classList.toggle("on",b===e.target));renderProfile();loadPChart(true)});
 $("pShare").onclick=()=>{const{v}=portfolio();const txt=`COINFORCE profilim: @${st.prof.handle} · Portföy ${usd(v)} · ${tradeCount()} işlem`;
-  const ok=()=>toast("Profil bağlantısı kopyalandı");try{navigator.clipboard.writeText(txt).then(ok,()=>toast(txt))}catch(e){toast(txt)}};
+  const ok=()=>toast("Profil bağlantısı kopyalandı");try{navigator.clipboard.writeText(I18N.t(txt)).then(ok,()=>toast(txt))}catch(e){toast(txt)}};
 $("promoGo").onclick=()=>{prev="profile";go("detail","BTC");openTrade("buy")};
 function renderPromoArt(){const picks=[["BTC",46,34,40],["ETH",36,4,14],["SOL",30,88,10],["DOGE",38,90,78],["XRP",28,10,82],["PENGU",32,52,96],["SUI",24,104,52]];
   $("promoArt").innerHTML=picks.map(([s,sz,l,tp])=>{const t=find(s);return `<div class="coin" style="background:${t.c};width:${sz}px;height:${sz}px;font-size:${sz*.34}px;left:${l}px;top:${tp}px">${face(t)}</div>`}).join("")}
 // settings
 const themeName=()=>{const r=document.documentElement;return (r.dataset.theme||(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"))==="light"?"Açık":"Koyu"};
 $("setTheme").onclick=()=>{$("themeBtn").click();$("setThemeVal").textContent=themeName()};
+[...$("setLang").children].forEach(b=>b.classList.toggle("on",b.dataset.lang===LANG));
+$("setLang").addEventListener("click",e=>{const b=e.target.closest("[data-lang]");if(!b||b.dataset.lang===LANG)return;try{localStorage.setItem("cf_lang",b.dataset.lang)}catch(err){}location.reload()});
 $("resetBtn").onclick=()=>{$("resetConfirm").hidden=false};
 $("resetNo").onclick=()=>{$("resetConfirm").hidden=true};
 $("resetYes").onclick=()=>busy($("resetYes"),async()=>{const r=await call("reset_account");if(r.err)return;$("resetConfirm").hidden=true;closeSheet();await loadAll();toast("Hesabın sıfırlandı")});
@@ -1682,7 +1842,7 @@ const BACK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 const COPY=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
 const xfCoin=(s,cls="")=>s==="USDT"?usdtCoin.replace("coin sm","coin "+cls):coinHTML(find(s)||{c:"#555",s},cls);
 const xfPx=s=>s==="USDT"?1:(find(s)||{}).p||0;
-const xfQ=v=>{v=+v;if(!(v>0))return"0";return v>=1000?fmtN(v,2):v>=1?fmtN(v,4).replace(/0+$/,"").replace(/,$/,""):String(+v.toPrecision(6)).replace(".",",")};
+const xfQ=v=>{v=+v;if(!(v>0))return"0";return v>=1000?fmtN(v,2):v>=1?fmtN(v,4).replace(/0+$/,"").replace(RX_TD,""):String(+v.toPrecision(6)).replace(".",DEC)};
 const minUsd=n=>Math.max(1,n.fee_usd*2);
 async function netsFor(sym){if(NETS[sym])return NETS[sym];const {data,error}=await sb.rpc("networks_for",{p_symbol:sym});if(error){toast(errText(error));return[]}return NETS[sym]=(data||[]).map(n=>({...n,fee_usd:+n.fee_usd}))}
 async function addrFor(net){if(ADDR[net])return ADDR[net];const {data,error}=await sb.rpc("my_address",{p_network:net});if(error){toast(errText(error));return null}return ADDR[net]=data}
@@ -1748,7 +1908,7 @@ async function renderRecvNet(nets){const s=recvSym,n=nets.find(x=>x.code===recvN
     <div class="xf-qr" id="recvQR"><div class="ld">QR hazırlanıyor…</div></div>
     <div class="xf-lbl">Adres</div><div class="xf-addr"><code id="recvAddr">…</code><button type="button" class="xf-copy" id="recvCopy" aria-label="Adresi kopyala">${COPY}</button></div>
     <div class="xf-rows"><div><span>Ağ</span><span>${esc(n.name)}</span></div><div><span>Minimum yatırma</span><span>${px?xfQ(minUsd(n)/px)+" "+s:usd(minUsd(n))}</span></div><div><span>Varış süresi</span><span>Yaklaşık ${n.eta_min} dakika</span></div></div>
-    <div class="xf-warn"><b>Sadece COINFORCE içinde geçerli.</b> Bu adrese yalnızca başka bir COINFORCE hesabından, <b>${esc(n.name)}</b> ağı seçilerek ${s} gönderilebilir. Gerçek bir cüzdandan veya borsadan gönderim yapma; ulaşmaz.</div>`;
+    <div class="xf-warn">${EN?`<b>Only valid inside COINFORCE.</b> Send ${s} to this address only from another COINFORCE account, on the <b>${esc(n.name)}</b> network. Don't send from a real wallet or exchange; it won't arrive.`:`<b>Sadece COINFORCE içinde geçerli.</b> Bu adrese yalnızca başka bir COINFORCE hesabından, <b>${esc(n.name)}</b> ağı seçilerek ${s} gönderilebilir. Gerçek bir cüzdandan veya borsadan gönderim yapma; ulaşmaz.`}</div>`;
   const a=await addrFor(n.code);if(recvSym!==s||recvNet!==n.code||!a)return;$("recvAddr").textContent=a;
   try{$("recvQR").innerHTML=qrSVG(a)+xfCoin(s)}catch(e){$("recvQR").innerHTML=`<div class="ld">QR oluşturulamadı</div>`}}
 $("recvBody").addEventListener("input",e=>{if(e.target.id==="recvQ"){recvQ=e.target.value;$("recvList").innerHTML=xfList(recvQ,false)}});
@@ -1777,7 +1937,7 @@ function renderSend(){const b=$("sendBody");
       <div class="xf-sum" id="sdSum"></div><div class="err" id="sdErr"></div>
       <button type="button" class="btn btn-accent full" id="sdGo">Gönder</button>`;
     sendWho=null;renderSendSum()})}
-function sdAmt(){let v=String($("sdAmt")?.value||"").trim().replace(/\s/g,"");if(v.includes(","))v=v.replace(/\./g,"").replace(",",".");return parseFloat(v)||0}
+function sdAmt(){return parseAmt($("sdAmt")?.value||"")}
 function renderSendSum(){const s=sendSym,n=(NETS[s]||[]).find(x=>x.code===sendNet);if(!n||!$("sdSum"))return;const px=xfPx(s),fee=px?n.fee_usd/px:0,q=sdAmt(),rec=Math.max(0,q-fee);
   $("sdSum").innerHTML=`<div><span>Ağ ücreti</span><span>${xfQ(fee)} ${s} (${usd(n.fee_usd)})</span></div><div><span>Minimum</span><span>${xfQ(minUsd(n)/px)} ${s}</span></div><div><span>Varış süresi</span><span>Yaklaşık ${n.eta_min} dakika</span></div><div class="big"><span>Alıcıya ulaşacak</span><span>${xfQ(rec)} ${s}</span></div>`}
 let whoT=null;
@@ -1793,7 +1953,7 @@ $("sendBody").addEventListener("input",e=>{if(e.target.id==="sdAddr")checkAddr()
 $("sendBody").addEventListener("click",e=>{const x=e.target.closest("[data-xs]");if(x){sendSym=x.dataset.xs;sendNet=null;renderSend();return}
   if(e.target.closest("[data-xback]")){sendSym=null;renderSend();return}
   const nb=e.target.closest("[data-sn]");if(nb){sendNet=nb.dataset.sn;$("sdNets").querySelectorAll("[data-sn]").forEach(b=>b.classList.toggle("on",b===nb));renderSendSum();checkAddr();return}
-  if(e.target.closest("#sdMax")){const bal=sendSym==="USDT"?st.usdt:st.h[sendSym]||0;const dd=bal>=1?6:10;$("sdAmt").value=inp(Math.floor(bal*10**dd)/10**dd,dd).replace(/,?0+$/,"");renderSendSum();return}
+  if(e.target.closest("#sdMax")){const bal=sendSym==="USDT"?st.usdt:st.h[sendSym]||0;const dd=bal>=1?6:10;$("sdAmt").value=inp(Math.floor(bal*10**dd)/10**dd,dd).replace(RX_TZ,"");renderSendSum();return}
   if(e.target.closest("#sdPaste")){try{navigator.clipboard.readText().then(t=>{$("sdAddr").value=(t||"").trim();checkAddr()},()=>toast("Yapıştırmaya izin verilmedi, adresi elle yapıştır"))}catch(err){toast("Adresi elle yapıştır")}return}
   const g=e.target.closest("#sdGo");if(!g)return;
   busy(g,async()=>{const addr=$("sdAddr").value.trim().toUpperCase(),q=sdAmt();$("sdErr").textContent="";
@@ -1808,7 +1968,7 @@ const IC={reply:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stro
   liked:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>`,
   share:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>`,
   del:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>`};
-const tAgo=t=>{const m=Math.floor((Date.now()-Date.parse(t))/60000);if(m<1)return"şimdi";if(m<60)return m+" dk";const h=Math.floor(m/60);if(h<24)return h+" sa";const d=Math.floor(h/24);return d<7?d+" g":new Date(t).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})};
+const tAgo=t=>{const m=Math.floor((Date.now()-Date.parse(t))/60000);if(m<1)return"şimdi";if(m<60)return m+" dk";const h=Math.floor(m/60);if(h<24)return h+" sa";const d=Math.floor(h/24);return d<7?d+" g":new Date(t).toLocaleDateString(LOC,{day:"numeric",month:"short"})};
 function fmtBody(b){return esc(b).replace(/\$([A-Za-z]{2,10})\b/g,(m,s)=>find(s.toUpperCase())||s.toUpperCase()==="USDT"?`<a data-ctag="${s.toUpperCase()}">$${s.toUpperCase()}</a>`:m)
   .replace(/(^|[^\w@])@([A-Za-z0-9_.]{3,30})/g,(m,pre,h)=>`${pre}<a data-mention="${h}">@${h}</a>`)}
 function symChip(sym){const t=find(sym);if(!t)return"";const ch=t.open?(t.p/t.open-1)*100:0;return `<span class="post-sym" data-ctag="${t.s}">${coinHTML(t,"sm")}$${t.s} ${usd(t.p,t.d)} <span class="${ch>=0?"up":"down"}">${pct(ch)}</span></span>`}
@@ -1818,7 +1978,7 @@ function postHTML(p,big){POSTS[p.id]=p;const mine=me&&p.user_id===me.id,canDel=m
     <div class="post-main">
       <div class="post-h"><b data-user="${p.user_id}">${esc(p.full_name||p.username)}</b>${vipTag(p.user_id,1)}<span class="muted ph-h">@${esc(p.username)}</span><span class="muted ph-t">· ${tAgo(p.created_at)}</span>${canDel?`<button type="button" class="post-x" data-pdel="${p.id}" aria-label="Sil">${IC.del}</button>`:""}</div>
       ${p.community_id&&!commOpen?`<span class="post-c" data-comm="${p.community_id}" style="background:${p.community_color}22;color:${p.community_color}">${esc(p.community_emoji||"")} ${esc(p.community_name||"")}</span>`:""}
-      <div class="post-b">${fmtBody(p.body)}</div>
+      <div class="post-b" translate="no">${fmtBody(p.body)}</div>
       ${p.symbol?symChip(p.symbol):""}
       <div class="post-a">${p.parent_id||(p.community_read_only&&!st.admin)?"":`<button type="button" data-preply="${p.id}" aria-label="Yanıtla">${IC.reply}${p.reply_count||""}</button>`}
         <button type="button" data-plike="${p.id}" class="${p.liked?"on":""}" aria-label="Beğen">${p.liked?IC.liked:IC.like}<span>${p.like_count||""}</span></button>
@@ -1881,7 +2041,7 @@ function newsBody(c){if(!c.is_member&&!st.admin)return `<div class="news-join"><
     <div id="cpList"><div class="empty">Haberler yükleniyor…</div></div><button type="button" class="btn btn-ghost full f-more" id="newsMore" hidden>Daha fazla haber</button>`}
 function newsHTML(n){const u=/^https:\/\//.test(n.url)?esc(n.url):"#",img=/^https:\/\//.test(n.image_url||"")?esc(n.image_url):"";
   return `<a class="news" href="${u}" target="_blank" rel="noopener noreferrer"><div class="news-h"><span class="news-src">${esc(n.source)}</span>${n.lang==="tr"?`<span class="news-tr">TR</span>`:""}<span class="muted">· ${tAgo(n.published_at)}</span></div>
-    <div class="news-t">${esc(n.title)}</div>${n.summary?`<div class="news-s">${esc(n.summary)}</div>`:""}${img?`<img class="news-img" src="${img}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:""}<div class="news-go">Habere git ↗</div></a>`}
+    <div class="news-t" translate="no">${esc(n.title)}</div>${n.summary?`<div class="news-s" translate="no">${esc(n.summary)}</div>`:""}${img?`<img class="news-img" src="${img}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:""}<div class="news-go">Habere git ↗</div></a>`}
 function renderNews(){if(!$("cpList"))return;const list=NEWS.filter(n=>newsLang==="all"||n.lang===newsLang).map(n=>({t:n.published_at,h:newsHTML(n)}));
   const oldest=NEWS.length?NEWS[NEWS.length-1].published_at:null;
   newsPosts.filter(p=>!oldest||p.created_at>=oldest).forEach(p=>list.push({t:p.created_at,h:postHTML(p)}));
@@ -1923,7 +2083,7 @@ document.addEventListener("click",async e=>{
   const po=e.target.closest("[data-post]");if(po&&!e.target.closest("[data-user],button,a,textarea")){const p=POSTS[po.dataset.post],tid=p&&p.parent_id?p.parent_id:po.dataset.post;if(!(openId==="thread"&&tid===thOpen))openThread(tid)}});
 document.addEventListener("click",async e=>{if(!e.target.closest("#cpMore")||!commOpen)return;const id=commOpen,rows=await feedRows("community",id,commLast,25);if(commOpen!==id||!rows)return;$("cpList").insertAdjacentHTML("beforeend",rows.map(p=>postHTML(p)).join(""));if(rows.length)commLast=rows[rows.length-1].created_at;$("cpMore").hidden=rows.length<25});
 // ---------- işlem akışı
-const trimZ=x=>x.replace(/(,\d*?)0+$/,"$1").replace(/,$/,"");
+const trimZ=x=>x.replace(RX_TZ2,"$1").replace(RX_TD,"");
 const kUsd=v=>{v=Math.abs(+v);return v>=1e6?"$"+trimZ(fmtN(v/1e6,v>=1e7?1:2))+"M":v>=1e3?"$"+trimZ(fmtN(v/1e3,v>=1e4?1:2))+"K":usd(v)};
 function tradeRow(x,showCoin){const t=find(x.symbol),px=+x.price,sell=x.side==="sell",ab=x.avg_buy!=null?+x.avg_buy:null,pl=sell&&ab?(px/ab-1)*100:null;
   return `<div class="tf"><span data-user="${x.user_id}">${avHTML({n:x.full_name||x.username,h:x.username,a:x.avatar_url})}</span><div class="mid">
@@ -1949,14 +2109,14 @@ let RW=null;
 const refLink=()=>`${location.origin}${location.pathname}?r=${encodeURIComponent(st.prof.handle||"")}`;
 async function loadMyRewards(){const {data,error}=await sb.rpc("my_rewards");if(error||!data)return;RW=data;if(openId==="rewards")renderRewardsTop()}
 function renderRewardsTop(){const r=RW||{ref_total:0,ref_week:0,referred:0,task_total:0,task_week:0,friends:[]};
-  const tot=+r.ref_total+ +r.task_total,wk=+r.ref_week+ +r.task_week,[a,b]=fmtN(tot,2).split(",");
-  $("rwTotal").innerHTML=`$${a}<small>,${b}</small>`;$("rwWeek").innerHTML=`<b>+${usd(wk)}</b> bu hafta`;
+  const tot=+r.ref_total+ +r.task_total,wk=+r.ref_week+ +r.task_week,[a,b]=fmtN(tot,2).split(DEC);
+  $("rwTotal").innerHTML=`$${a}<small>${DEC}${b}</small>`;$("rwWeek").innerHTML=`<b>+${usd(wk)}</b> bu hafta`;
   const l=refLink().replace(/^https?:\/\//,"");const i=l.lastIndexOf("=");$("rwLink").innerHTML=`${esc(l.slice(0,i+1))}<b>${esc(l.slice(i+1))}</b>`;
   $("rwRef").textContent=usd(+r.ref_total);$("rwRefN").textContent=`${r.referred} davet`;$("rwTask").textContent=usd(+r.task_total);
-  $("rwFriends").innerHTML=r.friends&&r.friends.length?`<div class="sec-t" style="margin-top:16px">Davet ettiklerin</div>`+r.friends.map(f=>`<div class="rw-fr">${avHTML({n:f.full_name||f.username,h:f.username,a:f.avatar_url})}<div class="mid"><b>@${esc(f.username)}</b><small>Katılım ${new Date(f.joined).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})}</small></div><b class="up">+${usd(+f.earned)}</b></div>`).join("")
+  $("rwFriends").innerHTML=r.friends&&r.friends.length?`<div class="sec-t" style="margin-top:16px">Davet ettiklerin</div>`+r.friends.map(f=>`<div class="rw-fr">${avHTML({n:f.full_name||f.username,h:f.username,a:f.avatar_url})}<div class="mid"><b>@${esc(f.username)}</b><small>Katılım ${new Date(f.joined).toLocaleDateString(LOC,{day:"numeric",month:"short"})}</small></div><b class="up">+${usd(+f.earned)}</b></div>`).join("")
     :`<div class="rw-empty">Arkadaşlarını davet et; yaptıkları her işlemin ücretinin %25'i otomatik olarak hesabına geçsin.</div>`;
   $("rwCode").innerHTML=r.referred_by?`<div class="hint" style="margin-top:10px">Seni davet eden: @${esc(r.referred_by)}</div>`:r.can_set_ref?`<div class="rw-code"><input id="rwCodeIn" placeholder="Davet kodun varsa (kullanıcı adı)" autocomplete="off" autocapitalize="off"><button type="button" id="rwCodeGo">Ekle</button></div><div class="err" id="rwCodeErr" style="text-align:left;margin-top:6px"></div>`:""}
-$("rwShare").onclick=async()=>{const url=refLink(),txt="COINFORCE'a katıl: kripto al-sat, yarış, topluluk. Davet linkim:";
+$("rwShare").onclick=async()=>{const url=refLink(),txt=I18N.t("COINFORCE'a katıl: kripto al-sat, yarış, topluluk. Davet linkim:");
   try{if(navigator.share){await navigator.share({title:"COINFORCE",text:txt,url});return}}catch(e){if(e&&e.name==="AbortError")return}
   try{await navigator.clipboard.writeText(url);toast("Davet linkin kopyalandı")}catch(e){toast(url)}};
 $("rwCode").addEventListener("click",e=>{const b=e.target.closest("#rwCodeGo");if(!b)return;busy(b,async()=>{const r=await call("set_referrer",{p_code:$("rwCodeIn").value},"rwCodeErr");if(r.err)return;toast("@"+r.data+" davet eden olarak eklendi");loadMyRewards()})});
@@ -1983,8 +2143,8 @@ function chartPts(){const u=userData;const pts=uChart.map(r=>({t:new Date(r.at).
 function renderUserChart(){const u=userData,box=$("upChartBox");if(!u||!box)return;const pts=chartPts();
   const lbl={"24h":"24s","7d":"7g","30d":"30g"}[uRange];
   let shown=+u.equity,chg=pts.length>1?pts[pts.length-1].v-pts[0].v:(u.change_24h!=null&&uRange==="24h"?+u.change_24h:null),sub=lbl;
-  if(uHover!=null&&pts.length>1){const p=pts[uHover];shown=p.v;chg=p.v-pts[0].v;sub=new Date(p.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}
-  const [ip,dp]=fmtN(shown,2).split(",");$("upEq").innerHTML=`${shown<0?"-":""}$${ip.replace("-","")}<small>,${dp}</small>`;
+  if(uHover!=null&&pts.length>1){const p=pts[uHover];shown=p.v;chg=p.v-pts[0].v;sub=new Date(p.t).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}
+  const [ip,dp]=fmtN(shown,2).split(DEC);$("upEq").innerHTML=`${shown<0?"-":""}$${ip.replace("-","")}<small>${DEC}${dp}</small>`;
   $("upChg").innerHTML=chg==null?`<span class="muted">${lbl} değişim henüz yok</span>`:`<span class="${chg>=0?"up":"down"}">${chg>=0?"+":"-"}${usd(Math.abs(chg))}</span> <span class="muted">${sub}</span>`;
   if(pts.length<2){box.innerHTML=`<div class="up-nochart">Grafik birkaç dakika içinde oluşmaya başlar. Varlık her 10 dakikada bir kaydediliyor.</div>`;return}
   const W=600,H=190,pad=10,vs=pts.map(p=>p.v),mn=Math.min(...vs),mx=Math.max(...vs),t0=pts[0].t,t1=pts[pts.length-1].t;
@@ -2005,7 +2165,7 @@ function uRows(){const u=userData;let list=(uTab==="open"?u.open:u.closed)||[];i
     const tag=x.type==="perp"?`<span class="tagx ${x.side>0?"long":"short"}">${x.leverage}x ${x.side>0?"Long":"Short"}</span>`:"";
     let sub,right,rs;
     if(uTab==="open"){sub=x.type==="perp"?`${usd(+x.margin,0)} teminat`:`${uQty(x.qty)} ${esc(x.symbol)}`;right=usd(+x.value);rs=p==null?`${(+x.pnl)>=0?"+":"-"}${usd(Math.abs(+x.pnl))}`:pct(p)}
-    else{sub=(x.type==="perp"?(x.liquidated?"Likide oldu":"Kapatıldı"):"Tamamen satıldı")+" · "+new Date(x.at).toLocaleDateString("tr-TR",{day:"numeric",month:"short"});right=`<span class="${cls}">${(+x.pnl)>=0?"+":"-"}${usd(Math.abs(+x.pnl))}</span>`;rs=p==null?"":pct(p)}
+    else{sub=(x.type==="perp"?(x.liquidated?"Likide oldu":"Kapatıldı"):"Tamamen satıldı")+" · "+new Date(x.at).toLocaleDateString(LOC,{day:"numeric",month:"short"});right=`<span class="${cls}">${(+x.pnl)>=0?"+":"-"}${usd(Math.abs(+x.pnl))}</span>`;rs=p==null?"":pct(p)}
     return `<div class="up-row">${coinIc(x.symbol)}<div class="mid"><b>${esc(nm)}</b><small>${tag}${sub}</small></div><div class="rt"><b>${right}</b><small class="${cls}">${rs}</small></div></div>`}).join("")}
 function uRecent(){const r=userData.recent||[];if(!r.length)return `<div class="hint" style="padding:12px 0">Henüz işlem yapmamış.</div>`;
   return r.map(x=>{const t=find(x.symbol),k=x.kind,amt=k==="perp_open"||k==="perp_close"||k==="liquidation"?(+x.qty)*(+x.price):+x.amount;
@@ -2017,13 +2177,13 @@ function renderUser(){const u=userData;if(!u)return;const n=u.full_name||u.usern
   $("userBody").innerHTML=`<div class="up-top"><div class="up-av" style="background:${url?"var(--surface2)":colorFor(u.username)}">${url?`<img class="av-img" src="${url}" alt="">`:esc(initial(n))}</div>
       <button type="button" class="btn ${u.is_following?"btn-ghost":"btn-accent"} up-fol" id="userFollow" data-id="${u.id}" data-f="${u.is_following?1:0}">${u.is_following?"Takiptesin":"Takip et"}</button></div>
     <div class="up-name">${esc(n)}${vipTag(u.id)}</div><div class="up-handle">@${esc(u.username)}</div>
-    ${u.bio?`<p class="up-bio">${esc(u.bio)}</p>`:""}
+    ${u.bio?`<p class="up-bio" translate="no">${esc(u.bio)}</p>`:""}
     <div class="err" id="userErr"></div>
     <div class="up-f"><span><b>${cnt(u.following)}</b>Takip</span><span><b>${cnt(u.followers)}</b>Takipçi</span></div>
     <div class="up-meta">${u.rank?`<span class="gold" style="color:${["#f2b705","#c9d1d9","#d0803a"][u.rank-1]||"#f2b705"}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"/></svg>#${u.rank} Tüm zamanlar</span>`:""}
       ${hold?`<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${hold} ort. vadeli süresi</span>`:""}
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9h13l-3-3M20 15H7l3 3"/></svg>${u.trades} işlem</span>
-      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Katılım ${new Date(u.created_at).toLocaleDateString("tr-TR",{month:"long",year:"numeric"})}</span></div>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Katılım ${new Date(u.created_at).toLocaleDateString(LOC,{month:"long",year:"numeric"})}</span></div>
     <div class="up-eqrow"><div><div class="up-eq" id="upEq"></div><div class="up-chg" id="upChg"></div></div>
       <div class="up-rng" id="upRng">${[["24h","24s"],["7d","7g"],["30d","30g"]].map(([k,l])=>`<button type="button" data-ur="${k}" class="${k===uRange?"on":""}">${l}</button>`).join("")}</div></div>
     <div id="upChartBox" style="position:relative"></div>
@@ -2069,7 +2229,7 @@ function renderCampDetail(c,lb){const st8=campState(c),e=Date.parse(c.ends_at),c
   const tiers=c.tiers.map((t,i)=>{const ok=c.my_volume>=+t.volume,cl=c.claimed.includes(i);return `<div class="tier${ok?" ok":""}"><span class="n">${i+1}</span><div class="mid"><b>${usd(+t.volume,0)} hacim</b><small>Ödül: +${usd(+t.reward,0)} USDT${ok?"":` · ${usd(+t.volume-c.my_volume,0)} kaldı`}</small></div>${cl?'<span class="done">Alındı</span>':ok&&canClaim?`<button type="button" class="claim" data-cclaim="${i}">Al</button>`:`<button type="button" class="locked" disabled>${ok?"Süre doldu":"Kilitli"}</button>`}</div>`}).join("");
   const board=lb==null?`<div class="hint">Sıralama yükleniyor…</div>`:lb.length?lb.map((r,i)=>{const mine=me&&r.user_id===me.id;return `<div class="lbr lbr-link${mine?" me":""}" data-user="${r.user_id}"><span class="rk">${i<3?laurel(i+1):i+1+"."}</span>${avHTML({n:r.full_name||r.username,h:r.username,a:r.avatar_url},"width:36px;height:36px;font-size:14px")}<div class="nm"><b>${esc(r.full_name||r.username)}${mine?" (sen)":""}</b><small>@${esc(r.username)}</small></div><div class="rt"><span class="g">${usd(+r.volume,0)}</span></div></div>`}).join(""):`<div class="hint">Henüz kimse işlem yapmadı. İlk sen ol!</div>`;
   $("campDetail").innerHTML=`<div class="sh-h"><h3>${esc(c.title)}</h3><span class="camp-t" style="font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 8px;border-radius:8px">${st8==="ended"?"Bitti":st8==="soon"?"Yakında":timeLeft(e-Date.now())}</span></div>
-   <div class="sub">${esc(c.description||"")}${c.description?"<br>":""}${c.symbol?esc(c.symbol)+" işlemleri sayılır":"Tüm coinlerdeki işlemler sayılır"} · Bitiş: ${new Date(e).toLocaleString("tr-TR",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})}</div>
+   <div class="sub">${esc(c.description||"")}${c.description?"<br>":""}${c.symbol?esc(c.symbol)+" işlemleri sayılır":"Tüm coinlerdeki işlemler sayılır"} · Bitiş: ${new Date(e).toLocaleString(LOC,{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})}</div>
    <div class="muted" style="font-size:13px">Senin hacmin</div><div class="camp-big">${usd(c.my_volume)}</div>
    <div class="sec-t" style="margin-top:14px">Kademeler</div>${tiers}
    <div class="sec-t" style="margin-top:20px">Hacim sıralaması</div>${board}
@@ -2195,8 +2355,8 @@ let trSide="buy",trUsd=true;
 const feeRate=()=>trSide==="buy"&&st.hist.length<100&&!st.hist.some(h=>h.k==="buy")?0:.0008;
 function openTrade(side){trSide=side;trUsd=true;trMax=false;$("trAmt").value="";otype="market";$("trPx").value="";syncOType();openSheet("trade");renderTrade()}
 function num(s){return parseFloat(String(s).replace(/\s/g,"").replace(/\./g,"").replace(",","."))||parseFloat(s)||0}
-const inp=(v,d)=>(+v).toFixed(d).replace(".",",");
-function parseAmt(s){s=String(s).trim().replace(/[\s$]/g,"");if(/,/.test(s))return num(s);if(/^\d{1,3}(\.\d{3})+$/.test(s))return parseFloat(s.replace(/\./g,""));return parseFloat(s)||0}
+const inp=(v,d)=>(+v).toFixed(d).replace(".",DEC);
+function parseAmt(s){s=String(s).trim().replace(/[\s$]/g,"");if(LANG==="en")return parseFloat(s.replace(/,/g,""))||0;if(/,/.test(s))return num(s);if(/^\d{1,3}(\.\d{3})+$/.test(s))return parseFloat(s.replace(/\./g,""));return parseFloat(s)||0}
 function renderTrade(){
   const t=find(cur),a=parseAmt($("trAmt").value),q=trUsd?a/t.p:a,v=q*t.p,fee=v*feeRate();
   $("trTitle").textContent=`${t.s} ${trSide==="buy"?"al":"sat"}`;
@@ -2321,7 +2481,7 @@ function renderDetailExtras(t){
 }
 // ----- alerts
 function alertRow(a){const t=find(a.s);return `<div class="orow"><span class="tag ${a.dir>0?"b":"s"}">${a.dir>0?"↑ ÜSTÜ":"↓ ALTI"}</span><div class="mid">${usd(a.px,t.d)}<small>Şu an ${usd(t.p,t.d)}</small></div><button type="button" class="x-btn" data-delal="${a.id}">Sil</button></div>`}
-function openAlert(){const t=find(cur);$("alTitle").textContent=`${t.s} fiyat alarmı`;$("alSub").textContent=`Fiyat seçtiğin seviyeye gelince bildirim alırsın.`;$("alPx").value=inp(t.p*1.05,t.d);
+function openAlert(){const t=find(cur);if(!t)return;$("alTitle").textContent=`${t.s} fiyat alarmı`;$("alSub").textContent=`Fiyat seçtiğin seviyeye gelince bildirim alırsın.`;$("alPx").value=inp(t.p*1.05,t.d);
   $("alPresets").innerHTML=[-.05,-.02,.02,.05].map(f=>`<button type="button" data-f="${f}">${f>0?"+":"-"}%${Math.abs(f*100)}</button>`).join("");$("alPresets").style.gridTemplateColumns="repeat(4,1fr)";$("alErr").textContent="";renderAlertHint();renderAlertList()}
 function renderAlertHint(){const t=find(cur),px=parseAmt($("alPx").value);$("alHint").textContent=px>0?`Şu an ${usd(t.p,t.d)}. Fiyat ${usd(px,t.d)} ${px>t.p?"üstüne çıkınca":"altına inince"} haber vereceğiz (${px>t.p?"+":""}${fmtN((px/t.p-1)*100,2)}%).`:`Şu an ${usd(t.p,t.d)}.`}
 function renderAlertList(){const al=st.alerts.filter(a=>a.s===cur);$("alList").innerHTML=al.length?`<div class="sec-t" style="margin-top:18px">Kurulu alarmlar</div>${al.map(alertRow).join("")}`:""}
@@ -2334,7 +2494,7 @@ $("alGo").onclick=()=>busy($("alGo"),async()=>{const t=find(cur),px=parseAmt($("
   await loadAll();renderAlertList();toast(`Alarm kuruldu: ${t.s} ${usd(px,t.d)}`)});
 async function deleteAlert(id){const {error}=await sb.from("alerts").delete().eq("id",id);if(error)return toast(errText(error));await loadAll();renderAlertList();toast("Alarm silindi")}
 // ----- notifications
-function renderNotifs(){$("notifList").innerHTML=st.notifs.length?st.notifs.map(n=>`<div class="nt"><span class="dot${n.read?" read":""}"></span><div>${esc(n.txt)}<small>${new Date(n.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div></div>`).join(""):`<div class="empty">Bildirim yok.<br>Emirlerin gerçekleşince ve alarmların çalınca burada görürsün.</div>`;
+function renderNotifs(){$("notifList").innerHTML=st.notifs.length?st.notifs.map(n=>`<div class="nt"><span class="dot${n.read?" read":""}"></span><div>${esc(n.txt)}<small>${new Date(n.t).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div></div>`).join(""):`<div class="empty">Bildirim yok.<br>Emirlerin gerçekleşince ve alarmların çalınca burada görürsün.</div>`;
   if(st.notifs.some(n=>!n.read)){st.notifs.forEach(n=>n.read=true);renderBadge();sb.from("notifications").update({read:true}).eq("user_id",me.id).eq("read",false).then(()=>{})}}
 $("notifClear").onclick=async()=>{const {error}=await sb.from("notifications").delete().eq("user_id",me.id);if(error)return toast(errText(error));st.notifs=[];renderNotifs();renderBadge()};
 // ----- perps
@@ -2383,7 +2543,18 @@ function drawCandles(){
   $("dChg").innerHTML=hoverX!=null?`<span class="muted">A ${usd(c.o,t.d)} · Y ${usd(c.h,t.d)} · D ${usd(c.l,t.d)}</span>`:`<span class="${dv>=0?"up":"down"}">${pct((t.p/d[0]-1)*100)}</span> <span class="muted">${lbl}</span>`;
 }
 // ----- academy
-const LESSONS=[
+const LESSONS=EN?[
+ {h:"Market orders and limit orders",m:"3 dk",p:["A <b>market order</b> fills immediately at the best current price. It's fast, but you don't choose the price.","A <b>limit order</b> fills at your price or better. A buy waits for the price to drop, a sell waits for it to rise. If the price never gets there, the order keeps waiting.","On COINFORCE, try it by tapping Buy on a token's page and choosing the Limit tab."],
+  q:"BTC is at $80,000 and you place a limit buy at $78,000. What happens?",o:["It buys right away at $80,000","It buys when the price drops to $78,000 or below","The order is cancelled"],a:1},
+ {h:"Limit losses with stop orders",m:"3 dk",p:["A <b>stop (stop-loss)</b> order turns into a market order when the price reaches your level.","For example, if you bought a token at $100 and set a stop sell at $90, it sells automatically when the price drops to $90 and your loss stays around 10%.","A stop isn't guaranteed: in fast drops it can fill a little below the trigger price."],
+  q:"When does a stop sell order trigger?",o:["When the price falls to the trigger level","When the price rises above the trigger level","At the end of the day"],a:0},
+ {h:"Leverage and liquidation",m:"4 dk",p:["<b>Leverage</b> lets you open a position bigger than your margin. With $100 margin and 10x leverage you open a $1,000 position.","Leverage magnifies both gains and losses. At 10x, a 10% move against you wipes out almost all of your margin.","When margin falls below a certain level, the position gets <b>liquidated</b>, meaning it's force-closed. The higher the leverage, the closer the liquidation price."],
+  q:"In a 20x long, roughly how far does the price have to fall before you're liquidated?",o:["20%","50%","About 4.5-5%"],a:2},
+ {h:"Diversification",m:"2 dk",p:["Putting your whole balance into one coin means your entire portfolio drops when that coin does.","Spreading across different assets lowers risk. The allocation bar on your profile shows how concentrated your portfolio is.","Keeping some cash (USDT) leaves room to buy the dips."],
+  q:"What is the main goal of diversification?",o:["Guarantee profit","Reduce the impact of a single asset falling","Reduce fees"],a:1},
+ {h:"Fees and costs",m:"2 dk",p:["You pay a small <b>fee</b> on every trade. On COINFORCE it's 0.08% for spot and 0.05% for futures.","Trading too often lets small fees pile up and eat into your profit.","The summary on the trade screen shows the fee you'll pay before you trade."],
+  q:"How much is a 0.08% fee on a $1,000 buy?",o:["$0.80","$8","$0.08"],a:0}
+]:[
  {h:"Piyasa emri ve limit emri",m:"3 dk",p:["<b>Piyasa emri</b> o anki en iyi fiyattan hemen gerçekleşir. Hızlıdır ama fiyatı sen seçemezsin.","<b>Limit emri</b> belirlediğin fiyatta ya da daha iyisinde gerçekleşir. Alışta fiyatın inmesini, satışta çıkmasını bekler. Fiyat oraya hiç gelmezse emir bekler.","COINFORCE'ta bir tokenin sayfasında Al'a dokunup Limit sekmesini seçerek deneyebilirsin."],
   q:"BTC 80.000$ iken 78.000$'dan limit alış emri verdin. Ne olur?",o:["Hemen 80.000$'dan alınır","Fiyat 78.000$ veya altına inince alınır","Emir iptal edilir"],a:1},
  {h:"Stop emriyle zararı sınırla",m:"3 dk",p:["<b>Stop (zarar durdur)</b> emri, fiyat belirlediğin seviyeye gelince piyasa emrine dönüşür.","Örneğin 100$'dan aldığın bir token için 90$'a stop satış koyarsan, fiyat 90$'a düşünce otomatik satılır ve zararın yaklaşık %10'da kalır.","Stop emri garanti değildir: hızlı düşüşlerde tetik fiyatının biraz altında gerçekleşebilir."],
@@ -2405,7 +2576,11 @@ $("lessonBody").addEventListener("click",e=>{const b=e.target.closest("[data-ans
   if(k===l.a){b.classList.add("right");$("quizMsg").textContent="Doğru! Ders tamamlandı.";if(!st.lessons.includes(i)){st.lessons.push(i);renderLessons();toast("Ders tamamlandı");sb.from("lessons_done").upsert({user_id:me.id,lesson:i},{onConflict:"user_id,lesson",ignoreDuplicates:true}).then(({error})=>{if(error)toast(errText(error))})}}
   else{b.classList.add("wrong");$("quizMsg").textContent="Tam değil, metni tekrar oku ve yeniden dene."}});
 // ----- onboarding
-const ONB=[
+const ONB=EN?[
+ {h:"Start with your balance",p:"You can start trading once USDT is loaded to your account.",c:["BTC","ETH","SOL"]},
+ {h:"Buy, sell, place orders",p:"Market, limit and stop orders; swaps and futures with up to 50x leverage. Set price alerts and get notified.",c:["XRP","DOGE","SUI"]},
+ {h:"Learn and compete",p:"Finish short lessons in the Academy, earn rewards from tasks and compete with friends on the leaderboard.",c:["HYPE","PENGU","TON"]}
+]:[
  {h:"Bakiyenle başla",p:"Hesabına USDT yüklendiğinde alım-satıma başlarsın.",c:["BTC","ETH","SOL"]},
  {h:"Al, sat, emir ver",p:"Piyasa, limit ve stop emirleri; takas ve 50x'e kadar kaldıraçlı vadeli işlemler. Fiyat alarmı kur, bildirim al.",c:["XRP","DOGE","SUI"]},
  {h:"Öğren ve yarış",p:"Akademi'de kısa dersleri bitir, görevlerle ödül kazan, sıralamada arkadaşlarınla yarış.",c:["HYPE","PENGU","TON"]}
