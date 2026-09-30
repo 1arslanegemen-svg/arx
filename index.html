@@ -698,13 +698,21 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 
 <div class="sheet" id="sh-deposit" role="dialog" aria-label="Para yatır">
   <div class="grab"></div>
-  <h3>Demo bakiye yükle</h3>
-  <div class="sub">Hesabına sanal USDT eklenir. Gerçek para kullanılmaz.</div>
+  <h3 id="depTitle">Bakiye yükle</h3>
+  <div class="sub" id="depSub">Hesaba sanal USDT eklenir. Gerçek para kullanılmaz.</div>
+  <div id="depInfo" hidden>
+    <div class="ios-steps">Bakiye yükleme şu an sadece COINFORCE yöneticisi tarafından yapılıyor. Bakiye almak için yöneticiye kullanıcı adını ilet:<br><b id="depMe">@</b></div>
+    <button class="btn btn-ghost full" type="button" id="depCopy" style="margin-top:14px">Kullanıcı adımı kopyala</button>
+  </div>
+  <div id="depForm">
+  <div class="seg" id="depWho" style="margin-bottom:12px"><button type="button" class="on" data-w="me">Kendime</button><button type="button" data-w="user">Bir kullanıcıya</button></div>
+  <div class="dep-in" id="depUserWrap" style="margin-bottom:14px" hidden><b>@</b><input id="depUser" placeholder="kullanıcı adı" autocomplete="off" autocapitalize="off" aria-label="Kullanıcı adı"></div>
   <div class="presets" id="depPresets"><button type="button" data-v="100">$100</button><button type="button" data-v="1000" class="on">$1.000</button><button type="button" data-v="10000">$10.000</button></div>
   <div class="dep-or">veya kendin yaz</div>
   <div class="dep-in"><b>$</b><input id="depAmt" inputmode="decimal" placeholder="Tutar gir" autocomplete="off" aria-label="Yüklenecek tutar"></div>
   <div class="err" id="depErr"></div>
   <button class="btn btn-accent full" type="button" id="depGo">$1.000 yükle</button>
+  </div>
 </div>
 
 <div class="sheet" id="sh-trade" role="dialog" aria-label="Al veya sat">
@@ -1090,7 +1098,7 @@ async function busy(btn,fn){if(btn.disabled)return;btn.disabled=true;try{await f
 const KIND={deposit:"dep",reward:"rew",perp_open:"perp",perp_close:"perp",liquidation:"perp"};
 async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(r.error)throw r.error;return r.data});
   try{
-    const [acc,hold,ord,pos,al,nt,tx,fol,fer,les,cl,prof]=await Promise.all([
+    const [acc,hold,ord,pos,al,nt,tx,fol,fer,les,cl,prof,adm]=await Promise.all([
       q(sb.from("accounts").select("*").eq("user_id",uid).maybeSingle()),
       q(sb.from("holdings").select("*").eq("user_id",uid)),
       q(sb.from("orders").select("*").eq("user_id",uid).eq("status","open").order("created_at")),
@@ -1102,7 +1110,8 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
       sb.from("follows").select("follower",{count:"exact",head:true}).eq("followee",uid).then(r=>r.count||0),
       q(sb.from("lessons_done").select("lesson").eq("user_id",uid)),
       q(sb.from("reward_claims").select("reward").eq("user_id",uid)),
-      q(sb.from("profiles").select("*").eq("id",uid).maybeSingle())]);
+      q(sb.from("profiles").select("*").eq("id",uid).maybeSingle()),
+      sb.rpc("is_admin").then(r=>!r.error&&r.data===true)]);
     const ids=fol.map(f=>f.followee);const fp=ids.length?await q(sb.from("profiles").select("id,username,full_name,avatar_url").in("id",ids)):[];
     st.usdt=+(acc?acc.usdt:0);st.dep=+(acc?acc.deposited:0);
     st.h={};st.cost={};hold.forEach(h=>{if(find(h.symbol)){st.h[h.symbol]=+h.qty;st.cost[h.symbol]=+h.cost}});
@@ -1114,7 +1123,7 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
       ot:(x.kind==="buy"||x.kind==="sell")&&x.note&&x.note!=="Piyasa"?x.note:"",
       txt:x.kind==="swap"?(x.note||"")+" takas":x.kind==="perp_open"?`${x.symbol} ${x.note||""} açıldı`:x.kind==="perp_close"?`${x.symbol} pozisyonu kapatıldı`:x.kind==="liquidation"?`${x.symbol} likide oldu`:x.kind==="reward"?rewardName(x.note):""}));
     st.friendsP=fp;st.friends=fp.map(p=>p.username);st.followers=fer;
-    st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
+    st.admin=adm;st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
     if(prof){st.prof={name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1,avatar:prof.avatar_url||""};st.onboarded=prof.onboarded}
   }catch(err){console.error(err);toast("Veriler yüklenemedi: "+errText(err))}
   renderAll();if(view==="rank")renderRank();if(openId==="notifs")renderNotifs();if(openId==="rewards")renderRewards();
@@ -1211,7 +1220,7 @@ $("edRm").onclick=()=>busy($("edRm"),async()=>{const old=avatarPath(st.prof.avat
   if(old)sb.storage.from("avatars").remove([old]).then(()=>{});st.prof.avatar="";fillEdit();renderProfile();renderAll();toast("Profil fotoğrafı kaldırıldı")});
 // rewards
 function rewards(){const tc=tradeCount();return[
-  {id:"dep",ic:"$",t:"İlk bakiye yüklemeni yap",r:10,p:st.dep>0?1:0,n:1},
+  {id:"dep",ic:"$",t:"Hesabına ilk bakiyen yüklensin",r:10,p:st.dep>0?1:0,n:1},
   {id:"buy",ic:"1",t:"İlk tokenini al",r:10,p:st.hist.some(h=>h.k==="buy")?1:0,n:1},
   {id:"order",ic:"L",t:"Bir limit veya stop emri ver",r:5,p:st.orders.length||st.hist.some(h=>h.ot)?1:0,n:1},
   {id:"swap",ic:"⇅",t:"Bir takas yap",r:5,p:st.hist.some(h=>h.k==="swap")?1:0,n:1},
@@ -1252,7 +1261,7 @@ $("chips").addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(
 
 // ---------- sheets
 let openId=null;
-function openSheet(id){closeSheet(true);openId=id;$("sh-"+id).classList.add("show");$("scrim").classList.add("show");if(id==="swap")renderSwap();if(id==="history")renderHistory();if(id==="edit")fillEdit();if(id==="rewards")renderRewards();if(id==="notifs")renderNotifs();if(id==="alert")openAlert();if(id==="settings"){$("logoutWho").textContent="@"+(st.prof.handle||"");$("resetConfirm").hidden=true;$("setThemeVal").textContent=themeName()}}
+function openSheet(id){closeSheet(true);openId=id;$("sh-"+id).classList.add("show");$("scrim").classList.add("show");if(id==="swap")renderSwap();if(id==="history")renderHistory();if(id==="edit")fillEdit();if(id==="rewards")renderRewards();if(id==="notifs")renderNotifs();if(id==="deposit")renderDep();if(id==="alert")openAlert();if(id==="settings"){$("logoutWho").textContent="@"+(st.prof.handle||"");$("resetConfirm").hidden=true;$("setThemeVal").textContent=themeName()}}
 function closeSheet(keepScrim){if(openId)$("sh-"+openId).classList.remove("show");openId=null;if(!keepScrim)$("scrim").classList.remove("show")}
 $("scrim").onclick=()=>closeSheet();
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
@@ -1264,7 +1273,20 @@ function depLabel(){$("depGo").textContent=depV>0?usd(depV,depV%1?2:0)+" yükle"
 $("depPresets").addEventListener("click",e=>{const v=+e.target.dataset.v;if(!v)return;depV=v;$("depAmt").value="";[...$("depPresets").children].forEach(b=>b.classList.toggle("on",b===e.target));depLabel()});
 $("depAmt").addEventListener("input",()=>{const raw=$("depAmt").value;[...$("depPresets").children].forEach(b=>b.classList.remove("on"));
   const v=parseAmt(raw);depV=raw.trim()?Math.round(v*100)/100:0;depLabel()});
+let depWho="me";
+function renderDep(){const a=!!st.admin;$("depInfo").hidden=a;$("depForm").hidden=!a;$("depMe").textContent="@"+(st.prof.handle||"");
+  $("depTitle").textContent=a?"Bakiye yükle":"Bakiye yükleme";$("depSub").textContent=a?"Yönetici olarak kendine ya da bir kullanıcıya sanal USDT yükleyebilirsin.":"Hesaba sanal USDT eklenir. Gerçek para kullanılmaz.";
+  [...$("depWho").children].forEach(b=>b.classList.toggle("on",b.dataset.w===depWho));$("depUserWrap").hidden=depWho!=="user";$("depErr").textContent=""}
+$("depWho").addEventListener("click",e=>{const b=e.target.closest("[data-w]");if(!b)return;depWho=b.dataset.w;renderDep()});
+$("depCopy").onclick=()=>{const t="@"+st.prof.handle;try{navigator.clipboard.writeText(t).then(()=>toast("Kullanıcı adın kopyalandı"),()=>toast(t))}catch(e){toast(t)}};
 $("depGo").onclick=()=>busy($("depGo"),async()=>{
+  if(!st.admin)return $("depErr").textContent="Bakiye yükleme sadece yönetici tarafından yapılabilir.";
+  if(depWho==="user"){const u=$("depUser").value.trim().replace(/^@/,"");
+    if(!/^[a-zA-Z0-9_.]{3,20}$/.test(u))return $("depErr").textContent="Geçerli bir kullanıcı adı yaz.";
+    if(!(depV>0))return $("depErr").textContent="Bir tutar seç ya da yaz.";
+    if(depV>DEP_MAX)return $("depErr").textContent="Tek seferde en fazla "+usd(DEP_MAX,0)+" yükleyebilirsin.";
+    const v=depV,r=await call("admin_deposit",{p_username:u,p_amount:v},"depErr");if(r.err)return;
+    closeSheet();$("depUser").value="";loadLB();toast(`@${r.data} hesabına ${usd(v,v%1?2:0)} yüklendi`);return}
   if(!(depV>0))return $("depErr").textContent="Bir tutar seç ya da yaz.";
   if(depV>DEP_MAX)return $("depErr").textContent="Tek seferde en fazla "+usd(DEP_MAX,0)+" yükleyebilirsin.";
   const v=depV,r=await call("deposit",{p_amount:v},"depErr");if(r.err)return;
@@ -1480,7 +1502,7 @@ $("lessonBody").addEventListener("click",e=>{const b=e.target.closest("[data-ans
   else{b.classList.add("wrong");$("quizMsg").textContent="Tam değil, metni tekrar oku ve yeniden dene."}});
 // ----- onboarding
 const ONB=[
- {h:"Sanal bakiyeyle başla",p:"Yatır'a dokun, istediğin kadar demo USDT yükle. Gerçek para yok, risk yok.",c:["BTC","ETH","SOL"]},
+ {h:"Sanal bakiyeyle başla",p:"Hesabına sanal USDT yüklendiğinde alım-satıma başlarsın. Gerçek para yok, risk yok.",c:["BTC","ETH","SOL"]},
  {h:"Al, sat, emir ver",p:"Piyasa, limit ve stop emirleri; takas ve 50x'e kadar kaldıraçlı vadeli işlemler. Fiyat alarmı kur, bildirim al.",c:["XRP","DOGE","SUI"]},
  {h:"Öğren ve yarış",p:"Akademi'de kısa dersleri bitir, görevlerle ödül kazan, sıralamada arkadaşlarınla yarış.",c:["HYPE","PENGU","TON"]}
 ];let onbI=0;
