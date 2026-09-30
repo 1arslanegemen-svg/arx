@@ -1278,6 +1278,7 @@ T.forEach(t=>{t.open=t.p*(1-(Math.random()-.45)*.05);t.hist=genHist(t.p,t.open);
 function genHist(p,open){const a=[];let v=open;for(let i=0;i<120;i++){v*=1+(Math.random()-.5)*.012;a.push(v)}const a0=a[0],aN=a[a.length-1],n=a.length-1;return a.map((x,i)=>x*Math.pow(open/a0,1-i/n)*Math.pow(p/aN,i/n))}
 const TRADERS=[["kayaboy",62,"#d9534f"],["mert.eth",210,"#5b8def"],["defne_trades",18,"#9b59b6"],["sol_avcısı",150,"#1abc9c"],["ozan.btc",33,"#e67e22"],["zeynepfx",285,"#e84393"],["whale_ist",45,"#2e86de"],["cemre",120,"#27ae60"]];
 const $=id=>document.getElementById(id);
+const cnt=n=>{n=+n||0;return n>=1e6?fmtN(n/1e6,1).replace(/,0$/,"")+"M":n>=1e4?fmtN(n/1e3,1).replace(/,0$/,"")+"K":fmtN(n,0)};
 const fmtN=(v,d=2)=>Number(v).toLocaleString("tr-TR",{minimumFractionDigits:d,maximumFractionDigits:d});
 const usd=(v,d=2)=>(v<0?"-":"")+"$"+fmtN(Math.abs(v),d);
 const big=v=>v>=1e12?"$"+fmtN(v/1e12,1)+"T":v>=1e9?"$"+fmtN(v/1e9,1)+"B":v>=1e6?"$"+fmtN(v/1e6,1)+"M":"$"+fmtN(v,0);
@@ -1483,7 +1484,7 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
     st.friendsP=fp;st.friends=fp.map(p=>p.username);st.followers=fer;
     st.admin=adm;st.camps=(cmp||[]).map(c=>({...c,my_volume:+c.my_volume,participants:+c.participants,tiers:Array.isArray(c.tiers)?c.tiers:[],claimed:c.claimed||[]}));st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
     pCh.t=0;
-    if(prof){st.prof={name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1,avatar:prof.avatar_url||""};st.onboarded=prof.onboarded}
+    if(prof){st.prof={fb:+prof.follower_bonus||0,gb:+prof.following_bonus||0,name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1,avatar:prof.avatar_url||""};st.onboarded=prof.onboarded}
   }catch(err){console.error(err);toast("Veriler yüklenemedi: "+errText(err))}
   renderAll();if(view==="rank")renderRank();if(openId==="notifs")renderNotifs();if(openId==="rewards")renderRewards();
 }
@@ -1541,7 +1542,7 @@ $("pChart").addEventListener("click",e=>{const r=$("pChart").getBoundingClientRe
 function renderProfile(){
   const p=st.prof,ini=(p.name||"?").trim().charAt(0).toLocaleUpperCase("tr-TR")||"?";
   setAv($("pAv"),st.prof.avatar,ini);setAv($("navAv"),st.prof.avatar,ini);
-  $("pName").innerHTML=esc(p.name)+(me?vipTag(me.id):"");$("pFollowing").textContent=st.friends.length;$("pFollowers").textContent=st.followers||0;$("pHandle").textContent="@"+p.handle;
+  $("pName").innerHTML=esc(p.name)+(me?vipTag(me.id):"");$("pFollowing").textContent=cnt(st.friends.length+(p.gb||0));$("pFollowers").textContent=cnt((st.followers||0)+(p.fb||0));$("pHandle").textContent="@"+p.handle;
   $("pBio").innerHTML=p.bio?esc(p.bio):`<button type="button" class="bio-add" data-open="edit"><i>+</i>Bio ekle</button>`;
   const tc=tradeCount();$("pTrades").textContent=tc+" işlem";
   $("pJoined").textContent="Katılım "+new Date(p.joined).toLocaleDateString("tr-TR",{month:"short",year:"numeric"});
@@ -1884,7 +1885,7 @@ function renderUser(){const u=userData;if(!u)return;const n=u.full_name||u.usern
     <div class="up-name">${esc(n)}${vipTag(u.id)}</div><div class="up-handle">@${esc(u.username)}</div>
     ${u.bio?`<p class="up-bio">${esc(u.bio)}</p>`:""}
     <div class="err" id="userErr"></div>
-    <div class="up-f"><span><b>${u.following}</b>Takip</span><span><b>${u.followers}</b>Takipçi</span></div>
+    <div class="up-f"><span><b>${cnt(u.following)}</b>Takip</span><span><b>${cnt(u.followers)}</b>Takipçi</span></div>
     <div class="up-meta">${u.rank?`<span class="gold" style="color:${["#f2b705","#c9d1d9","#d0803a"][u.rank-1]||"#f2b705"}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3a3 3 0 0 1-3 4M7 5H4a3 3 0 0 0 3 4"/></svg>#${u.rank} Tüm zamanlar</span>`:""}
       ${hold?`<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${hold} ort. vadeli süresi</span>`:""}
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9h13l-3-3M20 15H7l3 3"/></svg>${u.trades} işlem</span>
