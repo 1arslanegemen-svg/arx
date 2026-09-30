@@ -680,6 +680,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <div class="chips" id="chips">
     <button type="button" class="chip on" data-f="all">Kripto</button>
     <button type="button" class="chip" data-f="trend">Trend</button>
+    <button type="button" class="chip" data-f="meme">Meme</button>
     <button type="button" class="chip" data-f="gain">En çok yükselen</button>
     <button type="button" class="chip" data-f="held">En çok tutulan</button>
     <button type="button" class="chip" data-f="new">Yeni listelenen</button>
@@ -1150,7 +1151,8 @@ function renderList(){
   if(tab!=="watch"){
     if(filt==="trend")arr=arr.filter(t=>t.trend).sort((a,b)=>Math.abs(chg(b))-Math.abs(chg(a)));
     else if(filt==="gain")arr.sort((a,b)=>chg(b)-chg(a));
-    else if(filt==="held")arr.sort((a,b)=>b.held-a.held);
+    else if(filt==="held")arr.sort((a,b)=>(b.held||0)-(a.held||0));
+    else if(filt==="meme")arr=arr.filter(t=>t.cat==="meme").sort((a,b)=>b.mc-a.mc);
     else if(filt==="new")arr=arr.filter(t=>t.age).sort((a,b)=>b.age-a.age);
     else arr.sort((a,b)=>b.mc-a.mc);
   }
@@ -1199,7 +1201,7 @@ function renderDetail(){
   $("dPos").innerHTML=q>0?`<div class="pos-row"><span class="lbl">Pozisyonun</span><span class="val">${usd(val)}</span></div><div class="pos-row"><span class="lbl">Miktar</span><span class="val">${fmtN(q,6)} ${t.s}</span></div><div class="pos-row"><span class="lbl">Kâr / zarar</span><span class="val ${pl>=0?"up":"down"}">${pl>=0?"+":"-"}${usd(Math.abs(pl))} (${fmtN(cost?Math.abs(pl/cost*100):0,2)}%)</span></div>`
     :`<div class="pos-row"><span class="lbl">Bu tokende pozisyonun yok</span><span class="val muted">${usd(st.usdt)} kullanılabilir</span></div>`;
   const hi=Math.max(...t.hist.slice(-120)),lo=Math.min(...t.hist.slice(-120));
-  $("dStats").innerHTML=[["Piyasa değeri",big(t.mc)],["24s hacim",big(t.mc*0.045)],["24s yüksek",usd(hi,t.d)],["24s düşük",usd(lo,t.d)],["Dolaşımdaki arz",fmtN(t.sup/1e6,1)+"M "+t.s],["Tüm zamanların zirvesi",usd(t.ath,t.d)],["Tutanlar",fmtN(t.held*41.3,0)+"B"],["ATH'den uzaklık",fmtN((t.p/t.ath-1)*100,1)+"%"]].map(([a,b])=>`<div><span>${a}</span><b>${b}</b></div>`).join("");
+  $("dStats").innerHTML=[["Piyasa değeri",big(t.mc)],["24s hacim",big(t.vol||t.mc*0.045)],["24s yüksek",usd(hi,t.d)],["24s düşük",usd(lo,t.d)],t.sup?["Dolaşımdaki arz",(t.sup>=1e12?fmtN(t.sup/1e12,1)+"T ":t.sup>=1e9?fmtN(t.sup/1e9,1)+"B ":fmtN(t.sup/1e6,1)+"M ")+t.s]:null,t.ath?["Tüm zamanların zirvesi",usd(t.ath,t.d)]:null,t.held?["Tutanlar",fmtN(t.held*41.3,0)+"B"]:null,t.ath?["ATH'den uzaklık",fmtN((t.p/t.ath-1)*100,1)+"%"]:null].filter(Boolean).map(([a,b])=>`<div><span>${a}</span><b>${b}</b></div>`).join("");
   renderDetailExtras(t);
   $("dAbout").innerHTML=t.about.replace(/[<>&]/g,"")+(t.credit?`<br><small style="font-size:12px;color:var(--faint)">${t.credit}</small>`:"");
   drawChart();
@@ -1304,9 +1306,12 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
   renderAll();if(view==="rank")renderRank();if(openId==="notifs")renderNotifs();if(openId==="rewards")renderRewards();
 }
 async function loadPrices(){const {data,error}=await sb.from("prices").select("*");if(error||!data)return;
-  data.forEach(r=>{const t=find(r.symbol);if(!t)return;const first=!t.live;t.p=+r.price;t.open=+(r.open_24h||r.price);if(r.market_cap)t.mc=+r.market_cap;if(r.max_leverage)t.maxLev=r.max_leverage;if(r.image_url)t.img=r.image_url;if(first){t.hist=genHist(t.p,t.open);t.live=1}})}
+  data.forEach(r=>{if(r.listed===false)return;let t=find(r.symbol);if(!t){t=newTok(r);T.push(t)}const first=!t.live;if(r.category)t.cat=r.category;if(r.circulating_supply)t.sup=+r.circulating_supply;if(r.ath)t.ath=+r.ath;if(r.volume_24h)t.vol=+r.volume_24h;t.p=+r.price;t.open=+(r.open_24h||r.price);if(r.market_cap)t.mc=+r.market_cap;if(r.max_leverage)t.maxLev=r.max_leverage;if(r.image_url)t.img=r.image_url;if(first){t.hist=genHist(t.p,t.open);t.live=1}})}
+const decFor=p=>p>0?Math.min(12,Math.max(2,Math.ceil(-Math.log10(p))+3)):2;
+function newTok(r){const p=+r.price,at=r.listed_at?new Date(r.listed_at).getTime():Date.now(),fresh=Date.now()-at<30*864e5;
+  return {s:r.symbol,n:r.name||r.symbol,p,mc:+(r.market_cap||0),c:colorFor(r.symbol),d:decFor(p),age:fresh?at/1e10:0,dyn:1,about:`${r.name||r.symbol}, ${r.symbol} sembolüyle işlem gören bir ${r.category==="meme"?"meme coin":"kripto varlık"}.`}}
 function subscribe(){sb.removeAllChannels();
-  sb.channel("arx-prices").on("postgres_changes",{event:"UPDATE",schema:"public",table:"prices"},({new:r})=>{const t=find(r.symbol);if(t){t.p=+r.price;t.open=+(r.open_24h||r.price);if(r.market_cap)t.mc=+r.market_cap}}).subscribe();
+  sb.channel("arx-prices").on("postgres_changes",{event:"UPDATE",schema:"public",table:"prices"},({new:r})=>{const t=find(r.symbol);if(!t&&r.listed){loadPrices().then(renderAll);return}if(t){t.p=+r.price;t.open=+(r.open_24h||r.price);if(r.market_cap)t.mc=+r.market_cap}}).subscribe();
   sb.channel("arx-notifs-"+me.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"notifications",filter:"user_id=eq."+me.id},({new:n})=>{toast(n.body);loadAll()}).subscribe()}
 
 // ---------- profile
@@ -1836,7 +1841,7 @@ $("suPw").addEventListener("input",()=>$("pwMeter").dataset.s=pwScore($("suPw").
 async function enter(user){
   me=user;st=fresh();st.watch=loadWatch();
   $("auth").hidden=true;$("app").removeAttribute("aria-hidden");["liPw","suPw"].forEach(id=>$(id).value="");
-  go("home");await Promise.all([loadPrices(),loadAll(),loadLB()]);subscribe();renderAll();$("boot").hidden=true;
+  go("home");await loadPrices();await Promise.all([loadAll(),loadLB()]);subscribe();renderAll();$("boot").hidden=true;
   if(!st.onboarded)startOnb();
 }
 $("loginForm").addEventListener("submit",e=>{e.preventDefault();busy($("liGo"),async()=>{
