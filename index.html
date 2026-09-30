@@ -188,6 +188,48 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .inst-x{color:var(--muted);font-size:22px;width:28px;height:28px;flex:none;line-height:1}
 .ios-steps{background:var(--bg);border-radius:14px;padding:14px;line-height:1.7;font-size:14px}
 .ios-steps b{color:var(--accent)}
+/* transfers */
+.bal{flex-wrap:wrap}
+.bal-acts{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.bal-acts .btn{padding:14px 20px}
+@media (min-width:760px){.bal-acts{display:flex;width:auto;flex:none}}
+.xf-h{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.xf-h h3{margin:0}
+.xf-back{width:34px;height:34px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;flex:none}
+.xf-back svg{width:18px;height:18px}
+.xf-search{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:0 14px;margin:10px 0 6px}
+.xf-search input{flex:1;min-width:0;background:none;border:0;padding:12px 0;font:inherit;color:var(--fg)}
+.xf-list{max-height:52vh;overflow:auto;margin:0 -4px;padding:0 4px}
+.xf-list .tok .rt{text-align:right;font-weight:700}
+.xf-list .tok .rt small{display:block;color:var(--muted);font-weight:500;font-size:12px}
+.xf-admin{display:flex;align-items:center;justify-content:space-between;width:100%;padding:12px 14px;border-radius:14px;background:var(--accent-soft);color:var(--accent);font-weight:700;margin:8px 0 4px}
+.xf-nets{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 6px}
+.xf-qr{width:230px;height:230px;margin:16px auto 18px;background:#fff;border-radius:22px;padding:8px;position:relative;box-shadow:0 0 0 8px var(--surface2)}
+.xf-qr svg{width:100%;height:100%;display:block}
+.xf-qr .coin{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:46px;height:46px;font-size:15px;box-shadow:0 0 0 5px #fff}
+.xf-qr .coin i{display:none}
+.xf-qr .ld{position:absolute;inset:0;display:grid;place-items:center;color:#667;font-size:13px}
+.xf-lbl{color:var(--muted);font-size:13px;margin-bottom:4px}
+.xf-addr{display:flex;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.xf-addr code{flex:1;min-width:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:15px;font-weight:700;word-break:break-all;line-height:1.4}
+.xf-copy{width:44px;height:44px;border-radius:50%;background:var(--surface2);display:grid;place-items:center;flex:none}
+.xf-copy svg{width:20px;height:20px}
+.xf-rows>div{display:flex;justify-content:space-between;gap:12px;padding:12px 0;font-size:15px}
+.xf-rows>div span:last-child{color:var(--muted);text-align:right}
+.xf-warn{background:color-mix(in srgb,#f2b705 12%,transparent);color:var(--fg);border-radius:14px;padding:12px 14px;font-size:13px;line-height:1.5;margin-top:6px}
+.xf-warn b{color:#f2b705}
+.xf-in{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:0 6px 0 14px;margin-bottom:6px}
+.xf-in input{flex:1;min-width:0;background:none;border:0;padding:14px 0;font:inherit;font-size:16px;color:var(--fg)}
+.xf-in input.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}
+.xf-in button{padding:8px 12px;border-radius:10px;background:var(--surface2);font-weight:700;font-size:13px;flex:none}
+.xf-who{font-size:13px;min-height:20px;margin:0 2px 10px}
+.xf-who.ok{color:var(--up)}.xf-who.bad{color:var(--down)}
+.xf-sum{background:var(--bg);border-radius:14px;padding:4px 14px;margin:10px 0 12px}
+.xf-sum>div{display:flex;justify-content:space-between;padding:8px 0;font-size:14px}
+.xf-sum>div span:first-child{color:var(--muted)}
+.xf-sum>div.big{font-weight:700;font-size:15px;border-top:1px solid var(--line)}
+.xf-pend{background:var(--bg);border-radius:14px;padding:10px 14px;margin:10px 0;font-size:13px}
+.xf-pend div{display:flex;justify-content:space-between;padding:4px 0}
 /* user profile */
 .lbr-link{cursor:pointer}
 .lbr-link:active{opacity:.7}
@@ -664,7 +706,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
       <div class="bal-num" id="balNum">$0<span>,00</span></div>
       <div class="bal-chg" id="balChg">-- 24s</div>
     </div>
-    <button class="btn btn-accent" type="button" data-open="deposit">Yatır</button>
+    <div class="bal-acts"><button class="btn btn-accent" type="button" data-open="recv">Yatır</button><button class="btn btn-ghost" type="button" data-open="send">Gönder</button></div>
   </div>
 
   <div id="topWrap" hidden><div class="sec-t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 6.3L21 9l-5 4.4L17.5 20 12 16.6 6.5 20 8 13.4 3 9l6.4-.7z"/></svg>En iyi yatırımcılar</div>
@@ -812,7 +854,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
     </div>
     <div class="promo-art" id="promoArt" aria-hidden="true"></div>
   </div>
-  <button class="btn btn-accent full p-dep" type="button" data-open="deposit">Yatır</button>
+  <div class="grid2 p-dep"><button class="btn btn-accent" type="button" data-open="recv">Yatır</button><button class="btn btn-ghost" type="button" data-open="send">Gönder</button></div>
   </div></div>
 </div>
 </div>
@@ -1064,6 +1106,9 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <button class="btn btn-accent full" type="button" id="cnGo">Kampanyayı başlat</button>
 </div>
 
+<div class="sheet" id="sh-recv" role="dialog" aria-label="Kripto yatır"><div class="grab"></div><div id="recvBody"></div></div>
+<div class="sheet" id="sh-send" role="dialog" aria-label="Kripto gönder"><div class="grab"></div><div id="sendBody"></div></div>
+
 <div class="sheet" id="sh-pick" role="dialog" aria-label="Token seç">
   <div class="grab"></div>
   <h3>Token seç</h3>
@@ -1271,7 +1316,7 @@ $("addBtn").onclick=()=>busy($("addBtn"),async()=>{const h=$("addHandle").value.
 function errText(e){const m=(e&&(e.message||e.error_description))||"";if(/fetch|network/i.test(m))return "Sunucuya ulaşılamadı. İnternet bağlantını kontrol et.";return m||"Bir hata oluştu, tekrar dene."}
 async function call(fn,args,errId){const {data,error}=await sb.rpc(fn,args||{});if(error){const m=errText(error);if(errId)$(errId).textContent=m;else toast(m);return{err:m}}return{data}}
 async function busy(btn,fn){if(btn.disabled)return;btn.disabled=true;try{await fn()}finally{btn.disabled=false}}
-const KIND={deposit:"dep",reward:"rew",perp_open:"perp",perp_close:"perp",liquidation:"perp"};
+const KIND={deposit:"dep",reward:"rew",perp_open:"perp",perp_close:"perp",liquidation:"perp",transfer_out:"tout",transfer_in:"tin"};
 async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(r.error)throw r.error;return r.data});
   try{
     const [acc,hold,ord,pos,al,nt,tx,fol,fer,les,cl,prof,adm,cmp]=await Promise.all([
@@ -1358,7 +1403,8 @@ function renderProfile(){
   $("rewDot").hidden=!rewards().some(r=>r.done&&!st.claimed.includes(r.id));
 }
 function renderHistory(){
-  $("histList").innerHTML=st.hist.slice(0,40).map(h=>{const cash=h.k==="dep"||h.k==="rew";const title={dep:"Bakiye yükleme",rew:"Ödül: "+(h.txt||""),buy:h.s+" alındı"+(h.ot?` (${h.ot})`:""),sell:h.s+" satıldı"+(h.ot?` (${h.ot})`:""),swap:h.txt,perp:h.txt}[h.k]||h.txt||"";
+  $("histList").innerHTML=st.hist.slice(0,40).map(h=>{const cash=h.k==="dep"||h.k==="rew"||((h.k==="tin"||h.k==="tout")&&h.s==="USDT");const title={dep:"Bakiye yükleme",rew:"Ödül: "+(h.txt||""),buy:h.s+" alındı"+(h.ot?` (${h.ot})`:""),sell:h.s+" satıldı"+(h.ot?` (${h.ot})`:""),swap:h.txt,perp:h.txt,tout:h.s+" gönderildi",tin:h.s+" transfer olarak geldi"}[h.k]||h.txt||"";
+    if(h.k==="tout")return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span>-${usd(Math.abs(h.v))}</span></div>`;
     return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span class="${h.k==="sell"||cash?"up":""}">${h.k==="buy"?"-":h.k==="swap"?"":h.k==="perp"?(h.v>=0?"+":"-"):"+"}${usd(Math.abs(h.v))}</span></div>`}).join("")||`<div class="empty" style="padding:30px 10px">Henüz işlem yok.</div>`}
 $("pRanges").addEventListener("click",e=>{const r=e.target.dataset.r;if(!r)return;pRange=r;[...$("pRanges").children].forEach(b=>b.classList.toggle("on",b===e.target));renderProfile()});
 $("pShare").onclick=()=>{const{v}=portfolio();const txt=`COINFORCE profilim: @${st.prof.handle} · Portföy ${usd(v)} · ${tradeCount()} işlem`;
@@ -1378,6 +1424,131 @@ $("edSave").onclick=()=>busy($("edSave"),async()=>{const n=$("edName").value.tri
   if(!n)return $("edErr").textContent="Ad boş olamaz.";
   const {error}=await sb.from("profiles").update({full_name:n,bio}).eq("id",me.id);if(error)return $("edErr").textContent=errText(error);
   closeSheet();await loadAll();toast("Profil güncellendi")});
+// ---------- transfers (COINFORCE hesapları arası)
+let recvSym=null,recvQ="",recvNet=null,sendSym=null,sendNet=null,sendWho=null,xfPending=[];
+const NETS={},ADDR={};
+const BACK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>`;
+const COPY=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>`;
+const xfCoin=(s,cls="")=>s==="USDT"?usdtCoin.replace("coin sm","coin "+cls):coinHTML(find(s)||{c:"#555",s},cls);
+const xfPx=s=>s==="USDT"?1:(find(s)||{}).p||0;
+const xfQ=v=>{v=+v;if(!(v>0))return"0";return v>=1000?fmtN(v,2):v>=1?fmtN(v,4).replace(/0+$/,"").replace(/,$/,""):String(+v.toPrecision(6)).replace(".",",")};
+const minUsd=n=>Math.max(1,n.fee_usd*2);
+async function netsFor(sym){if(NETS[sym])return NETS[sym];const {data,error}=await sb.rpc("networks_for",{p_symbol:sym});if(error){toast(errText(error));return[]}return NETS[sym]=(data||[]).map(n=>({...n,fee_usd:+n.fee_usd}))}
+async function addrFor(net){if(ADDR[net])return ADDR[net];const {data,error}=await sb.rpc("my_address",{p_network:net});if(error){toast(errText(error));return null}return ADDR[net]=data}
+// QR kod üretici (bayt modu, H düzeltme seviyesi, sürüm 1-10)
+function qrMatrix(text){
+  const data=[...new TextEncoder().encode(text)],ECC=[0,17,28,22,16,22,28,26,26,24,28],NB=[0,1,1,2,4,4,4,5,6,8,8];
+  const raw=v=>{let r=(16*v+128)*v+64;if(v>=2){const na=Math.floor(v/7)+2;r-=(25*na-10)*na-55;if(v>=7)r-=36}return r};
+  let ver=1,cap=0;for(;ver<=10;ver++){cap=Math.floor(raw(ver)/8)-ECC[ver]*NB[ver];if(12+(ver<10?0:8)+data.length*8<=cap*8)break}
+  if(ver>10)throw new Error("QR: metin çok uzun");
+  const bb=[],put=(v,n)=>{for(let i=n-1;i>=0;i--)bb.push((v>>>i)&1)};
+  put(4,4);put(data.length,ver<10?8:16);data.forEach(b=>put(b,8));
+  const capBits=cap*8;put(0,Math.min(4,capBits-bb.length));put(0,(8-bb.length%8)%8);for(let p=0xEC;bb.length<capBits;p^=0xEC^0x11)put(p,8);
+  const dc=[];for(let i=0;i<bb.length;i+=8){let b=0;for(let j=0;j<8;j++)b=b<<1|bb[i+j];dc.push(b)}
+  const mul=(x,y)=>{let z=0;for(let i=7;i>=0;i--){z=(z<<1)^((z>>>7)*0x11D);z^=((y>>>i)&1)*x}return z};
+  const deg=ECC[ver],gen=new Array(deg).fill(0);gen[deg-1]=1;let root=1;
+  for(let i=0;i<deg;i++){for(let j=0;j<deg;j++){gen[j]=mul(gen[j],root);if(j+1<deg)gen[j]^=gen[j+1]}root=mul(root,2)}
+  const rem=d=>{const r=new Array(deg).fill(0);for(const b of d){const f=b^r.shift();r.push(0);for(let i=0;i<deg;i++)r[i]^=mul(gen[i],f)}return r};
+  const nb=NB[ver],rawCw=Math.floor(raw(ver)/8),nShort=nb-rawCw%nb,shortLen=Math.floor(rawCw/nb),blocks=[];
+  for(let i=0,k=0;i<nb;i++){const d=dc.slice(k,k+shortLen-deg+(i<nShort?0:1));k+=d.length;const e=rem(d);if(i<nShort)d.push(0);blocks.push(d.concat(e))}
+  const cw=[];for(let i=0;i<blocks[0].length;i++)blocks.forEach((b,j)=>{if(i!==shortLen-deg||j>=nShort)cw.push(b[i])});
+  const N=ver*4+17,M=[],F=[];for(let y=0;y<N;y++){M.push(new Array(N).fill(false));F.push(new Array(N).fill(false))}
+  const set=(x,y,d)=>{M[y][x]=d;F[y][x]=true};
+  for(let i=0;i<N;i++){set(6,i,i%2===0);set(i,6,i%2===0)}
+  const finder=(cx,cy)=>{for(let dy=-4;dy<=4;dy++)for(let dx=-4;dx<=4;dx++){const x=cx+dx,y=cy+dy;if(x<0||y<0||x>=N||y>=N)continue;const d=Math.max(Math.abs(dx),Math.abs(dy));set(x,y,d!==2&&d!==4)}};
+  finder(3,3);finder(N-4,3);finder(3,N-4);
+  if(ver>1){const na=Math.floor(ver/7)+2,step=Math.floor((ver*4+na*2+1)/(na*2-2))*2,pos=[6];for(let i=na-2;i>=0;i--)pos.push(N-7-i*step);
+    pos.forEach((a,i)=>pos.forEach((b,j)=>{if((i===0&&j===0)||(i===0&&j===na-1)||(i===na-1&&j===0))return;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++)set(a+dx,b+dy,Math.max(Math.abs(dx),Math.abs(dy))!==1)}))}
+  const fmt=mask=>{const d=2<<3|mask;let r=d;for(let i=0;i<10;i++)r=(r<<1)^((r>>>9)*0x537);const bits=(d<<10|r)^0x5412,g=i=>((bits>>>i)&1)===1;
+    for(let i=0;i<=5;i++)set(8,i,g(i));set(8,7,g(6));set(8,8,g(7));set(7,8,g(8));for(let i=9;i<15;i++)set(14-i,8,g(i));
+    for(let i=0;i<8;i++)set(N-1-i,8,g(i));for(let i=8;i<15;i++)set(8,N-15+i,g(i));set(8,N-8,true)};
+  fmt(0);
+  if(ver>=7){let r=ver;for(let i=0;i<12;i++)r=(r<<1)^((r>>>11)*0x1F25);const bits=ver<<12|r;for(let i=0;i<18;i++){const b=((bits>>>i)&1)===1,a=N-11+i%3,c=Math.floor(i/3);set(a,c,b);set(c,a,b)}}
+  let bi=0;for(let right=N-1;right>=1;right-=2){if(right===6)right=5;for(let v=0;v<N;v++)for(let j=0;j<2;j++){const x=right-j,up=((right+1)&2)===0,y=up?N-1-v:v;
+    if(!F[y][x]&&bi<cw.length*8){M[y][x]=((cw[bi>>>3]>>>(7-(bi&7)))&1)===1;bi++}}}
+  const MF=[(x,y)=>(x+y)%2===0,(x,y)=>y%2===0,(x,y)=>x%3===0,(x,y)=>(x+y)%3===0,(x,y)=>(Math.floor(x/3)+Math.floor(y/2))%2===0,(x,y)=>x*y%2+x*y%3===0,(x,y)=>(x*y%2+x*y%3)%2===0,(x,y)=>((x+y)%2+x*y%3)%2===0];
+  const apply=m=>{for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(!F[y][x]&&MF[m](x,y))M[y][x]=!M[y][x]};
+  const pen=()=>{let p=0,dark=0;for(let a=0;a<N;a++){let rr=1,rc=1;for(let b=1;b<N;b++){if(M[a][b]===M[a][b-1]){rr++;if(rr===5)p+=3;else if(rr>5)p++}else rr=1;if(M[b][a]===M[b-1][a]){rc++;if(rc===5)p+=3;else if(rc>5)p++}else rc=1}}
+    for(let y=0;y<N-1;y++)for(let x=0;x<N-1;x++){const c=M[y][x];if(c===M[y][x+1]&&c===M[y+1][x]&&c===M[y+1][x+1])p+=3}
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(M[y][x])dark++;p+=Math.floor(Math.abs(dark*20-N*N*10)/(N*N))*10;return p};
+  let best=0,bp=Infinity;for(let m=0;m<8;m++){apply(m);fmt(m);const p=pen();if(p<bp){bp=p;best=m}apply(m)}
+  apply(best);fmt(best);return M}
+function qrSVG(text){const Q=qrMatrix(text),n=Q.length,m=3,W=n+m*2;
+  const inF=(r,c)=>(r<7&&c<7)||(r<7&&c>=n-7)||(r>=n-7&&c<7);const mid=n/2,hole=n*0.13;let d="";
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++){if(!Q[r][c]||inF(r,c))continue;if(Math.abs(r+.5-mid)<hole+1&&Math.abs(c+.5-mid)<hole+1)continue;d+=`<circle cx="${c+m+.5}" cy="${r+m+.5}" r=".45"/>`}
+  const fin=(x,y)=>`<rect x="${x+.5}" y="${y+.5}" width="6" height="6" rx=".4" fill="none" stroke="#000" stroke-width="1"/><rect x="${x+2}" y="${y+2}" width="3" height="3" rx=".2"/>`;
+  return `<svg viewBox="0 0 ${W} ${W}" role="img" aria-label="QR kod"><g fill="#000">${d}${fin(m,m)}${fin(m+n-7,m)}${fin(m,m+n-7)}</g></svg>`}
+function xfList(q,withBal){const Q=q.trim().toUpperCase();const all=[{s:"USDT",n:"Tether",mc:1e20},...T.filter(t=>!t.dyn||t.live)];
+  let arr=all.filter(t=>!Q||t.s.includes(Q)||t.n.toUpperCase().includes(Q));
+  if(withBal)arr=arr.filter(t=>t.s==="USDT"?st.usdt>0:(st.h[t.s]||0)>0).sort((a,b)=>(b.s==="USDT"?st.usdt:(st.h[b.s]||0)*b.p)-(a.s==="USDT"?st.usdt:(st.h[a.s]||0)*a.p));
+  else arr.sort((a,b)=>b.mc-a.mc);
+  return arr.map(t=>{const bal=t.s==="USDT"?st.usdt:st.h[t.s]||0;return `<button type="button" class="tok" data-xs="${t.s}">${xfCoin(t.s)}<div class="mid"><div class="sym">${t.s}</div><div class="sub">${esc(t.n)}</div></div>${withBal?`<div class="rt">${xfQ(bal)}<small>${usd(bal*xfPx(t.s))}</small></div>`:""}</button>`}).join("")}
+// ---- Yatır
+function renderRecv(){const b=$("recvBody");
+  if(!recvSym){b.innerHTML=`<div class="xf-h"><h3>Yatır</h3></div><div class="sub" style="margin-bottom:6px">Yatırmak istediğin coini seç. Adresini başka bir COINFORCE kullanıcısına verirsen sana coin gönderebilir.</div>
+    ${st.admin?`<button type="button" class="xf-admin" data-open="deposit">Bakiye yükle (yönetici)<span>›</span></button>`:""}
+    <div class="xf-search"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="recvQ" placeholder="Coin ara" autocomplete="off" autocapitalize="characters" value="${esc(recvQ)}"></div>
+    <div class="xf-list" id="recvList">${xfList(recvQ,false)}</div>`;return}
+  const s=recvSym;b.innerHTML=`<div class="xf-h"><button type="button" class="xf-back" data-xback aria-label="Geri">${BACK}</button><h3>${s} Yatır</h3></div><div id="recvMain"><div class="empty">Yükleniyor…</div></div>`;
+  netsFor(s).then(nets=>{if(recvSym!==s)return;if(!nets.length){$("recvMain").innerHTML=`<div class="empty">Bu coin için ağ bulunamadı.</div>`;return}
+    if(!recvNet||!nets.some(n=>n.code===recvNet))recvNet=nets[0].code;renderRecvNet(nets)})}
+async function renderRecvNet(nets){const s=recvSym,n=nets.find(x=>x.code===recvNet);const px=xfPx(s);
+  $("recvMain").innerHTML=`${nets.length>1?`<div class="xf-nets">${nets.map(x=>`<button type="button" class="chip${x.code===n.code?" on":""}" data-xn="${x.code}">${esc(x.name)}</button>`).join("")}</div>`:""}
+    <div class="xf-qr" id="recvQR"><div class="ld">QR hazırlanıyor…</div></div>
+    <div class="xf-lbl">Adres</div><div class="xf-addr"><code id="recvAddr">…</code><button type="button" class="xf-copy" id="recvCopy" aria-label="Adresi kopyala">${COPY}</button></div>
+    <div class="xf-rows"><div><span>Ağ</span><span>${esc(n.name)}</span></div><div><span>Minimum yatırma</span><span>${px?xfQ(minUsd(n)/px)+" "+s:usd(minUsd(n))}</span></div><div><span>Varış süresi</span><span>Yaklaşık ${n.eta_min} dakika</span></div></div>
+    <div class="xf-warn"><b>Sadece COINFORCE içinde geçerli.</b> Bu adrese yalnızca başka bir COINFORCE hesabından, <b>${esc(n.name)}</b> ağı seçilerek ${s} gönderilebilir. Gerçek bir cüzdandan veya borsadan gönderim yapma; ulaşmaz.</div>`;
+  const a=await addrFor(n.code);if(recvSym!==s||recvNet!==n.code||!a)return;$("recvAddr").textContent=a;
+  try{$("recvQR").innerHTML=qrSVG(a)+xfCoin(s)}catch(e){$("recvQR").innerHTML=`<div class="ld">QR oluşturulamadı</div>`}}
+$("recvBody").addEventListener("input",e=>{if(e.target.id==="recvQ"){recvQ=e.target.value;$("recvList").innerHTML=xfList(recvQ,false)}});
+$("recvBody").addEventListener("click",e=>{const x=e.target.closest("[data-xs]");if(x){recvSym=x.dataset.xs;recvNet=null;renderRecv();return}
+  if(e.target.closest("[data-xback]")){recvSym=null;renderRecv();return}
+  const nb=e.target.closest("[data-xn]");if(nb){recvNet=nb.dataset.xn;netsFor(recvSym).then(renderRecvNet);return}
+  if(e.target.closest("#recvCopy")){const a=$("recvAddr").textContent;if(a.length<5)return;try{navigator.clipboard.writeText(a).then(()=>toast("Adres kopyalandı"),()=>toast(a))}catch(err){toast(a)}}});
+// ---- Gönder
+async function loadPending(){if(!me)return;const {data}=await sb.from("transfers").select("symbol,qty,fee_qty,arrive_at,sender,network").eq("status","pending").eq("sender",me.id).order("arrive_at");xfPending=data||[];if(openId==="send"&&!sendSym)renderSend()}
+function renderSend(){const b=$("sendBody");
+  if(!sendSym){const list=xfList("",true);
+    const pend=xfPending.length?`<div class="xf-pend"><b style="display:block;margin-bottom:4px">Yoldaki transferlerin</b>${xfPending.map(p=>`<div><span>${xfQ(+p.qty-+p.fee_qty)} ${esc(p.symbol)}</span><span class="muted">~${Math.max(1,Math.ceil((Date.parse(p.arrive_at)-Date.now())/60000))} dk</span></div>`).join("")}</div>`:"";
+    b.innerHTML=`<div class="xf-h"><h3>Gönder</h3></div><div class="sub" style="margin-bottom:6px">Başka bir COINFORCE kullanıcısının adresine coin gönder.</div>${pend}
+      <div class="xf-list">${list||`<div class="empty" style="padding:24px 8px">Gönderebileceğin bir varlık yok.</div>`}</div>`;return}
+  const s=sendSym;b.innerHTML=`<div class="xf-h"><button type="button" class="xf-back" data-xback aria-label="Geri">${BACK}</button><h3>${s} Gönder</h3></div><div id="sendMain"><div class="empty">Yükleniyor…</div></div>`;
+  netsFor(s).then(nets=>{if(sendSym!==s)return;if(!nets.length){$("sendMain").innerHTML=`<div class="empty">Bu coin gönderilemiyor.</div>`;return}
+    if(!sendNet||!nets.some(n=>n.code===sendNet))sendNet=nets[0].code;
+    const bal=s==="USDT"?st.usdt:st.h[s]||0;
+    $("sendMain").innerHTML=`<div class="xf-lbl" style="margin-top:12px">Alıcı adresi</div>
+      <div class="xf-in"><input id="sdAddr" class="mono" placeholder="CF… ile başlayan adres" autocomplete="off" autocapitalize="characters" spellcheck="false"><button type="button" id="sdPaste">Yapıştır</button></div>
+      <div class="xf-who" id="sdWho"></div>
+      <div class="xf-lbl">Ağ</div><div class="xf-nets" id="sdNets" style="margin-top:4px">${nets.map(x=>`<button type="button" class="chip${x.code===sendNet?" on":""}" data-sn="${x.code}">${esc(x.name)}</button>`).join("")}</div>
+      <div class="xf-lbl" style="margin-top:10px">Miktar</div>
+      <div class="xf-in"><input id="sdAmt" inputmode="decimal" placeholder="0" autocomplete="off"><b style="color:var(--muted);font-size:14px">${s}</b><button type="button" id="sdMax">Maks</button></div>
+      <div class="hint">Kullanılabilir: ${xfQ(bal)} ${s} (${usd(bal*xfPx(s))})</div>
+      <div class="xf-sum" id="sdSum"></div><div class="err" id="sdErr"></div>
+      <button type="button" class="btn btn-accent full" id="sdGo">Gönder</button>`;
+    sendWho=null;renderSendSum()})}
+function sdAmt(){let v=String($("sdAmt")?.value||"").trim().replace(/\s/g,"");if(v.includes(","))v=v.replace(/\./g,"").replace(",",".");return parseFloat(v)||0}
+function renderSendSum(){const s=sendSym,n=(NETS[s]||[]).find(x=>x.code===sendNet);if(!n||!$("sdSum"))return;const px=xfPx(s),fee=px?n.fee_usd/px:0,q=sdAmt(),rec=Math.max(0,q-fee);
+  $("sdSum").innerHTML=`<div><span>Ağ ücreti</span><span>${xfQ(fee)} ${s} (${usd(n.fee_usd)})</span></div><div><span>Minimum</span><span>${xfQ(minUsd(n)/px)} ${s}</span></div><div><span>Varış süresi</span><span>Yaklaşık ${n.eta_min} dakika</span></div><div class="big"><span>Alıcıya ulaşacak</span><span>${xfQ(rec)} ${s}</span></div>`}
+let whoT=null;
+function checkAddr(){clearTimeout(whoT);const v=$("sdAddr").value.trim().toUpperCase(),w=$("sdWho");sendWho=null;w.className="xf-who";w.textContent="";if(v.length<10)return;
+  whoT=setTimeout(async()=>{const {data,error}=await sb.rpc("lookup_address",{p_address:v});if($("sdAddr")?.value.trim().toUpperCase()!==v)return;
+    if(error||!data){w.className="xf-who bad";w.textContent="Bu adres bulunamadı.";return}
+    if(data.self){w.className="xf-who bad";w.textContent="Bu senin kendi adresin.";return}
+    const nets=NETS[sendSym]||[],hit=nets.find(x=>x.code===data.network);
+    if(!hit){w.className="xf-who bad";w.textContent=`Bu adres ${sendSym} gönderilebilen bir ağa ait değil.`;return}
+    if(sendNet!==hit.code){sendNet=hit.code;$("sdNets").querySelectorAll("[data-sn]").forEach(b=>b.classList.toggle("on",b.dataset.sn===sendNet));renderSendSum()}
+    sendWho=data;w.className="xf-who ok";w.textContent=`✓ @${data.username} · ${hit.name}`},350)}
+$("sendBody").addEventListener("input",e=>{if(e.target.id==="sdAddr")checkAddr();if(e.target.id==="sdAmt"){$("sdErr").textContent="";renderSendSum()}});
+$("sendBody").addEventListener("click",e=>{const x=e.target.closest("[data-xs]");if(x){sendSym=x.dataset.xs;sendNet=null;renderSend();return}
+  if(e.target.closest("[data-xback]")){sendSym=null;renderSend();return}
+  const nb=e.target.closest("[data-sn]");if(nb){sendNet=nb.dataset.sn;$("sdNets").querySelectorAll("[data-sn]").forEach(b=>b.classList.toggle("on",b===nb));renderSendSum();checkAddr();return}
+  if(e.target.closest("#sdMax")){const bal=sendSym==="USDT"?st.usdt:st.h[sendSym]||0;$("sdAmt").value=String(+bal.toPrecision(12)).replace(".",",");renderSendSum();return}
+  if(e.target.closest("#sdPaste")){try{navigator.clipboard.readText().then(t=>{$("sdAddr").value=(t||"").trim();checkAddr()},()=>toast("Yapıştırmaya izin verilmedi, adresi elle yapıştır"))}catch(err){toast("Adresi elle yapıştır")}return}
+  const g=e.target.closest("#sdGo");if(!g)return;
+  busy(g,async()=>{const addr=$("sdAddr").value.trim().toUpperCase(),q=sdAmt();$("sdErr").textContent="";
+    if(!addr)return $("sdErr").textContent="Alıcı adresini gir.";if(!(q>0))return $("sdErr").textContent="Miktar gir.";
+    const r=await call("send_transfer",{p_symbol:sendSym,p_network:sendNet,p_address:addr,p_qty:q},"sdErr");if(r.err)return;
+    closeSheet();toast(`${xfQ(r.data.receive)} ${sendSym} gönderildi · yaklaşık ${r.data.eta_min} dk`);await loadAll();loadPending()})});
 // ---------- user profiles
 let userOpen=null,userData=null,uRange="24h",uTab="open",uFil="all",uChart=[],uHover=null;
 const UKIND={buy:"Alım",sell:"Satım",swap:"Takas",perp_open:"Vadeli açılış",perp_close:"Vadeli kapanış",liquidation:"Likidasyon"};
@@ -1572,7 +1743,7 @@ $("chips").addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(
 
 // ---------- sheets
 let openId=null;
-function openSheet(id){closeSheet(true);openId=id;$("sh-"+id).classList.add("show");$("scrim").classList.add("show");if(id==="swap")renderSwap();if(id==="history")renderHistory();if(id==="edit")fillEdit();if(id==="rewards")renderRewards();if(id==="notifs")renderNotifs();if(id==="campaigns")renderCampList();if(id==="campnew")fillCampNew();if(id==="deposit")renderDep();if(id==="alert")openAlert();if(id==="settings"){$("logoutWho").textContent="@"+(st.prof.handle||"");$("resetConfirm").hidden=true;$("setThemeVal").textContent=themeName()}}
+function openSheet(id){closeSheet(true);openId=id;$("sh-"+id).classList.add("show");$("scrim").classList.add("show");if(id==="swap")renderSwap();if(id==="history")renderHistory();if(id==="edit")fillEdit();if(id==="rewards")renderRewards();if(id==="notifs")renderNotifs();if(id==="campaigns")renderCampList();if(id==="campnew")fillCampNew();if(id==="deposit")renderDep();if(id==="recv"){recvSym=null;recvQ="";renderRecv()}if(id==="send"){sendSym=null;renderSend();loadPending()}if(id==="alert")openAlert();if(id==="settings"){$("logoutWho").textContent="@"+(st.prof.handle||"");$("resetConfirm").hidden=true;$("setThemeVal").textContent=themeName()}}
 function closeSheet(keepScrim){if(openId)$("sh-"+openId).classList.remove("show");openId=null;if(!keepScrim)$("scrim").classList.remove("show")}
 $("scrim").onclick=()=>closeSheet();
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
