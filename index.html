@@ -191,19 +191,57 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 /* user profile */
 .lbr-link{cursor:pointer}
 .lbr-link:active{opacity:.7}
-.up-head{display:flex;align-items:center;gap:16px;margin:4px 0 14px}
+.upage{position:fixed;inset:0;z-index:36;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.upage-in{max-width:560px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(40px + env(safe-area-inset-bottom,0px))}
+.up-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .up-av{width:76px;height:76px;border-radius:50%;flex:none;display:grid;place-items:center;overflow:hidden;font-family:var(--display);font-weight:800;font-size:28px;color:#fff}
-.up-name{font-size:21px;font-weight:700;overflow-wrap:anywhere}
+.up-fol{min-width:120px;padding:11px 20px;margin-top:14px}
+.up-name{font-size:24px;font-weight:700;margin-top:12px;overflow-wrap:anywhere}
 .up-handle{color:var(--muted);margin-top:2px}
-.up-stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-radius:14px;margin:14px 0}
-.up-stats div{padding:12px 6px;text-align:center}
-.up-stats b{display:block;font-size:18px}
-.up-stats span{font-size:12px;color:var(--muted)}
-.up-rank{display:flex;justify-content:space-between;align-items:center;background:var(--bg);border-radius:14px;padding:14px 16px;margin-bottom:14px}
-.up-hold{display:flex;flex-wrap:wrap;gap:8px}
-.up-hold span{display:flex;align-items:center;gap:6px;background:var(--bg);border-radius:20px;padding:5px 12px 5px 5px;font-size:13px;font-weight:600}
-.up-hold .coin{width:22px;height:22px;font-size:9px}
-.up-hold .coin i{display:none}
+.up-bio{margin:12px 0 0;line-height:1.5;overflow-wrap:anywhere}
+.up-f{display:flex;gap:18px;margin-top:14px;color:var(--muted)}
+.up-f b{color:var(--fg);margin-right:4px}
+.up-meta{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;padding-bottom:18px;border-bottom:1px solid var(--line);color:var(--muted);font-size:14px}
+.up-meta span{display:inline-flex;align-items:center;gap:6px}
+.up-meta svg{width:16px;height:16px}
+.up-meta .gold{color:#f2b705;font-weight:700}
+.up-meta .gold svg{width:22px;height:22px}
+.up-eqrow{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:10px;margin-top:20px}
+.up-eq{font-family:var(--display);font-size:clamp(26px,7.4vw,34px);white-space:nowrap;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.up-eq small{font-size:.7em;color:var(--faint)}
+.up-chg{margin-top:6px;font-weight:600}
+.up-rng{display:flex;gap:2px;flex:none}
+.up-rng button{padding:7px 10px;border-radius:10px;color:var(--muted);font-weight:700;font-size:14px}
+.up-rng button.on{background:var(--surface);color:var(--fg)}
+.up-chart{display:block;width:100%;height:190px;margin:14px 0 8px;touch-action:pan-y}
+.up-nochart{height:190px;display:grid;place-items:center;text-align:center;color:var(--muted);font-size:14px;margin:14px 0 8px;border:1px dashed var(--line);border-radius:16px;padding:0 24px}
+.up-cash{display:flex;align-items:center;gap:14px;margin:10px 0 22px}
+.up-cash i{width:52px;height:52px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-style:normal;font-size:24px;font-weight:700}
+.up-cash small{display:block;color:var(--muted)}
+.up-cash b{font-size:20px}
+.up-ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.up-ph h3{margin:0;font-size:19px}
+.up-tog{display:flex;border:1px solid var(--line);border-radius:12px;padding:3px}
+.up-tog button{padding:6px 12px;border-radius:9px;color:var(--muted);font-weight:700;font-size:14px}
+.up-tog button.on{background:var(--surface2);color:var(--accent)}
+.up-fil{display:flex;gap:8px;margin-bottom:8px}
+.up-fil button{padding:8px 16px;border-radius:12px;border:1px solid var(--line);color:var(--muted);font-weight:600}
+.up-fil button.on{background:var(--surface);color:var(--fg);border-color:transparent}
+.up-row{display:flex;align-items:center;gap:12px;padding:12px 0}
+.up-row+.up-row{border-top:1px solid var(--line)}
+.up-row .coin{width:44px;height:44px;flex:none}
+.up-row .mid{flex:1;min-width:0}
+.up-row .mid b{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.up-row .mid small,.up-row .rt small{color:var(--muted);font-size:13px}
+.up-row .rt{text-align:right;flex:none}
+.up-row .rt b{display:block;font-size:16px}
+.up-row .rt small.up{color:var(--up);font-weight:600}.up-row .rt small.down{color:var(--down);font-weight:600}
+.up-row .mid small .tagx{margin:0 6px 0 0;vertical-align:0}
+.tagx{display:inline-block;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:700;margin-left:6px;vertical-align:2px}
+.tagx.long{background:color-mix(in srgb,var(--up) 18%,transparent);color:var(--up)}
+.tagx.short{background:color-mix(in srgb,var(--down) 18%,transparent);color:var(--down)}
+.up-sec{margin:26px 0 6px;font-size:19px}
+.up-dot{position:absolute;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);margin-top:14px;box-shadow:0 0 0 3px var(--bg);pointer-events:none}
 /* campaigns */
 .camp{display:block;width:100%;text-align:left;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%,var(--surface)),var(--surface) 60%);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:10px}
 .camp.ended{background:var(--surface);opacity:.75}
@@ -792,6 +830,14 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <button type="button" data-go="profile" aria-label="Hesabım"><span class="nav-av" id="navAv">E</span></button>
 </nav>
 
+<div class="upage" id="userPage" hidden role="dialog" aria-label="Kullanıcı profili">
+  <div class="upage-in">
+    <div class="back-row"><button class="icon-btn" type="button" id="userBack" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="icon-btn" type="button" id="userReload" aria-label="Yenile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg></button></div>
+    <div id="userBody"></div>
+  </div>
+</div>
+
 <div class="scrim" id="scrim"></div>
 
 <div class="sheet" id="sh-deposit" role="dialog" aria-label="Para yatır">
@@ -1015,11 +1061,6 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <div class="hint" id="cnHint"></div>
   <div class="err" id="cnErr"></div>
   <button class="btn btn-accent full" type="button" id="cnGo">Kampanyayı başlat</button>
-</div>
-
-<div class="sheet" id="sh-user" role="dialog" aria-label="Kullanıcı profili">
-  <div class="grab"></div>
-  <div id="userBody"></div>
 </div>
 
 <div class="sheet" id="sh-pick" role="dialog" aria-label="Token seç">
@@ -1333,28 +1374,90 @@ $("edSave").onclick=()=>busy($("edSave"),async()=>{const n=$("edName").value.tri
   const {error}=await sb.from("profiles").update({full_name:n,bio}).eq("id",me.id);if(error)return $("edErr").textContent=errText(error);
   closeSheet();await loadAll();toast("Profil güncellendi")});
 // ---------- user profiles
-let userOpen=null;
-async function openUser(id){if(!id)return;if(me&&id===me.id){closeSheet();go("profile");return}
-  userOpen=id;$("userBody").innerHTML=`<div class="empty">Profil yükleniyor…</div>`;openSheet("user");
-  const {data,error}=await sb.rpc("public_profile",{p_user:id});if(userOpen!==id||openId!=="user")return;
-  if(error){$("userBody").innerHTML=`<div class="empty">${esc(errText(error))}</div>`;return}renderUser(data)}
-function renderUser(u){const n=u.full_name||u.username,url=safeUrl(u.avatar_url),pnl=u.pnl==null?null:+u.pnl;
-  const hold=(u.holdings||[]).slice(0,6).map(h=>{const t=find(h.symbol);return t?`<span><div class="coin sm" style="background:${t.c}">${face(t)}</div>${esc(h.symbol)} %${fmtN(+h.pct,+h.pct%1?1:0)}</span>`:""}).join("");
-  $("userBody").innerHTML=`<div class="up-head"><div class="up-av" style="background:${url?"var(--surface2)":colorFor(u.username)}">${url?`<img class="av-img" src="${url}" alt="">`:esc(initial(n))}</div>
-    <div style="min-width:0"><div class="up-name">${esc(n)}</div><div class="up-handle">@${esc(u.username)}</div></div></div>
-    ${u.bio?`<p style="margin:0 0 6px;line-height:1.5;overflow-wrap:anywhere">${esc(u.bio)}</p>`:""}
-    <div class="up-stats"><div><b>${u.followers}</b><span>Takipçi</span></div><div><b>${u.following}</b><span>Takip</span></div><div><b>${u.trades}</b><span>İşlem</span></div></div>
-    <div class="up-rank"><div><div class="muted" style="font-size:13px">Sıralama</div><div style="font-size:20px;font-weight:700;margin-top:2px">${u.rank?"#"+u.rank:"-"}</div></div>
-      <div style="text-align:right"><div class="muted" style="font-size:13px">Toplam sanal kâr</div><div style="font-size:20px;font-weight:700;margin-top:2px" class="${pnl==null?"muted":pnl>=0?"up":"down"}">${pnl==null?"-":(pnl>=0?"+":"-")+usd(Math.abs(pnl))}</div></div></div>
-    ${hold?`<div class="sec-t">Portföy dağılımı</div><div class="up-hold">${hold}</div>`:`<div class="hint">Şu an coin tutmuyor.</div>`}
-    <p class="hint" style="margin-top:14px">Katılım ${new Date(u.created_at).toLocaleDateString("tr-TR",{month:"long",year:"numeric"})}</p>
+let userOpen=null,userData=null,uRange="24h",uTab="open",uFil="all",uChart=[],uHover=null;
+const UKIND={buy:"Alım",sell:"Satım",swap:"Takas",perp_open:"Vadeli açılış",perp_close:"Vadeli kapanış",liquidation:"Likidasyon"};
+const uQty=v=>{v=+v;return v>=1e6?fmtN(v/1e6,1)+" Mn":v>=1e3?fmtN(v,0):v>=1?fmtN(v,2):fmtN(v,v>=.01?4:6)};
+const uDur=sec=>{sec=+sec;if(!(sec>0))return null;const d=Math.floor(sec/86400),h=Math.floor(sec%86400/3600),m=Math.floor(sec%3600/60);return d?`${d}g ${h}s`:h?`${h}s ${m}dk`:m?`${m} dk`:"1 dk'dan az"};
+function coinIc(sym){const t=find(sym);return t?`<div class="coin" style="background:${t.c}">${face(t)}</div>`:`<div class="coin" style="background:#555">${esc((sym||"?")[0])}</div>`}
+async function openUser(id){if(!id)return;if(me&&id===me.id){closeSheet();closeUser();go("profile");return}
+  closeSheet();userOpen=id;userData=null;uRange="24h";uTab="open";uFil="all";uChart=[];uHover=null;
+  $("userBody").innerHTML=`<div class="empty" style="margin-top:40px">Profil yükleniyor…</div>`;$("userPage").hidden=false;$("userPage").scrollTop=0;document.documentElement.style.overflow="hidden";
+  await loadUser(id)}
+function closeUser(){if($("userPage").hidden)return;$("userPage").hidden=true;userOpen=null;document.documentElement.style.overflow=""}
+async function loadUser(id){const [pr,ch]=await Promise.all([sb.rpc("public_profile",{p_user:id}),sb.rpc("profile_chart",{p_user:id,p_range:uRange})]);
+  if(userOpen!==id)return;if(pr.error){$("userBody").innerHTML=`<div class="empty" style="margin-top:40px">${esc(errText(pr.error))}</div>`;return}
+  userData=pr.data;uChart=ch.error?[]:(ch.data||[]);renderUser()}
+async function loadUserChart(){const id=userOpen;const {data,error}=await sb.rpc("profile_chart",{p_user:id,p_range:uRange});if(userOpen!==id)return;uChart=error?[]:(data||[]);uHover=null;renderUserChart()}
+function chartPts(){const u=userData;const pts=uChart.map(r=>({t:new Date(r.at).getTime(),v:+r.equity}));if(u&&u.equity!=null)pts.push({t:Date.now(),v:+u.equity});return pts}
+function renderUserChart(){const u=userData,box=$("upChartBox");if(!u||!box)return;const pts=chartPts();
+  const lbl={"24h":"24s","7d":"7g","30d":"30g"}[uRange];
+  let shown=+u.equity,chg=pts.length>1?pts[pts.length-1].v-pts[0].v:(u.change_24h!=null&&uRange==="24h"?+u.change_24h:null),sub=lbl;
+  if(uHover!=null&&pts.length>1){const p=pts[uHover];shown=p.v;chg=p.v-pts[0].v;sub=new Date(p.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}
+  const [ip,dp]=fmtN(shown,2).split(",");$("upEq").innerHTML=`${shown<0?"-":""}$${ip.replace("-","")}<small>,${dp}</small>`;
+  $("upChg").innerHTML=chg==null?`<span class="muted">${lbl} değişim henüz yok</span>`:`<span class="${chg>=0?"up":"down"}">${chg>=0?"+":"-"}${usd(Math.abs(chg))}</span> <span class="muted">${sub}</span>`;
+  if(pts.length<2){box.innerHTML=`<div class="up-nochart">Grafik birkaç dakika içinde oluşmaya başlar. Varlık her 10 dakikada bir kaydediliyor.</div>`;return}
+  const W=600,H=190,pad=10,vs=pts.map(p=>p.v),mn=Math.min(...vs),mx=Math.max(...vs),t0=pts[0].t,t1=pts[pts.length-1].t;
+  const X=t=>(t-t0)/(t1-t0||1)*W,Y=v=>pad+(mx-v)/(mx-mn||1)*(H-pad*2);
+  const good=pts[pts.length-1].v>=pts[0].v,col=good?"var(--up)":"var(--down)";
+  const d=pts.map((p,i)=>(i?"L":"M")+X(p.t).toFixed(1)+" "+Y(p.v).toFixed(1)).join("");
+  const hi=uHover??pts.length-1,hp=pts[hi];
+  box.innerHTML=`<svg class="up-chart" id="upChart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-label="Varlık grafiği">
+    <defs><linearGradient id="upG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${good?"#2ecc71":"#ff5b5b"}" stop-opacity=".22"/><stop offset="1" stop-color="${good?"#2ecc71":"#ff5b5b"}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${d}L${W} ${H}L0 ${H}Z" fill="url(#upG)"/>
+    <path d="${d}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    ${uHover!=null?`<line x1="${X(hp.t)}" x2="${X(hp.t)}" y1="0" y2="${H}" stroke="var(--muted)" stroke-width="1" vector-effect="non-scaling-stroke"/>`:""}
+  </svg><div class="up-dot" style="left:${X(hp.t)/W*100}%;top:${Y(hp.v)/H*100}%;background:${col}"></div>`}
+function uRows(){const u=userData;let list=(uTab==="open"?u.open:u.closed)||[];if(uFil!=="all")list=list.filter(x=>x.type===uFil);
+  if(uTab==="open")list=[...list].sort((a,b)=>b.value-a.value);
+  if(!list.length)return `<div class="hint" style="padding:18px 0">${uTab==="open"?"Açık pozisyonu yok.":"Kapanmış pozisyonu yok."}</div>`;
+  return list.map(x=>{const t=find(x.symbol),nm=t?t.n:x.symbol,p=x.pct==null?null:+x.pct,cls=(+x.pnl)>=0?"up":"down";
+    const tag=x.type==="perp"?`<span class="tagx ${x.side>0?"long":"short"}">${x.leverage}x ${x.side>0?"Long":"Short"}</span>`:"";
+    let sub,right,rs;
+    if(uTab==="open"){sub=x.type==="perp"?`${usd(+x.margin,0)} teminat`:`${uQty(x.qty)} ${esc(x.symbol)}`;right=usd(+x.value);rs=p==null?`${(+x.pnl)>=0?"+":"-"}${usd(Math.abs(+x.pnl))}`:pct(p)}
+    else{sub=(x.type==="perp"?(x.liquidated?"Likide oldu":"Kapatıldı"):"Tamamen satıldı")+" · "+new Date(x.at).toLocaleDateString("tr-TR",{day:"numeric",month:"short"});right=`<span class="${cls}">${(+x.pnl)>=0?"+":"-"}${usd(Math.abs(+x.pnl))}</span>`;rs=p==null?"":pct(p)}
+    return `<div class="up-row">${coinIc(x.symbol)}<div class="mid"><b>${esc(nm)}</b><small>${tag}${sub}</small></div><div class="rt"><b>${right}</b><small class="${cls}">${rs}</small></div></div>`}).join("")}
+function uRecent(){const r=userData.recent||[];if(!r.length)return `<div class="hint" style="padding:12px 0">Henüz işlem yapmamış.</div>`;
+  return r.map(x=>{const t=find(x.symbol),k=x.kind,amt=k==="perp_open"||k==="perp_close"||k==="liquidation"?(+x.qty)*(+x.price):+x.amount;
+    const neg=k==="sell"||k==="liquidation"||(k==="perp_close"&&+x.amount<0);
+    const det=k==="swap"?esc(x.note||""):k==="perp_open"?esc(x.note||""):k==="perp_close"?`Kâr/zarar ${(+x.amount)>=0?"+":"-"}${usd(Math.abs(+x.amount))}`:k==="liquidation"?esc(x.note||""):`${uQty(x.qty)} ${esc(x.symbol||"")} · ${usd(+x.price,+x.price<1?4:2)}`;
+    return `<div class="up-row">${coinIc(x.symbol)}<div class="mid"><b>${UKIND[k]||k} <span class="muted" style="font-weight:600">${esc(t?t.s:x.symbol||"")}</span></b><small>${det}</small></div><div class="rt"><b>${usd(amt)}</b><small>${ago(Date.now()-new Date(x.at).getTime())} önce</small></div></div>`}).join("")}
+function renderUser(){const u=userData;if(!u)return;const n=u.full_name||u.username,url=safeUrl(u.avatar_url),hold=uDur(u.avg_hold);
+  const nO=(u.open||[]).length;
+  $("userBody").innerHTML=`<div class="up-top"><div class="up-av" style="background:${url?"var(--surface2)":colorFor(u.username)}">${url?`<img class="av-img" src="${url}" alt="">`:esc(initial(n))}</div>
+      <button type="button" class="btn ${u.is_following?"btn-ghost":"btn-accent"} up-fol" id="userFollow" data-id="${u.id}" data-f="${u.is_following?1:0}">${u.is_following?"Takiptesin":"Takip et"}</button></div>
+    <div class="up-name">${esc(n)}</div><div class="up-handle">@${esc(u.username)}</div>
+    ${u.bio?`<p class="up-bio">${esc(u.bio)}</p>`:""}
     <div class="err" id="userErr"></div>
-    <button type="button" class="btn ${u.is_following?"btn-ghost":"btn-accent"} full" id="userFollow" data-id="${u.id}" data-f="${u.is_following?1:0}">${u.is_following?"Takipten çık":"Takip et"}</button>`}
+    <div class="up-f"><span><b>${u.following}</b>Takip</span><span><b>${u.followers}</b>Takipçi</span></div>
+    <div class="up-meta">${u.rank?`<span class="gold">${u.rank<=3?laurel(u.rank):""}#${u.rank} Tüm zamanlar</span>`:""}
+      ${hold?`<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${hold} ort. vadeli süresi</span>`:""}
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9h13l-3-3M20 15H7l3 3"/></svg>${u.trades} işlem</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Katılım ${new Date(u.created_at).toLocaleDateString("tr-TR",{month:"long",year:"numeric"})}</span></div>
+    <div class="up-eqrow"><div><div class="up-eq" id="upEq"></div><div class="up-chg" id="upChg"></div></div>
+      <div class="up-rng" id="upRng">${[["24h","24s"],["7d","7g"],["30d","30g"]].map(([k,l])=>`<button type="button" data-ur="${k}" class="${k===uRange?"on":""}">${l}</button>`).join("")}</div></div>
+    <div id="upChartBox" style="position:relative"></div>
+    <div class="up-cash"><i>$</i><div><small>Toplam nakit</small><b>${usd(+u.cash)}</b></div></div>
+    <div class="up-ph"><h3>Pozisyonlar (${uTab==="open"?nO:(u.closed||[]).length})</h3><div class="up-tog" id="upTog"><button type="button" data-ut="open" class="${uTab==="open"?"on":""}">Açık</button><button type="button" data-ut="closed" class="${uTab==="closed"?"on":""}">Kapalı</button></div></div>
+    <div class="up-fil" id="upFil">${[["all","Tümü"],["token","Token"],["perp","Vadeli"]].map(([k,l])=>`<button type="button" data-uf="${k}" class="${k===uFil?"on":""}">${l}</button>`).join("")}</div>
+    <div id="upRows">${uRows()}</div>
+    <h3 class="up-sec">Son işlemler</h3><div>${uRecent()}</div>`;
+  renderUserChart()}
+$("userBack").onclick=closeUser;
+$("userReload").onclick=()=>{if(userOpen)loadUser(userOpen)};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&openId==null)closeUser()});
 document.addEventListener("click",e=>{if(e.target.closest("[data-fol],[data-unf],button:not([data-user])")&&!e.target.closest("[data-user].tcard"))return;const u=e.target.closest("[data-user]");if(u){e.preventDefault();openUser(u.dataset.user)}});
-$("userBody").addEventListener("click",e=>{const b=e.target.closest("#userFollow");if(!b)return;busy(b,async()=>{const id=b.dataset.id;
-  const {error}=b.dataset.f==="1"?await sb.from("follows").delete().eq("follower",me.id).eq("followee",id):await sb.from("follows").insert({follower:me.id,followee:id});
-  if(error&&error.code!=="23505")return $("userErr").textContent=errText(error);
-  toast(b.dataset.f==="1"?"Takipten çıkıldı":"Takip edildi");loadAll();const r=await sb.rpc("public_profile",{p_user:id});if(!r.error&&userOpen===id)renderUser(r.data)})});
+$("userBody").addEventListener("click",e=>{
+  const r=e.target.closest("[data-ur]");if(r){uRange=r.dataset.ur;$("upRng").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b===r));loadUserChart();return}
+  const tg=e.target.closest("[data-ut]");if(tg){uTab=tg.dataset.ut;renderUser();return}
+  const f=e.target.closest("[data-uf]");if(f){uFil=f.dataset.uf;$("upFil").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b===f));$("upRows").innerHTML=uRows();return}
+  const b=e.target.closest("#userFollow");if(!b)return;busy(b,async()=>{const id=b.dataset.id,was=b.dataset.f==="1";
+    const {error}=was?await sb.from("follows").delete().eq("follower",me.id).eq("followee",id):await sb.from("follows").insert({follower:me.id,followee:id});
+    if(error&&error.code!=="23505")return $("userErr").textContent=errText(error);
+    toast(was?"Takipten çıkıldı":"Takip edildi");userData.is_following=!was;userData.followers=Math.max(0,userData.followers+(was?-1:1));loadAll();renderUser()})});
+function uPtr(e){const svg=e.target.closest("#upChart");if(!svg)return;const pts=chartPts();if(pts.length<2)return;const r=svg.getBoundingClientRect(),fx=(e.clientX-r.left)/r.width,t=pts[0].t+fx*(pts[pts.length-1].t-pts[0].t);
+  let bi=0;pts.forEach((p,i)=>{if(Math.abs(p.t-t)<Math.abs(pts[bi].t-t))bi=i});if(bi!==uHover){uHover=bi;renderUserChart()}}
+$("userBody").addEventListener("pointermove",uPtr);$("userBody").addEventListener("pointerdown",uPtr);
+$("userBody").addEventListener("pointerleave",()=>{if(uHover!=null){uHover=null;renderUserChart()}});
 // ---------- campaigns
 function timeLeft(ms){if(ms<=0)return "Bitti";const m=Math.floor(ms/60000),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;return d?`${d}g ${h}sa kaldı`:h?`${h}sa ${mm}dk kaldı`:`${Math.max(1,mm)}dk kaldı`}
 function campState(c){const now=Date.now(),s=Date.parse(c.starts_at),e=Date.parse(c.ends_at);return now<s?"soon":now>=e?"ended":"live"}
