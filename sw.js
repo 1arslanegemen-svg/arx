@@ -1,5 +1,5 @@
 // COINFORCE service worker: uygulama kabuğunu önbelleğe alır; veriler her zaman sunucudan gelir.
-const CACHE = "arx-v4";
+const CACHE = "arx-v5";
 const SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
@@ -20,7 +20,7 @@ self.addEventListener("fetch", e => {
   }
   // Simgeler, kütüphane ve yazı tipleri: önce önbellek
   e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(r => {
-    if (r.ok && (url.origin === location.origin || url.hostname === "cdn.jsdelivr.net" || url.hostname.endsWith("gstatic.com") || url.hostname.endsWith("googleapis.com"))) {
+    if (r.ok && (url.origin === location.origin || url.hostname === "cdn.jsdelivr.net" || url.hostname === "coin-images.coingecko.com" || url.hostname === "assets.coingecko.com" || url.hostname.endsWith("gstatic.com") || url.hostname.endsWith("googleapis.com"))) {
       const cp = r.clone(); caches.open(CACHE).then(c => c.put(req, cp));
     }
     return r;

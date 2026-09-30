@@ -91,7 +91,9 @@ h2{font-size:20px;font-weight:700;margin:6px 0 14px;text-wrap:balance}
 .tok{display:flex;align-items:center;gap:14px;width:100%;padding:12px 0;text-align:left}
 .tok:active{opacity:.7}
 .coin{position:relative;width:48px;height:48px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:800;font-size:17px;color:#fff;font-family:var(--display)}
-.coin img{width:100%;height:100%;border-radius:50%;display:block;box-shadow:0 0 0 1px var(--line)}
+.coin img{width:100%;height:100%;border-radius:50%;display:block;object-fit:contain;box-shadow:0 0 0 1px var(--line)}
+.coin img+.mono{display:none}
+.coin:has(img){background:transparent!important}
 .coin:not(:has(img))::before{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.38),transparent 52%),linear-gradient(160deg,transparent 40%,rgba(0,0,0,.32));box-shadow:inset 0 0 0 2px rgba(255,255,255,.16),inset 0 -3px 6px rgba(0,0,0,.18)}
 .coin:not(:has(img))::after{content:"";position:absolute;inset:12%;border-radius:50%;border:1.5px solid rgba(255,255,255,.2)}
 .coin .mono{position:relative;z-index:1;letter-spacing:-.02em;text-shadow:0 1px 2px rgba(0,0,0,.25);font-size:1.08em}
@@ -829,7 +831,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
     <p>COINFORCE, kripto alım-satımını risksiz öğrenmen için yapılmış bir <b>sanal işlem</b> uygulamasıdır. Yüklediğin bakiye, kazançlar ve ödüller sanaldır; gerçek paraya çevrilemez ve gerçek para yatırılamaz.</p>
     <p>Fiyat verisi CoinGecko tarafından sağlanır ve yaklaşık 30 saniyede bir güncellenir. Uygulamadaki hiçbir içerik yatırım tavsiyesi değildir.</p>
     <p>Hesabın ve işlemlerin COINFORCE sunucusunda saklanır; her cihazdan aynı hesapla giriş yapabilirsin.</p>
-    <p class="muted" style="font-size:12px">Bitcoin logosu kamu malıdır. Ethereum logosu Ethereum Foundation'a aittir, CC BY 3.0. XRP sembolü topluluk kullanımı için yayımlanmıştır.</p>
+    <p class="muted" style="font-size:12px">Coin logoları ve adları ilgili projelerin markalarıdır; yalnızca coinleri tanıtmak için gösterilir ve bir ortaklık anlamına gelmez. Logolar ve fiyat verisi CoinGecko üzerinden alınır.</p>
   </div>
 </div>
 
@@ -905,7 +907,8 @@ const big=v=>v>=1e12?"$"+fmtN(v/1e12,1)+"T":v>=1e9?"$"+fmtN(v/1e9,1)+"B":v>=1e6?
 const chg=t=>(t.p/t.open-1)*100;
 const pct=v=>(v>=0?"▲ ":"▼ ")+fmtN(Math.abs(v),2)+"%";
 const find=s=>T.find(t=>t.s===s);
-const face=t=>t.img?`<img src="${t.img}" alt="">`:`<span class="mono">${t.s.length>3?t.s.slice(0,2):t.s.slice(0,1)}</span>`;
+const mono=t=>`<span class="mono">${t.s.length>3?t.s.slice(0,2):t.s.slice(0,1)}</span>`;
+const face=t=>t.img?`<img src="${t.img}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">${mono(t)}`:mono(t);
 const coinHTML=(t,cls="")=>`<div class="coin ${cls}" style="background:${t.c}">${face(t)}${cls?"":`<i><svg viewBox="0 0 10 10" fill="none" stroke="var(--accent-ink)" stroke-width="2"><path d="M2 5.2l2 2 4-4.4"/></svg></i>`}</div>`;
 const usdtCoin=`<div class="coin sm" style="background:#26a17b">$</div>`;
 
@@ -1099,7 +1102,7 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
   renderAll();if(view==="rank")renderRank();if(openId==="notifs")renderNotifs();if(openId==="rewards")renderRewards();
 }
 async function loadPrices(){const {data,error}=await sb.from("prices").select("*");if(error||!data)return;
-  data.forEach(r=>{const t=find(r.symbol);if(!t)return;const first=!t.live;t.p=+r.price;t.open=+(r.open_24h||r.price);if(r.market_cap)t.mc=+r.market_cap;if(r.max_leverage)t.maxLev=r.max_leverage;if(first){t.hist=genHist(t.p,t.open);t.live=1}})}
+  data.forEach(r=>{const t=find(r.symbol);if(!t)return;const first=!t.live;t.p=+r.price;t.open=+(r.open_24h||r.price);if(r.market_cap)t.mc=+r.market_cap;if(r.max_leverage)t.maxLev=r.max_leverage;if(r.image_url)t.img=r.image_url;if(first){t.hist=genHist(t.p,t.open);t.live=1}})}
 function subscribe(){sb.removeAllChannels();
   sb.channel("arx-prices").on("postgres_changes",{event:"UPDATE",schema:"public",table:"prices"},({new:r})=>{const t=find(r.symbol);if(t){t.p=+r.price;t.open=+(r.open_24h||r.price);if(r.market_cap)t.mc=+r.market_cap}}).subscribe();
   sb.channel("arx-notifs-"+me.id).on("postgres_changes",{event:"INSERT",schema:"public",table:"notifications",filter:"user_id=eq."+me.id},({new:n})=>{toast(n.body);loadAll()}).subscribe()}
