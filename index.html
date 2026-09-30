@@ -185,6 +185,31 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .inst-x{color:var(--muted);font-size:22px;width:28px;height:28px;flex:none;line-height:1}
 .ios-steps{background:var(--bg);border-radius:14px;padding:14px;line-height:1.7;font-size:14px}
 .ios-steps b{color:var(--accent)}
+/* campaigns */
+.camp{display:block;width:100%;text-align:left;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%,var(--surface)),var(--surface) 60%);border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:10px}
+.camp.ended{background:var(--surface);opacity:.75}
+.camp-h{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.camp-h b{font-size:16px;font-weight:700}
+.camp-t{font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 8px;border-radius:8px;white-space:nowrap;flex:none}
+.camp.ended .camp-t{color:var(--muted);background:var(--surface2)}
+.camp-m{color:var(--muted);font-size:13px;margin-top:4px}
+.camp-bar{height:8px;border-radius:4px;background:var(--surface2);margin:12px 0 6px;overflow:hidden}
+.camp-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.camp-f{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);gap:8px}
+.camp-f b{color:var(--fg);font-weight:600}
+.camp-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--down);margin-left:6px;vertical-align:middle}
+.tier{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.tier .n{width:34px;height:34px;border-radius:10px;background:var(--surface2);display:grid;place-items:center;font-weight:800;color:var(--muted);flex:none}
+.tier.ok .n{background:var(--accent-soft);color:var(--accent)}
+.tier .mid{flex:1;min-width:0}
+.tier .mid b{display:block;font-weight:600}
+.tier .mid small{color:var(--muted);font-size:12px}
+.tier button{padding:8px 14px;border-radius:10px;font-weight:700;font-size:13px;flex:none}
+.tier .claim{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--accent-ink)}
+.tier .locked{background:var(--surface2);color:var(--muted);cursor:default}
+.tier .done{color:var(--up);font-weight:700;font-size:13px;flex:none}
+.camp-big{font-size:28px;font-weight:700;letter-spacing:-.01em;margin:8px 0 2px}
+.camp-actions{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:18px}
 /* v3 features */
 .top-r{display:flex;gap:8px}
 .bell{position:relative}
@@ -587,6 +612,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 
   <div id="topWrap" hidden><div class="sec-t"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 6.3L21 9l-5 4.4L17.5 20 12 16.6 6.5 20 8 13.4 3 9l6.4-.7z"/></svg>En iyi yatırımcılar</div>
   <div class="rail" id="topRail"></div></div>
+  <div id="campWrap" hidden><div class="r-sec-h" style="margin:22px 0 10px"><div class="sec-t" style="margin:0"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3h10v2h3v3a4 4 0 0 1-4 4h-.3A5 5 0 0 1 13 14.9V17h3v3H8v-3h3v-2.1A5 5 0 0 1 8.3 12H8a4 4 0 0 1-4-4V5h3zm0 4H6v1a2 2 0 0 0 1 1.7zm10 0v2.7A2 2 0 0 0 18 8V7z"/></svg>Hacim kampanyaları</div><button type="button" class="r-link" data-open="campaigns">Tümü <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button></div><div id="campHome"></div></div>
 
   </div><div class="col-b">
   <div class="tabs" role="tablist">
@@ -942,6 +968,35 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <p class="hint" style="margin-top:12px">Sonra COINFORCE'u ana ekrandaki simgeden aç; tarayıcı çubukları olmadan tam ekran çalışır.</p>
 </div>
 
+<div class="sheet" id="sh-campaigns" role="dialog" aria-label="Hacim kampanyaları">
+  <div class="grab"></div>
+  <div class="sh-h"><h3>Hacim kampanyaları</h3><button type="button" class="r-link" id="campNewBtn" hidden>+ Yeni</button></div>
+  <div class="sub">Kampanya süresince yaptığın alım, satım, takas ve vadeli işlemler hacmine sayılır. Kademelere ulaştıkça ödül al.</div>
+  <div id="campList"></div>
+</div>
+
+<div class="sheet" id="sh-campaign" role="dialog" aria-label="Kampanya">
+  <div class="grab"></div>
+  <div id="campDetail"></div>
+</div>
+
+<div class="sheet" id="sh-campnew" role="dialog" aria-label="Yeni kampanya">
+  <div class="grab"></div>
+  <h3>Yeni hacim kampanyası</h3>
+  <div class="sub">Oluşturduğunda tüm kullanıcılara bildirim gider ve kampanya hemen başlar.</div>
+  <label class="fld"><span>Başlık</span><input id="cnTitle" maxlength="60" placeholder="ör. BTC Haftası"></label>
+  <label class="fld"><span>Açıklama</span><textarea id="cnDesc" maxlength="280" rows="2" placeholder="Kısa açıklama (isteğe bağlı)"></textarea></label>
+  <div class="two">
+    <label class="fld"><span>Coin</span><div class="sel"><select id="cnSym"><option value="">Tüm coinler</option></select></div></label>
+    <label class="fld"><span>Süre (gün)</span><input id="cnDays" inputmode="numeric" value="7"></label>
+  </div>
+  <label class="fld"><span>Kademeler (her satıra hacim = ödül)</span><textarea id="cnTiers" rows="4">5000 = 5
+25000 = 15
+100000 = 50</textarea></label>
+  <div class="err" id="cnErr"></div>
+  <button class="btn btn-accent full" type="button" id="cnGo">Kampanyayı başlat</button>
+</div>
+
 <div class="sheet" id="sh-pick" role="dialog" aria-label="Token seç">
   <div class="grab"></div>
   <h3>Token seç</h3>
@@ -1151,7 +1206,7 @@ async function busy(btn,fn){if(btn.disabled)return;btn.disabled=true;try{await f
 const KIND={deposit:"dep",reward:"rew",perp_open:"perp",perp_close:"perp",liquidation:"perp"};
 async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(r.error)throw r.error;return r.data});
   try{
-    const [acc,hold,ord,pos,al,nt,tx,fol,fer,les,cl,prof,adm]=await Promise.all([
+    const [acc,hold,ord,pos,al,nt,tx,fol,fer,les,cl,prof,adm,cmp]=await Promise.all([
       q(sb.from("accounts").select("*").eq("user_id",uid).maybeSingle()),
       q(sb.from("holdings").select("*").eq("user_id",uid)),
       q(sb.from("orders").select("*").eq("user_id",uid).eq("status","open").order("created_at")),
@@ -1164,7 +1219,8 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
       q(sb.from("lessons_done").select("lesson").eq("user_id",uid)),
       q(sb.from("reward_claims").select("reward").eq("user_id",uid)),
       q(sb.from("profiles").select("*").eq("id",uid).maybeSingle()),
-      sb.rpc("is_admin").then(r=>!r.error&&r.data===true)]);
+      sb.rpc("is_admin").then(r=>!r.error&&r.data===true),
+      sb.rpc("campaigns_list").then(r=>r.error?[]:r.data||[])]);
     const ids=fol.map(f=>f.followee);const fp=ids.length?await q(sb.from("profiles").select("id,username,full_name,avatar_url").in("id",ids)):[];
     st.usdt=+(acc?acc.usdt:0);st.dep=+(acc?acc.deposited:0);
     st.h={};st.cost={};hold.forEach(h=>{if(find(h.symbol)){st.h[h.symbol]=+h.qty;st.cost[h.symbol]=+h.cost}});
@@ -1174,9 +1230,9 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
     st.notifs=nt.map(n=>({id:n.id,txt:n.body,t:Date.parse(n.created_at),read:n.read,s:n.symbol}));
     st.hist=tx.map(x=>({k:KIND[x.kind]||x.kind,s:x.symbol,v:x.kind==="perp_open"?-x.amount_usd:+x.amount_usd,t:Date.parse(x.created_at),
       ot:(x.kind==="buy"||x.kind==="sell")&&x.note&&x.note!=="Piyasa"?x.note:"",
-      txt:x.kind==="swap"?(x.note||"")+" takas":x.kind==="perp_open"?`${x.symbol} ${x.note||""} açıldı`:x.kind==="perp_close"?`${x.symbol} pozisyonu kapatıldı`:x.kind==="liquidation"?`${x.symbol} likide oldu`:x.kind==="reward"?rewardName(x.note):""}));
+      txt:x.kind==="swap"?(x.note||"")+" takas":x.kind==="perp_open"?`${x.symbol} ${x.note||""} açıldı`:x.kind==="perp_close"?`${x.symbol} pozisyonu kapatıldı`:x.kind==="liquidation"?`${x.symbol} likide oldu`:x.kind==="reward"?(String(x.note||"").startsWith("Kampanya")?x.note:rewardName(x.note)):""}));
     st.friendsP=fp;st.friends=fp.map(p=>p.username);st.followers=fer;
-    st.admin=adm;st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
+    st.admin=adm;st.camps=(cmp||[]).map(c=>({...c,my_volume:+c.my_volume,participants:+c.participants,tiers:Array.isArray(c.tiers)?c.tiers:[],claimed:c.claimed||[]}));st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
     if(prof){st.prof={name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1,avatar:prof.avatar_url||""};st.onboarded=prof.onboarded}
   }catch(err){console.error(err);toast("Veriler yüklenemedi: "+errText(err))}
   renderAll();if(view==="rank")renderRank();if(openId==="notifs")renderNotifs();if(openId==="rewards")renderRewards();
@@ -1251,6 +1307,49 @@ $("edSave").onclick=()=>busy($("edSave"),async()=>{const n=$("edName").value.tri
   if(!n)return $("edErr").textContent="Ad boş olamaz.";
   const {error}=await sb.from("profiles").update({full_name:n,bio}).eq("id",me.id);if(error)return $("edErr").textContent=errText(error);
   closeSheet();await loadAll();toast("Profil güncellendi")});
+// ---------- campaigns
+function timeLeft(ms){if(ms<=0)return "Bitti";const m=Math.floor(ms/60000),d=Math.floor(m/1440),h=Math.floor(m%1440/60),mm=m%60;return d?`${d}g ${h}sa kaldı`:h?`${h}sa ${mm}dk kaldı`:`${Math.max(1,mm)}dk kaldı`}
+function campState(c){const now=Date.now(),s=Date.parse(c.starts_at),e=Date.parse(c.ends_at);return now<s?"soon":now>=e?"ended":"live"}
+function campNext(c){const i=c.tiers.findIndex(t=>c.my_volume<+t.volume);return i<0?null:i}
+function campClaimable(c){return c.tiers.some((t,i)=>c.my_volume>=+t.volume&&!c.claimed.includes(i))&&Date.now()<Date.parse(c.ends_at)+7*864e5}
+function campCard(c){const st8=campState(c),nx=campNext(c),last=c.tiers[c.tiers.length-1]||{volume:1,reward:0};
+  const target=nx==null?+last.volume:+c.tiers[nx].volume,prevT=nx>0?+c.tiers[nx-1].volume:0,pctv=nx==null?100:Math.max(2,Math.min(100,(c.my_volume-prevT)/(target-prevT)*100));
+  const total=c.tiers.reduce((a,t)=>a+ +t.reward,0),badge=st8==="ended"?"Bitti":st8==="soon"?"Yakında":timeLeft(Date.parse(c.ends_at)-Date.now());
+  return `<button type="button" class="camp${st8==="ended"?" ended":""}" data-camp="${c.id}"><div class="camp-h"><div><b>${esc(c.title)}</b>${campClaimable(c)?'<span class="camp-dot" title="Alınacak ödül var"></span>':""}<div class="camp-m">${c.symbol?esc(c.symbol)+" işlemleri":"Tüm coinler"} · ${c.participants} katılımcı · toplam ${usd(total,0)} ödül</div></div><span class="camp-t">${badge}</span></div>
+    <div class="camp-bar"><i style="width:${pctv}%"></i></div>
+    <div class="camp-f"><span>Hacmin <b>${usd(c.my_volume,0)}</b></span><span>${nx==null?"Tüm kademeler tamam":`Sonraki: ${usd(target,0)} → <b>+${usd(+c.tiers[nx].reward,0)}</b>`}</span></div></button>`}
+function renderCampHome(){const cs=(st.camps||[]).filter(c=>campState(c)!=="ended"||campClaimable(c));$("campWrap").hidden=!cs.length;$("campHome").innerHTML=cs.slice(0,2).map(campCard).join("")}
+function renderCampList(){$("campNewBtn").hidden=!st.admin;const cs=st.camps||[];$("campList").innerHTML=cs.length?cs.map(campCard).join(""):`<div class="empty">Şu an aktif kampanya yok.</div>`}
+let campOpen=null;
+async function openCampaign(id){campOpen=id;const c=(st.camps||[]).find(x=>x.id===id);if(!c)return;renderCampDetail(c,null);openSheet("campaign");
+  const {data}=await sb.rpc("campaign_leaderboard",{p_campaign:id,p_limit:10});if(campOpen===id&&openId==="campaign")renderCampDetail(c,data||[])}
+function renderCampDetail(c,lb){const st8=campState(c),e=Date.parse(c.ends_at),canClaim=Date.now()<e+7*864e5;
+  const tiers=c.tiers.map((t,i)=>{const ok=c.my_volume>=+t.volume,cl=c.claimed.includes(i);return `<div class="tier${ok?" ok":""}"><span class="n">${i+1}</span><div class="mid"><b>${usd(+t.volume,0)} hacim</b><small>Ödül: +${usd(+t.reward,0)} sanal USDT${ok?"":` · ${usd(+t.volume-c.my_volume,0)} kaldı`}</small></div>${cl?'<span class="done">Alındı</span>':ok&&canClaim?`<button type="button" class="claim" data-cclaim="${i}">Al</button>`:`<button type="button" class="locked" disabled>${ok?"Süre doldu":"Kilitli"}</button>`}</div>`}).join("");
+  const board=lb==null?`<div class="hint">Sıralama yükleniyor…</div>`:lb.length?lb.map((r,i)=>{const mine=me&&r.user_id===me.id;return `<div class="lbr${mine?" me":""}"><span class="rk">${i<3?laurel(i+1):i+1+"."}</span>${avHTML({n:r.full_name||r.username,h:r.username,a:r.avatar_url},"width:36px;height:36px;font-size:14px")}<div class="nm"><b>${esc(r.full_name||r.username)}${mine?" (sen)":""}</b><small>@${esc(r.username)}</small></div><div class="rt"><span class="g">${usd(+r.volume,0)}</span></div></div>`}).join(""):`<div class="hint">Henüz kimse işlem yapmadı. İlk sen ol!</div>`;
+  $("campDetail").innerHTML=`<div class="sh-h"><h3>${esc(c.title)}</h3><span class="camp-t" style="font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 8px;border-radius:8px">${st8==="ended"?"Bitti":st8==="soon"?"Yakında":timeLeft(e-Date.now())}</span></div>
+   <div class="sub">${esc(c.description||"")}${c.description?"<br>":""}${c.symbol?esc(c.symbol)+" işlemleri sayılır":"Tüm coinlerdeki işlemler sayılır"} · Bitiş: ${new Date(e).toLocaleString("tr-TR",{day:"numeric",month:"long",hour:"2-digit",minute:"2-digit"})}</div>
+   <div class="muted" style="font-size:13px">Senin hacmin</div><div class="camp-big">${usd(c.my_volume)}</div>
+   <div class="sec-t" style="margin-top:14px">Kademeler</div>${tiers}
+   <div class="sec-t" style="margin-top:20px">Hacim sıralaması</div>${board}
+   <div class="err" id="campErr"></div>
+   <div class="camp-actions"><button type="button" class="btn btn-accent" id="campTrade" ${st8==="ended"?"disabled":""}>İşlem yap</button>${st.admin&&st8!=="ended"?'<button type="button" class="btn btn-ghost" id="campEnd">Bitir</button>':""}</div>`}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-camp]");if(b){openCampaign(b.dataset.camp)}});
+$("campDetail").addEventListener("click",e=>{
+  const cb=e.target.closest("[data-cclaim]");if(cb){busy(cb,async()=>{const r=await call("claim_campaign",{p_campaign:campOpen,p_tier:+cb.dataset.cclaim},"campErr");if(r.err)return;await loadAll();const c=st.camps.find(x=>x.id===campOpen);if(c)openCampaign(c.id);toast(`Kampanya ödülü: +${usd(+r.data,0)}`)});return}
+  if(e.target.id==="campTrade"){const c=st.camps.find(x=>x.id===campOpen);closeSheet();if(c&&c.symbol&&find(c.symbol)){prev=view;go("detail",c.symbol)}else go("home");return}
+  if(e.target.id==="campEnd"){const btn=e.target;if(btn.dataset.sure!=="1"){btn.dataset.sure="1";btn.textContent="Emin misin?";return}
+    busy(btn,async()=>{const r=await call("end_campaign",{p_campaign:campOpen},"campErr");if(r.err)return;closeSheet();await loadAll();toast("Kampanya bitirildi")})}
+});
+$("campNewBtn").onclick=()=>openSheet("campnew");
+function fillCampNew(){const sel=$("cnSym");if(sel.options.length<2)T.forEach(t=>sel.add(new Option(t.s+" · "+t.n,t.s)));$("cnErr").textContent=""}
+$("cnGo").onclick=()=>busy($("cnGo"),async()=>{const title=$("cnTitle").value.trim(),days=parseInt($("cnDays").value,10);
+  if(title.length<3)return $("cnErr").textContent="En az 3 karakterlik bir başlık yaz.";
+  if(!(days>=1&&days<=90))return $("cnErr").textContent="Süre 1 ile 90 gün arasında olmalı.";
+  const tiers=[];for(const line of $("cnTiers").value.split("\n")){if(!line.trim())continue;const m=line.split(/[=:]/);if(m.length!==2)return $("cnErr").textContent=`Bu satır anlaşılmadı: "${line.trim()}". Örnek: 5000 = 5`;
+    const v=parseAmt(m[0]),r=parseAmt(m[1]);if(!(v>0)||!(r>=0))return $("cnErr").textContent=`Bu satırdaki sayılar hatalı: "${line.trim()}"`;tiers.push({volume:v,reward:r})}
+  if(!tiers.length)return $("cnErr").textContent="En az bir kademe gir.";
+  const res=await call("create_campaign",{p_title:title,p_description:$("cnDesc").value.trim(),p_symbol:$("cnSym").value||null,p_days:days,p_tiers:tiers},"cnErr");if(res.err)return;
+  $("cnTitle").value="";$("cnDesc").value="";closeSheet();await loadAll();toast("Kampanya başladı: "+title)});
 // avatar upload
 function squareJpeg(file,size=320){return new Promise((res,rej)=>{const url=URL.createObjectURL(file),img=new Image();
   img.onload=()=>{const s=Math.min(img.naturalWidth,img.naturalHeight),c=document.createElement("canvas");c.width=c.height=size;const g=c.getContext("2d");
@@ -1314,7 +1413,7 @@ $("chips").addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(
 
 // ---------- sheets
 let openId=null;
-function openSheet(id){closeSheet(true);openId=id;$("sh-"+id).classList.add("show");$("scrim").classList.add("show");if(id==="swap")renderSwap();if(id==="history")renderHistory();if(id==="edit")fillEdit();if(id==="rewards")renderRewards();if(id==="notifs")renderNotifs();if(id==="deposit")renderDep();if(id==="alert")openAlert();if(id==="settings"){$("logoutWho").textContent="@"+(st.prof.handle||"");$("resetConfirm").hidden=true;$("setThemeVal").textContent=themeName()}}
+function openSheet(id){closeSheet(true);openId=id;$("sh-"+id).classList.add("show");$("scrim").classList.add("show");if(id==="swap")renderSwap();if(id==="history")renderHistory();if(id==="edit")fillEdit();if(id==="rewards")renderRewards();if(id==="notifs")renderNotifs();if(id==="campaigns")renderCampList();if(id==="campnew")fillCampNew();if(id==="deposit")renderDep();if(id==="alert")openAlert();if(id==="settings"){$("logoutWho").textContent="@"+(st.prof.handle||"");$("resetConfirm").hidden=true;$("setThemeVal").textContent=themeName()}}
 function closeSheet(keepScrim){if(openId)$("sh-"+openId).classList.remove("show");openId=null;if(!keepScrim)$("scrim").classList.remove("show")}
 $("scrim").onclick=()=>closeSheet();
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
@@ -1431,7 +1530,7 @@ function tick(){tickN++;
 }
 function renderTradeSoft(){const e=$("trErr").textContent;renderTrade();$("trErr").textContent=e}
 function renderSwapSoft(){const e=$("swErr").textContent;renderSwap();$("swErr").textContent=e}
-function renderAll(){renderBal();renderTop();renderPromoArt();setAv($("navAv"),st.prof.avatar,initial(st.prof.name));renderList();if(view==="detail")renderDetail();if(view==="profile")renderProfile();if(view==="search")renderSearch();renderBadge()}
+function renderAll(){renderBal();renderTop();renderCampHome();renderPromoArt();setAv($("navAv"),st.prof.avatar,initial(st.prof.name));renderList();if(view==="detail")renderDetail();if(view==="profile")renderProfile();if(view==="search")renderSearch();renderBadge()}
 // ---------- engine: orders, alerts, perps
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const maxLev=t=>t.maxLev||(t.mc>5e10?50:t.mc>5e9?25:10);
