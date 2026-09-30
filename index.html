@@ -635,6 +635,36 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 .fld-at:focus-within{border-color:var(--accent)}
 .set-confirm{background:var(--bg);border-radius:14px;padding:14px;margin-top:12px}
 .set-confirm p{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.rw-top{margin:6px 0 16px}.rw-top>span{color:var(--muted);font-size:14px}
+.rw-total{font-family:var(--display);font-size:40px;font-weight:800;letter-spacing:-.02em;line-height:1.15}.rw-total small{font-size:.75em;color:var(--faint)}
+.rw-week{font-size:15px;color:var(--muted)}.rw-week b{color:var(--up)}
+.rw-ref{border-radius:18px;overflow:hidden;border:1px solid var(--line);margin-bottom:10px}
+.rw-ref-h{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:14px;padding:11px 12px;text-align:center}
+.rw-ref-h svg{width:18px;height:18px;flex:none}
+.rw-link{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;font-size:15px;min-width:0}
+.rw-link span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}.rw-link span b{color:var(--fg)}
+.rw-link button{color:var(--accent);flex:none;display:grid;place-items:center}.rw-link svg{width:22px;height:22px}
+.rw-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.rw-cards>div{border:1px solid var(--line);border-radius:18px;padding:14px}
+.rw-cards b{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600}.rw-cards b svg{width:16px;height:16px}
+.rw-cards em{font-style:normal;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:2px 6px;border-radius:6px}
+.rw-v{font-size:24px;font-weight:700;margin:10px 0 4px}.rw-cards small{color:var(--muted);font-size:12px}
+.rw-empty{text-align:center;color:var(--muted);padding:22px 16px 6px;line-height:1.5}
+.rw-fr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.rw-fr .av{width:34px;height:34px;font-size:13px}
+.rw-fr .mid{flex:1;min-width:0}.rw-fr small{display:block;color:var(--muted);font-size:12px}
+.rw-code{display:flex;gap:8px;margin-top:12px}.rw-code input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:16px;color:var(--fg)}
+.rw-code button{padding:10px 14px;border-radius:12px;background:var(--surface2);font-weight:700}
+/* trade feed */
+.tf{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.tf .av{width:42px;height:42px;font-size:15px;cursor:pointer}
+.tf .mid{flex:1;min-width:0}
+.tf-h{display:flex;align-items:center;gap:8px;font-size:15px;min-width:0}.tf-h b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.tf-tag{font-size:12px;font-weight:700;padding:2px 7px;border-radius:6px;flex:none}
+.tf-tag.buy{background:color-mix(in srgb,var(--up) 16%,transparent);color:var(--up)}.tf-tag.sell{background:color-mix(in srgb,var(--down) 16%,transparent);color:var(--down)}
+.tf-h .muted{font-size:13px;flex:none}
+.tf-v{font-size:18px;font-weight:700;margin-top:3px}.tf-v span{color:var(--muted);font-weight:500}
+.tf-pl{font-size:13px;color:var(--muted);margin-top:3px}
+.tf .coin{width:30px;height:30px;font-size:11px;flex:none;align-self:center;cursor:pointer}.tf .coin i{display:none}
 .rew-sum{display:flex;justify-content:space-between;background:var(--accent-soft);color:var(--accent);border-radius:14px;padding:14px 16px;font-weight:700;margin-bottom:8px}
 .rew{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
 .rew .ic{width:40px;height:40px;border-radius:12px;background:var(--surface2);display:grid;place-items:center;flex:none;font-weight:800;color:var(--accent)}
@@ -757,7 +787,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
       <p class="auth-alt">Hesabın yok mu? <button type="button" data-a="signup">Kaydol</button></p>
     </form>
 
-    <form id="suForm" novalidate hidden>
+    <form id="suForm" novalidate hidden><div class="hint" id="suRef" hidden style="text-align:center;margin:0 0 10px;font-size:13px"></div>
       <div class="two">
         <label class="fld"><span>Ad</span><input id="suName" autocomplete="given-name" maxlength="30"></label>
         <label class="fld"><span>Soyad</span><input id="suSurname" autocomplete="family-name" maxlength="30"></label>
@@ -855,6 +885,8 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <div class="stats" id="dStats"></div>
   <div class="sec-t">Hakkında</div>
   <p class="about" id="dAbout"></p>
+  <div class="sec-t" style="margin-top:18px">Topluluk işlemleri</div>
+  <div id="dTrades"><div class="hint">Yükleniyor…</div></div>
   <p class="disclaim">Fiyat verisi <a href="https://www.coingecko.com/" target="_blank" rel="noopener" style="color:inherit">CoinGecko</a> tarafından sağlanır ve ~30 saniye gecikmeli olabilir. Hiçbir içerik yatırım tavsiyesi değildir.</p>
   </div></div>
 </div>
@@ -879,13 +911,14 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <div class="r-tabs r3" id="rTabs"><button type="button" data-rt="feed" class="on">Topluluk</button><button type="button" data-rt="board">Sıralama</button><button type="button" data-rt="friends">Takip (<span id="fCount">0</span>)</button></div>
 
   <div id="rFeed">
-    <div class="seg" id="fSeg"><button type="button" data-fs="all" class="on">Akış</button><button type="button" data-fs="following">Takiptekiler</button><button type="button" data-fs="comms">Topluluklar</button></div>
+    <div class="seg" id="fSeg"><button type="button" data-fs="all" class="on">Akış</button><button type="button" data-fs="following">Takip</button><button type="button" data-fs="comms">Topluluklar</button><button type="button" data-fs="trades">İşlemler</button></div>
     <div id="fPosts">
       <div id="fCompose"></div>
       <button type="button" class="f-new" id="fNew" hidden></button>
       <div id="fList"></div>
       <button type="button" class="btn btn-ghost full f-more" id="fMore" hidden>Daha fazla göster</button>
     </div>
+    <div id="fTrades" hidden><div id="tfList"></div><button type="button" class="btn btn-ghost full f-more" id="tfMore" hidden>Daha fazla göster</button></div>
     <div id="fComms" hidden>
       <button type="button" class="btn btn-accent full" data-open="commnew" style="margin-bottom:14px">+ Topluluk kur</button>
       <div id="cList"></div>
@@ -1100,7 +1133,16 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 <div class="sheet" id="sh-rewards" role="dialog" aria-label="Ödüller">
   <div class="grab"></div>
   <h3>Ödüller</h3>
-  <div class="sub">Görevleri tamamla, USDT kazan.</div>
+  <div class="rw-top"><span>Toplam kazanç</span><div class="rw-total" id="rwTotal">$0<small>,00</small></div><div class="rw-week" id="rwWeek"><b>+$0</b> bu hafta</div></div>
+  <div class="rw-ref"><div class="rw-ref-h"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 7h-2.2A3 3 0 0 0 12 3.8 3 3 0 0 0 6.2 7H4a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8h1a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM9 5a1 1 0 0 1 1 1v1H9a1 1 0 1 1 0-2zm4 1a1 1 0 1 1 1 1h-1zM11 19H7v-7h4zm0-9H5V9h6zm6 9h-4v-7h4zm2-9h-6V9h6z"/></svg>Davet et, arkadaşlarının işlem ücretlerinin %25'ini kazan</div>
+    <div class="rw-link"><span id="rwLink"></span><button type="button" id="rwShare" aria-label="Davet linkini paylaş"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></button></div></div>
+  <div class="rw-cards">
+    <div><b><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm8 7 8-5H4z"/></svg>Davetler <em>%25</em></b><div class="rw-v" id="rwRef">$0</div><small id="rwRefN">0 davet</small></div>
+    <div><b><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 6.3L21 9l-5 4.4L17.5 20 12 16.6 6.5 20 8 13.4 3 9l6.4-.7z"/></svg>Görev ödülleri</b><div class="rw-v" id="rwTask">$0</div><small>Görevler ve kampanyalar</small></div>
+  </div>
+  <div id="rwFriends"></div>
+  <div id="rwCode"></div>
+  <div class="sec-t" style="margin-top:18px">Görevler</div>
   <div class="rew-sum" id="rewSum"></div>
   <div id="rewList"></div>
 </div>
@@ -1399,7 +1441,7 @@ function renderDetail(){
     :`<div class="pos-row"><span class="lbl">Bu tokende pozisyonun yok</span><span class="val muted">${usd(st.usdt)} kullanılabilir</span></div>`;
   const hi=t.hi24||Math.max(...t.hist.slice(-120)),lo=t.lo24||Math.min(...t.hist.slice(-120));
   $("dStats").innerHTML=[["Piyasa değeri",big(t.mc)],["24s hacim",t.vol?big(t.vol):"-"],["24s yüksek",usd(hi,t.d)],["24s düşük",usd(lo,t.d)],t.sup?["Dolaşımdaki arz",(t.sup>=1e12?fmtN(t.sup/1e12,1)+"T ":t.sup>=1e9?fmtN(t.sup/1e9,1)+"B ":fmtN(t.sup/1e6,1)+"M ")+t.s]:null,t.ath?["Tüm zamanların zirvesi",usd(t.ath,t.d)]:null,t.ath?["ATH'den uzaklık",fmtN((t.p/t.ath-1)*100,1)+"%"]:null].filter(Boolean).map(([a,b])=>`<div><span>${a}</span><b>${b}</b></div>`).join("");
-  renderDetailExtras(t);
+  renderDetailExtras(t);loadCoinTrades(t.s);
   $("dAbout").innerHTML=t.about.replace(/[<>&]/g,"")+(t.credit?`<br><small style="font-size:12px;color:var(--faint)">${t.credit}</small>`:"");
   drawChart();
 }
@@ -1785,7 +1827,7 @@ function postHTML(p,big){POSTS[p.id]=p;const mine=me&&p.user_id===me.id,canDel=m
 function composerHTML(ctx,ph){const p=st.prof;return `<div class="cmp" data-cmp="${ctx}">${avHTML({n:p.name,h:p.handle,a:p.avatar})}<div class="cmp-main"><textarea class="cmp-ta" rows="2" maxlength="500" placeholder="${esc(ph)}"></textarea>
   <div class="cmp-bar">${ctx.startsWith("c:")&&commData?`<span class="cmp-in">${esc(commData.emoji)} ${esc(commData.name)} içinde</span>`:""}<small>500</small><button type="button" class="btn btn-accent" data-cmpgo disabled>${ctx.startsWith("r:")?"Yanıtla":"Paylaş"}</button></div><div class="err" style="text-align:left;margin:4px 0 0"></div></div></div>`}
 async function feedRows(scope,ref,before,limit){const {data,error}=await sb.rpc("feed",{p_scope:scope,p_ref:ref||null,p_before:before||null,p_limit:limit||25});if(error){toast(errText(error));return null}return data||[]}
-function showFeed(){$("fPosts").hidden=fScope==="comms";$("fComms").hidden=fScope!=="comms";if(fScope==="comms")return loadComms();
+function showFeed(){$("fPosts").hidden=fScope==="comms"||fScope==="trades";$("fComms").hidden=fScope!=="comms";$("fTrades").hidden=fScope!=="trades";if(fScope==="comms")return loadComms();if(fScope==="trades")return loadTrades(true);
   $("fCompose").innerHTML=composerHTML("g","Neler oluyor? $BTC gibi coin etiketle");loadFeed(true)}
 let fSeq=0;
 async function loadFeed(reset){if(fBusy&&!reset)return;fBusy=true;const seq=++fSeq,scope=fScope;try{if(reset){fLast=null;fNewN=0;$("fNew").hidden=true;if(!$("fList").innerHTML)$("fList").innerHTML=`<div class="empty">Yükleniyor…</div>`}
@@ -1880,6 +1922,48 @@ document.addEventListener("click",async e=>{
   const cm=e.target.closest("[data-comm]");if(cm&&!e.target.closest("button")){openComm(cm.dataset.comm);return}
   const po=e.target.closest("[data-post]");if(po&&!e.target.closest("[data-user],button,a,textarea")){const p=POSTS[po.dataset.post],tid=p&&p.parent_id?p.parent_id:po.dataset.post;if(!(openId==="thread"&&tid===thOpen))openThread(tid)}});
 document.addEventListener("click",async e=>{if(!e.target.closest("#cpMore")||!commOpen)return;const id=commOpen,rows=await feedRows("community",id,commLast,25);if(commOpen!==id||!rows)return;$("cpList").insertAdjacentHTML("beforeend",rows.map(p=>postHTML(p)).join(""));if(rows.length)commLast=rows[rows.length-1].created_at;$("cpMore").hidden=rows.length<25});
+// ---------- işlem akışı
+const trimZ=x=>x.replace(/(,\d*?)0+$/,"$1").replace(/,$/,"");
+const kUsd=v=>{v=Math.abs(+v);return v>=1e6?"$"+trimZ(fmtN(v/1e6,v>=1e7?1:2))+"M":v>=1e3?"$"+trimZ(fmtN(v/1e3,v>=1e4?1:2))+"K":usd(v)};
+function tradeRow(x,showCoin){const t=find(x.symbol),px=+x.price,sell=x.side==="sell",ab=x.avg_buy!=null?+x.avg_buy:null,pl=sell&&ab?(px/ab-1)*100:null;
+  return `<div class="tf"><span data-user="${x.user_id}">${avHTML({n:x.full_name||x.username,h:x.username,a:x.avatar_url})}</span><div class="mid">
+    <div class="tf-h"><b data-user="${x.user_id}">${esc(x.username)}</b>${vipTag(x.user_id,1)}<span class="tf-tag ${sell?"sell":"buy"}">${sell?"Satış":"Alış"}</span><span class="muted">${tAgo(x.created_at)}</span></div>
+    <div class="tf-v">${kUsd(x.amount)} <span>·</span> ${usd(px,t?t.d:px<1?6:2)}${showCoin?` <span>${esc(x.symbol)}</span>`:""}</div>
+    ${sell&&ab?`<div class="tf-pl">Ort. alış ${usd(ab,t?t.d:2)} → satış ${usd(px,t?t.d:2)} · <span class="${pl>=0?"up":"down"}">${pct(pl)}</span></div>`:""}
+  </div>${showCoin&&t?`<span data-ctag="${t.s}">${coinHTML(t,"sm")}</span>`:""}</div>`}
+let tfLast=null,tfSeq=0;
+async function loadTrades(reset){const seq=++tfSeq;if(reset){tfLast=null;if(!$("tfList").innerHTML)$("tfList").innerHTML=`<div class="empty">Yükleniyor…</div>`}
+  const {data,error}=await sb.rpc("trade_feed",{p_symbol:null,p_before:reset?null:tfLast,p_limit:30});if(seq!==tfSeq)return;
+  if(error){$("tfList").innerHTML=`<div class="empty">${esc(errText(error))}</div>`;return}
+  const html=(data||[]).map(x=>tradeRow(x,true)).join("");
+  if(reset)$("tfList").innerHTML=html||`<div class="empty" style="padding:30px 10px">Henüz alım-satım yok.</div>`;else $("tfList").insertAdjacentHTML("beforeend",html);
+  if(data&&data.length)tfLast=data[data.length-1].created_at;$("tfMore").hidden=!data||data.length<30}
+$("tfMore").onclick=()=>loadTrades(false);
+const CT={};
+async function loadCoinTrades(sym){const c=CT[sym];if(c&&Date.now()-c.t<30000){if(c.html!=null&&$("dTrades").dataset.s!==sym){$("dTrades").innerHTML=c.html;$("dTrades").dataset.s=sym}return}
+  CT[sym]={t:Date.now(),html:c&&c.html};const {data,error}=await sb.rpc("trade_feed",{p_symbol:sym,p_before:null,p_limit:15});
+  const html=error?`<div class="hint">${esc(errText(error))}</div>`:(data||[]).map(x=>tradeRow(x,false)).join("")||`<div class="hint" style="padding:6px 0 10px">Bu coinde henüz topluluk işlemi yok.</div>`;
+  CT[sym]={t:Date.now(),html};if(cur===sym){$("dTrades").innerHTML=html;$("dTrades").dataset.s=sym}}
+// ---------- ödüller: davet programı
+let RW=null;
+const refLink=()=>`${location.origin}${location.pathname}?r=${encodeURIComponent(st.prof.handle||"")}`;
+async function loadMyRewards(){const {data,error}=await sb.rpc("my_rewards");if(error||!data)return;RW=data;if(openId==="rewards")renderRewardsTop()}
+function renderRewardsTop(){const r=RW||{ref_total:0,ref_week:0,referred:0,task_total:0,task_week:0,friends:[]};
+  const tot=+r.ref_total+ +r.task_total,wk=+r.ref_week+ +r.task_week,[a,b]=fmtN(tot,2).split(",");
+  $("rwTotal").innerHTML=`$${a}<small>,${b}</small>`;$("rwWeek").innerHTML=`<b>+${usd(wk)}</b> bu hafta`;
+  const l=refLink().replace(/^https?:\/\//,"");const i=l.lastIndexOf("=");$("rwLink").innerHTML=`${esc(l.slice(0,i+1))}<b>${esc(l.slice(i+1))}</b>`;
+  $("rwRef").textContent=usd(+r.ref_total);$("rwRefN").textContent=`${r.referred} davet`;$("rwTask").textContent=usd(+r.task_total);
+  $("rwFriends").innerHTML=r.friends&&r.friends.length?`<div class="sec-t" style="margin-top:16px">Davet ettiklerin</div>`+r.friends.map(f=>`<div class="rw-fr">${avHTML({n:f.full_name||f.username,h:f.username,a:f.avatar_url})}<div class="mid"><b>@${esc(f.username)}</b><small>Katılım ${new Date(f.joined).toLocaleDateString("tr-TR",{day:"numeric",month:"short"})}</small></div><b class="up">+${usd(+f.earned)}</b></div>`).join("")
+    :`<div class="rw-empty">Arkadaşlarını davet et; yaptıkları her işlemin ücretinin %25'i otomatik olarak hesabına geçsin.</div>`;
+  $("rwCode").innerHTML=r.referred_by?`<div class="hint" style="margin-top:10px">Seni davet eden: @${esc(r.referred_by)}</div>`:r.can_set_ref?`<div class="rw-code"><input id="rwCodeIn" placeholder="Davet kodun varsa (kullanıcı adı)" autocomplete="off" autocapitalize="off"><button type="button" id="rwCodeGo">Ekle</button></div><div class="err" id="rwCodeErr" style="text-align:left;margin-top:6px"></div>`:""}
+$("rwShare").onclick=async()=>{const url=refLink(),txt="COINFORCE'a katıl: kripto al-sat, yarış, topluluk. Davet linkim:";
+  try{if(navigator.share){await navigator.share({title:"COINFORCE",text:txt,url});return}}catch(e){if(e&&e.name==="AbortError")return}
+  try{await navigator.clipboard.writeText(url);toast("Davet linkin kopyalandı")}catch(e){toast(url)}};
+$("rwCode").addEventListener("click",e=>{const b=e.target.closest("#rwCodeGo");if(!b)return;busy(b,async()=>{const r=await call("set_referrer",{p_code:$("rwCodeIn").value},"rwCodeErr");if(r.err)return;toast("@"+r.data+" davet eden olarak eklendi");loadMyRewards()})});
+// Davet linkiyle gelindiyse kodu sakla ve kayıt sekmesini aç
+const REF_IN=(new URLSearchParams(location.search).get("r")||"").replace(/[^A-Za-z0-9_.]/g,"").slice(0,30);
+if(REF_IN){try{localStorage.setItem("cf_ref",REF_IN)}catch(e){}}
+function savedRef(){try{return localStorage.getItem("cf_ref")||""}catch(e){return REF_IN}}
 // ---------- user profiles
 let userOpen=null,userData=null,uRange="24h",uTab="open",uFil="all",uChart=[],uHover=null;
 const UKIND={buy:"Alım",sell:"Satım",swap:"Takas",perp_open:"Vadeli açılış",perp_close:"Vadeli kapanış",liquidation:"Likidasyon"};
@@ -2041,7 +2125,7 @@ function rewards(){const tc=tradeCount();return[
   {id:"acad",ic:"A",t:"Akademi'de 3 ders bitir",r:15,p:Math.min(st.lessons.length,3),n:3}
  ].map(x=>({...x,done:x.p>=x.n}))}
 function rewardName(id){const r=rewards().find(x=>x.id===id);return r?r.t:"Ödül"}
-function renderRewards(){const rs=rewards(),got=rs.filter(r=>st.claimed.includes(r.id)).reduce((a,r)=>a+r.r,0),all=rs.reduce((a,r)=>a+r.r,0);
+function renderRewards(){renderRewardsTop();loadMyRewards();const rs=rewards(),got=rs.filter(r=>st.claimed.includes(r.id)).reduce((a,r)=>a+r.r,0),all=rs.reduce((a,r)=>a+r.r,0);
   $("rewSum").innerHTML=`<span>Kazanılan</span><span>${usd(got,0)} / ${usd(all,0)}</span>`;
   $("rewList").innerHTML=rs.map(r=>{const cl=st.claimed.includes(r.id);return `<div class="rew"><div class="ic">${r.ic}</div><div class="mid"><b>${r.t}</b><small>+${usd(r.r,0)} USDT · ${r.p}/${r.n}</small><div class="bar2"><i style="width:${r.p/r.n*100}%"></i></div></div>${cl?`<span class="done">Alındı</span>`:r.done?`<button type="button" class="claim" data-claim="${r.id}">Al</button>`:`<button type="button" class="locked" disabled>Kilitli</button>`}</div>`}).join("")}
 $("rewList").addEventListener("click",e=>{const b=e.target.closest("[data-claim]");if(!b)return;const id=b.dataset.claim;
@@ -2380,7 +2464,7 @@ $("suForm").addEventListener("submit",e=>{e.preventDefault();busy($("suGo"),asyn
   const av=await sb.rpc("username_available",{u:handle});if(av.error)return err.textContent=errText(av.error);
   if(!av.data)return err.textContent="Bu kullanıcı adı alınmış. Başka bir tane dene.";
   const birth=`${yy}-${String(mo).padStart(2,"0")}-${String(dd).padStart(2,"0")}`;
-  const {data,error}=await sb.auth.signUp({email,password:pw,options:{data:{username:handle,full_name:name+" "+surname,birth_date:birth},emailRedirectTo:location.origin+location.pathname}});
+  const {data,error}=await sb.auth.signUp({email,password:pw,options:{data:{username:handle,full_name:name+" "+surname,birth_date:birth,ref:savedRef()},emailRedirectTo:location.origin+location.pathname}});
   if(error){const m=error.message||"";return err.textContent=/already registered|already exists/i.test(m)?"Bu e-posta ile zaten bir hesap var. Oturum aç sekmesinden giriş yapabilirsin.":/database error/i.test(m)?"Hesap oluşturulamadı. Kullanıcı adı alınmış olabilir, başka bir tane dene.":errText(error)}
   if(data.user&&Array.isArray(data.user.identities)&&data.user.identities.length===0)return err.textContent="Bu e-posta ile zaten bir hesap var. Oturum aç sekmesinden giriş yapabilirsin.";
   const needsConfirm=!data.session;if(data.session)await sb.auth.signOut();
@@ -2434,14 +2518,14 @@ async function pullRefresh(){
   const jobs=[loadPrices(),loadAll(),loadLB()];
   if(userOpen)jobs.push(loadUser(userOpen));
   if(commOpen)jobs.push(loadComm(commOpen));
-  else if(view==="rank"&&rTab==="feed"){jobs.push(fScope==="comms"?loadComms():loadFeed(true))}
+  else if(view==="rank"&&rTab==="feed"){jobs.push(fScope==="comms"?loadComms():fScope==="trades"?loadTrades(true):loadFeed(true))}
   await Promise.all(jobs.map(j=>Promise.resolve(j).catch(()=>{})));
   renderAll();if(view==="rank")renderRank();toast("Güncellendi")}
 if("serviceWorker" in navigator&&location.protocol==="https:"){addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
 // boot
 (async function boot(){
   const {data}=await sb.auth.getSession();
-  if(data&&data.session){await enter(data.session.user)}else{showAuth("login");$("boot").hidden=true;loadPrices()}
+  if(data&&data.session){await enter(data.session.user)}else{showAuth(REF_IN?"signup":"login");if(REF_IN){$("suRef").hidden=false;$("suRef").textContent="🎁 @"+REF_IN+" seni COINFORCE'a davet etti"}$("boot").hidden=true;loadPrices()}
 })();
 setInterval(tick,2000);
 })();
