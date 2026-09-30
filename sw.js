@@ -1,16 +1,22 @@
 // COINFORCE service worker: uygulama kabuğunu önbelleğe alır; veriler her zaman sunucudan gelir.
-const CACHE = "arx-v5";
+const CACHE = "arx-v6";
+const AVATARS = "coinforce-avatars";
 const SHELL = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
 });
 self.addEventListener("activate", e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE && k !== AVATARS).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener("fetch", e => {
   const req = e.request, url = new URL(req.url);
   if (req.method !== "GET") return;
+  // Profil fotoğrafları: her yüklemede dosya adı değişir, önbellekten anında göster
+  if (url.hostname.endsWith("supabase.co") && url.pathname.includes("/storage/v1/object/public/avatars/")) {
+    e.respondWith(caches.open(AVATARS).then(c => c.match(req).then(hit => hit || fetch(req).then(r => { if (r.ok) c.put(req, r.clone()); return r; }))));
+    return;
+  }
   if (url.hostname.endsWith("supabase.co")) return;                 // canlı veri: hiç önbelleğe alma
   if (req.mode === "navigate" || url.pathname.endsWith("/index.html")) {
     // Sayfa: önce ağ (güncellemeler hemen gelsin), çevrimdışıysa önbellek
