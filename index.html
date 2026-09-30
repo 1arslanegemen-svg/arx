@@ -602,6 +602,7 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .p-port-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
 .p-val{font-size:36px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
 .p-val span{color:var(--faint)}
+.p-lbl{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:2px}
 .p-chg{margin-top:6px;font-weight:600;font-size:14px;color:var(--faint)}
 .p-ranges{display:flex;gap:2px}
 .p-ranges button{padding:7px 11px;border-radius:10px;font-weight:600;font-size:14px;color:var(--faint)}
@@ -942,7 +943,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   </div>
   <div class="p-port">
     <div class="p-port-head">
-      <div><div class="p-val" id="pVal">$0<span>,00</span></div><div class="p-chg" id="pChg">--</div></div>
+      <div><div class="p-lbl">Pozisyon değeri</div><div class="p-val" id="pVal">$0<span>,00</span></div><div class="p-chg" id="pChg">--</div></div>
       <div class="p-ranges" id="pRanges"><button type="button" class="on" data-r="24s">24s</button><button type="button" data-r="7g">7g</button><button type="button" data-r="30g">30g</button><button type="button" data-r="Tümü">Tümü</button></div>
     </div>
     <div class="p-chart-wrap">
@@ -1481,6 +1482,7 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
       txt:x.kind==="swap"?(x.note||"")+" takas":x.kind==="perp_open"?`${x.symbol} ${x.note||""} açıldı`:x.kind==="perp_close"?`${x.symbol} pozisyonu kapatıldı`:x.kind==="liquidation"?`${x.symbol} likide oldu`:x.kind==="reward"?(String(x.note||"").startsWith("Kampanya")?x.note:rewardName(x.note)):""}));
     st.friendsP=fp;st.friends=fp.map(p=>p.username);st.followers=fer;
     st.admin=adm;st.camps=(cmp||[]).map(c=>({...c,my_volume:+c.my_volume,participants:+c.participants,tiers:Array.isArray(c.tiers)?c.tiers:[],claimed:c.claimed||[]}));st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
+    pCh.t=0;
     if(prof){st.prof={name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1,avatar:prof.avatar_url||""};st.onboarded=prof.onboarded}
   }catch(err){console.error(err);toast("Veriler yüklenemedi: "+errText(err))}
   renderAll();if(view==="rank")renderRank();if(openId==="notifs")renderNotifs();if(openId==="rewards")renderRewards();
@@ -1501,21 +1503,41 @@ let pRange="24s";
 const esc=x=>String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function ago(ms){const m=Math.floor(ms/60000);if(m<1)return"1 dk'dan az";if(m<60)return m+" dk";const h=Math.floor(m/60);if(h<24)return h+" sa";return Math.floor(h/24)+" gün"}
 function tradeCount(){return st.hist.filter(h=>h.k==="buy"||h.k==="sell"||h.k==="swap"||h.k==="perp").length}
-function valueSeries(){
-  const held=Object.entries(st.h);if(!held.length)return null;
-  const map={"24s":null,"7g":"1H","30g":"1A","Tümü":"Tümü"}[pRange];
-  const series=held.map(([s,q])=>{const t=find(s);return{q,d:map?rangeDataFor(t,map):t.hist.slice(-120)}});
-  const L=Math.min(...series.map(x=>x.d.length));
-  const out=[];for(let i=0;i<L;i++){let v=st.usdt;series.forEach(x=>v+=x.q*x.d[x.d.length-L+i]);out.push(v)}return out}
-function drawPortfolio(d){
-  const c=$("pChart"),g=c.getContext("2d"),dpr=devicePixelRatio||1,W=c.clientWidth,H=c.clientHeight;if(!W)return;
-  c.width=W*dpr;c.height=H*dpr;g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);if(!d)return;
-  const mn=Math.min(...d),mx=Math.max(...d),pad=16,y=v=>pad+(mx-v)/(mx-mn||1)*(H-pad*2),x=i=>i/(d.length-1)*W;
-  const col=css(d[d.length-1]>=d[0]?"--up":"--down"),gr=g.createLinearGradient(0,0,0,H);gr.addColorStop(0,col+"40");gr.addColorStop(1,col+"00");
-  g.beginPath();d.forEach((v,i)=>i?g.lineTo(x(i),y(v)):g.moveTo(0,y(v)));g.lineTo(W,H);g.lineTo(0,H);g.closePath();g.fillStyle=gr;g.fill();
-  g.beginPath();d.forEach((v,i)=>i?g.lineTo(x(i),y(v)):g.moveTo(0,y(v)));g.strokeStyle=col;g.lineWidth=2;g.lineJoin="round";g.stroke();
-  g.fillStyle=col;g.beginPath();g.arc(W-3,y(d[d.length-1]),4,0,7);g.fill();
+// Pozisyon grafiği: sunucudaki gerçek geçmiş (nakit hariç coin + vadeli değeri)
+let pCh={r:null,t:0,pts:null,busy:false},pMarks=[];
+const P_RANGE={"24s":"24h","7g":"7d","30g":"30d","Tümü":"all"};
+function posNow(){let v=0;for(const[s,q]of Object.entries(st.h)){const t=find(s);if(t)v+=q*t.p}
+  st.orders.forEach(o=>{if(o.side==="sell"){const t=find(o.s);if(t)v+=o.q*t.p}});
+  st.perps.forEach(p=>{const t=find(p.s);if(t)v+=Math.max(0,p.margin+p.side*(t.p-p.entry)*p.qty)});return v}
+async function loadPChart(force){const r=P_RANGE[pRange];if(!me||pCh.busy)return;if(!force&&pCh.r===r&&Date.now()-pCh.t<60000)return;pCh.busy=true;
+  try{const {data,error}=await sb.rpc("profile_chart",{p_user:me.id,p_range:r});
+    if(!error&&Array.isArray(data)){pCh.r=r;pCh.t=Date.now();pCh.pts=data.filter(x=>x.pos_value!=null).map(x=>({t:Date.parse(x.at),v:+x.pos_value,m:x.mark||null,mu:+x.mark_usd||0,ms:x.mark_symbol||""}));
+      setTimeout(()=>{if(view==="profile")renderProfile()},0)}}finally{pCh.busy=false}}
+function valueSeries(){const r=P_RANGE[pRange],now=Date.now(),pv=posNow();
+  let pts=pCh.r===r&&pCh.pts?pCh.pts.slice():[];
+  if(!pts.length&&pv<=0)return null;
+  if(!pts.length){const span={"24h":864e5,"7d":6048e5,"30d":2592e6,"all":3024e6}[r];pts=[{t:now-span,v:pv}]}
+  pts.push({t:now,v:pv});return pts}
+function drawPortfolio(pts){
+  const c=$("pChart"),g=c.getContext("2d"),dpr=devicePixelRatio||1,W=c.clientWidth,H=c.clientHeight;pMarks=[];if(!W)return;
+  c.width=W*dpr;c.height=H*dpr;g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);if(!pts)return;
+  const vs=pts.map(p=>p.v),mn=Math.min(...vs),mx=Math.max(...vs),pad=18,t0=pts[0].t,t1=pts[pts.length-1].t;
+  const y=v=>pad+(mx-v)/(mx-mn||1)*(H-pad*2),x=t=>4+(t-t0)/(t1-t0||1)*(W-12);
+  const col=css(vs[vs.length-1]>=vs[0]?"--up":"--down"),gr=g.createLinearGradient(0,0,0,H);gr.addColorStop(0,col+"40");gr.addColorStop(1,col+"00");
+  const path=()=>{g.beginPath();pts.forEach((p,i)=>i?g.lineTo(x(p.t),y(p.v)):g.moveTo(x(p.t),y(p.v)))};
+  path();g.lineTo(x(t1),H);g.lineTo(x(t0),H);g.closePath();g.fillStyle=gr;g.fill();
+  path();g.strokeStyle=col;g.lineWidth=2;g.lineJoin="round";g.stroke();
+  const up=css("--up"),down=css("--down"),bg=css("--bg");
+  pts.forEach((p,i)=>{if(p.m!=="sell"||!i)return;const q=pts[i-1];g.beginPath();g.moveTo(x(q.t),y(q.v));g.lineTo(x(p.t),y(p.v));g.strokeStyle=down;g.lineWidth=2.6;g.stroke()});
+  pts.forEach(p=>{if(!p.m)return;const cx=x(p.t),cy=y(p.v),sell=p.m==="sell";
+    g.beginPath();g.arc(cx,cy,8,0,7);g.fillStyle=sell?down:up;g.fill();g.lineWidth=2;g.strokeStyle=bg;g.stroke();
+    g.beginPath();g.moveTo(cx-3.5,cy);g.lineTo(cx+3.5,cy);if(!sell){g.moveTo(cx,cy-3.5);g.lineTo(cx,cy+3.5)}g.strokeStyle="#fff";g.lineWidth=2;g.lineCap="round";g.stroke();
+    pMarks.push({x:cx,y:cy,p})});
+  const last=pts[pts.length-1];g.fillStyle=col;g.beginPath();g.arc(x(last.t),y(last.v),4,0,7);g.fill();window.__pMarks=pMarks;
 }
+$("pChart").addEventListener("click",e=>{const r=$("pChart").getBoundingClientRect(),ex=e.clientX-r.left,ey=e.clientY-r.top;
+  let best=null,bd=22;pMarks.forEach(m=>{const d=Math.hypot(m.x-ex,m.y-ey);if(d<bd){bd=d;best=m}});if(!best)return;const p=best.p;
+  toast(`${p.ms||""} ${p.m==="sell"?"satış":"alım"} · ${usd(p.mu)} · ${new Date(p.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}`)});
 function renderProfile(){
   const p=st.prof,ini=(p.name||"?").trim().charAt(0).toLocaleUpperCase("tr-TR")||"?";
   setAv($("pAv"),st.prof.avatar,ini);setAv($("navAv"),st.prof.avatar,ini);
@@ -1526,11 +1548,11 @@ function renderProfile(){
   const held=Object.keys(st.h);
   if(held.length){const firsts=held.map(s=>{const b=st.hist.filter(h=>(h.k==="buy"||h.k==="swap")&&h.s===s).pop();return b?b.t:Date.now()});
     $("pHold").textContent="Ort. tutma "+ago(Date.now()-firsts.reduce((a,b)=>a+b,0)/firsts.length)}else $("pHold").textContent="Tutma süresi yok";
-  const{v,v0}=portfolio();const[a,b]=fmtN(v,2).split(",");$("pVal").innerHTML=`$${a}<span>,${b}</span>`;
+  loadPChart();const v=posNow();const[a,b]=fmtN(v,2).split(",");$("pVal").innerHTML=`$${a}<span>,${b}</span>`;
   const d=valueSeries();$("pEmpty").hidden=!!d;drawPortfolio(d);
   const chgEl=$("pChg");
   if(!d){chgEl.textContent="--";chgEl.className="p-chg"}
-  else{const base=pRange==="24s"?v0:d[0],diff=v-base,dp=base?diff/base*100:0;chgEl.textContent=`${diff>=0?"+":"-"}${usd(Math.abs(diff))} (${fmtN(Math.abs(dp),2)}%)`;chgEl.className="p-chg "+(diff>=0?"up":"down")}
+  else{const base=d[0].v,diff=v-base,dp=base?diff/base*100:0;chgEl.textContent=`${diff>=0?"+":"-"}${usd(Math.abs(diff))} (${fmtN(Math.abs(dp),2)}%)`;chgEl.className="p-chg "+(diff>=0?"up":"down")}
   $("pCount").textContent=held.length;
   $("holdList").innerHTML=Object.entries(st.h).sort((x,y)=>y[1]*find(y[0]).p-x[1]*find(x[0]).p).map(([s,q])=>{const t=find(s),val=q*t.p,pl=val-(st.cost[s]||0),pp=st.cost[s]?pl/st.cost[s]*100:0;return `<button type="button" class="tok" data-open-tok="${s}">${coinHTML(t)}<div class="mid"><div class="sym">${s}</div><div class="sub">${fmtN(q,6)} ${s}</div></div><div class="rt"><div class="px">${usd(val)}</div><div class="ch ${pl>=0?"up":"down"}">${pl>=0?"+":"-"}${usd(Math.abs(pl))} (${fmtN(Math.abs(pp),1)}%)</div></div></button>`}).join("")
     +(st.usdt>0.004?`<div class="tok" style="cursor:default">${usdtCoin.replace("coin sm","coin")}<div class="mid"><div class="sym">USDT</div><div class="sub">Kullanılabilir nakit</div></div><div class="rt"><div class="px">${usd(st.usdt)}</div></div></div>`:"");
@@ -1543,7 +1565,7 @@ function renderHistory(){
   $("histList").innerHTML=st.hist.slice(0,40).map(h=>{const cash=h.k==="dep"||h.k==="rew"||((h.k==="tin"||h.k==="tout")&&h.s==="USDT");const title={dep:"Bakiye yükleme",rew:"Ödül: "+(h.txt||""),buy:h.s+" alındı"+(h.ot?` (${h.ot})`:""),sell:h.s+" satıldı"+(h.ot?` (${h.ot})`:""),swap:h.txt,perp:h.txt,tout:h.s+" gönderildi",tin:h.s+" transfer olarak geldi"}[h.k]||h.txt||"";
     if(h.k==="tout")return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span>-${usd(Math.abs(h.v))}</span></div>`;
     return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString("tr-TR",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span class="${h.k==="sell"||cash?"up":""}">${h.k==="buy"?"-":h.k==="swap"?"":h.k==="perp"?(h.v>=0?"+":"-"):"+"}${usd(Math.abs(h.v))}</span></div>`}).join("")||`<div class="empty" style="padding:30px 10px">Henüz işlem yok.</div>`}
-$("pRanges").addEventListener("click",e=>{const r=e.target.dataset.r;if(!r)return;pRange=r;[...$("pRanges").children].forEach(b=>b.classList.toggle("on",b===e.target));renderProfile()});
+$("pRanges").addEventListener("click",e=>{const r=e.target.dataset.r;if(!r)return;pRange=r;[...$("pRanges").children].forEach(b=>b.classList.toggle("on",b===e.target));renderProfile();loadPChart(true)});
 $("pShare").onclick=()=>{const{v}=portfolio();const txt=`COINFORCE profilim: @${st.prof.handle} · Portföy ${usd(v)} · ${tradeCount()} işlem`;
   const ok=()=>toast("Profil bağlantısı kopyalandı");try{navigator.clipboard.writeText(txt).then(ok,()=>toast(txt))}catch(e){toast(txt)}};
 $("promoGo").onclick=()=>{prev="profile";go("detail","BTC");openTrade("buy")};
