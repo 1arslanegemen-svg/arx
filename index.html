@@ -990,9 +990,10 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
     <label class="fld"><span>Coin</span><div class="sel"><select id="cnSym"><option value="">Tüm coinler</option></select></div></label>
     <label class="fld"><span>Süre (gün)</span><input id="cnDays" inputmode="numeric" value="7"></label>
   </div>
-  <label class="fld"><span>Kademeler (her satıra hacim = ödül)</span><textarea id="cnTiers" rows="4">5000 = 5
-25000 = 15
-100000 = 50</textarea></label>
+  <label class="fld"><span>Kademeler (her satıra hacim = ödül)</span><textarea id="cnTiers" rows="4">5000 = 2
+25000 = 8
+100000 = 30</textarea></label>
+  <div class="hint" id="cnHint"></div>
   <div class="err" id="cnErr"></div>
   <button class="btn btn-accent full" type="button" id="cnGo">Kampanyayı başlat</button>
 </div>
@@ -1341,7 +1342,10 @@ $("campDetail").addEventListener("click",e=>{
     busy(btn,async()=>{const r=await call("end_campaign",{p_campaign:campOpen},"campErr");if(r.err)return;closeSheet();await loadAll();toast("Kampanya bitirildi")})}
 });
 $("campNewBtn").onclick=()=>openSheet("campnew");
-function fillCampNew(){const sel=$("cnSym");if(sel.options.length<2)T.forEach(t=>sel.add(new Option(t.s+" · "+t.n,t.s)));$("cnErr").textContent=""}
+function tierHint(){const out=[];let tot=0,prev=0;for(const line of $("cnTiers").value.split("\n")){if(!line.trim())continue;const m=line.split(/[=:]/);if(m.length!==2)continue;const v=parseAmt(m[0]),r=parseAmt(m[1]);if(!(v>0))continue;tot+=r>0?r:0;const mx=Math.floor(v*0.0004*100)/100;out.push(`${usd(v,0)} hacim: toplam ödül ${usd(tot,tot%1?2:0)} / en fazla ${usd(mx,mx%1?2:0)}${tot>mx?" (fazla, düşür)":""}`)}
+  $("cnHint").innerHTML="Denge kuralı: bir kademeye kadar verilen toplam ödül, o hacmin komisyonunun yarısını geçemez (her $10.000 hacim için en fazla $4). Böylece sadece ödül için al-sat yapmak zarar ettirir."+(out.length?"<br>"+out.map(esc).join("<br>"):"")}
+$("cnTiers").addEventListener("input",tierHint);
+function fillCampNew(){tierHint();const sel=$("cnSym");if(sel.options.length<2)T.forEach(t=>sel.add(new Option(t.s+" · "+t.n,t.s)));$("cnErr").textContent=""}
 $("cnGo").onclick=()=>busy($("cnGo"),async()=>{const title=$("cnTitle").value.trim(),days=parseInt($("cnDays").value,10);
   if(title.length<3)return $("cnErr").textContent="En az 3 karakterlik bir başlık yaz.";
   if(!(days>=1&&days<=90))return $("cnErr").textContent="Süre 1 ile 90 gün arasında olmalı.";
