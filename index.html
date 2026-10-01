@@ -839,6 +839,10 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 .hold-ic svg{width:28px;height:28px}
 .hold-box h3{margin:0 0 8px;font-size:18px}
 .hold-box p{margin:0 0 18px;font-size:14px;line-height:1.5;color:var(--muted)}
+.wd-pend{display:flex;gap:12px;align-items:flex-start;margin:10px 0 4px;padding:14px 16px;border-radius:16px;background:var(--surface2);border:1px solid var(--line)}
+.wd-pend svg{width:20px;height:20px;flex:none;margin-top:1px;color:var(--muted)}
+.wd-pend b{display:block;font-weight:600;font-size:14px;line-height:1.4;color:var(--fg);font-variant-numeric:tabular-nums}
+.wd-pend small{display:block;margin-top:4px;font-size:12.5px;color:var(--muted);line-height:1.4}
 </style>
 
 </head>
@@ -2593,7 +2597,7 @@ const hm=t=>esc(String(t||"").slice(0,5));
 function wdHead(){const c=CASH;return `<span class="wd-state ${c.open?"open":"closed"}"><i></i>${c.open?"Çekim şu an açık":"Çekim şu an kapalı"}</span>
   <div class="wd-info">${EN?`Withdrawal requests are accepted <b>every day ${hm(c.open_at)}–${hm(c.close_at)}</b> (Turkey time). Approved requests are sent to your IBAN in TRY. You can withdraw up to the total you deposited by card; admin top-ups and rewards can't be withdrawn.`:`Para çekme talepleri <b>her gün ${hm(c.open_at)}–${hm(c.close_at)}</b> (Türkiye saati) arasında alınır. Onaylanan talepler IBAN'ına TL olarak gönderilir. Kartla yatırdığın toplam tutar kadar çekebilirsin; yönetici yüklemeleri ve ödüller çekilemez.`}</div>
   <div class="wd-cap"><span class="muted">Çekilebilir</span><b>${usd(+c.withdrawable)}</b></div>
-  ${+c.held>0?`<div class="hint">${EN?`${fmtN(+c.held,2)} USDT deposited by card in the last ${+c.hold_hours} hours becomes withdrawable after that.`:`Son ${+c.hold_hours} saatte kartla yatırdığın ${fmtN(+c.held,2)} USDT, ${+c.hold_hours} saat dolunca çekilebilir olur.`}</div>`:""}`}
+  ${+c.held>0?`<div class="wd-pend"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>${EN?`${fmtN(+c.held,2)} USDT pending under security and compliance checks`:`Güvenlik ve Uyum Kontrolleri Gereğince ${fmtN(+c.held,2)} USDT Beklemede`}</b><small>${EN?`Card deposits become withdrawable ${+c.hold_hours} hours after payment.`:`Kartla yatırılan tutarlar, ödemeden ${+c.hold_hours} saat sonra çekilebilir olur.`}</small></div></div>`:""}`}
 function wdList(){const w=CASH.withdrawals||[];if(!w.length)return"";return `<div class="sec-t" style="margin:16px 0 4px">Çekim taleplerin</div>`+w.map(x=>`<div class="wd-row"><div class="mid"><b>${tl(+x.amount_try)}</b> <span class="muted">· ${fmtN(+x.amount_usdt,2)} USDT</span><small>${esc(x.iban)} · ${new Date(x.created_at).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}${x.note?" · "+esc(x.note):""}</small></div>${x.status==="pending"?`<button type="button" class="wd-x" data-wdcancel="${x.id}">İptal</button>`:""}<span class="wd-st ${x.status}">${WD_ST[x.status]||x.status}</span></div>`).join("")}
 function renderWithdraw(){const b=$("wdBody");if(!CASH){b.innerHTML=`<div class="xf-h"><h3>Para çek</h3></div><div class="empty">Bilgiler yüklenemedi.</div>`;return}
   if(!wdSym){const list=xfList("",true);
