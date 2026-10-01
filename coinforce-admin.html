@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>COINFORCE Yönetim</title>
+<style>
+  /* Layout: koyu fintech kontrol paneli — üstte durum özeti, altta kullanıcı tablosu */
+  :root{
+    --bg:#0b0f17; --panel:#121826; --panel-2:#0f1420; --line:#1f2838;
+    --fg:#e8edf6; --muted:#8a97ad; --faint:#5d6a80;
+    --accent:#2fe6a6; --accent-ink:#04120c;
+    --gold:#e8b34a; --danger:#ff5f6d; --warn:#ffb020; --ok:#2fe6a6;
+    --radius:14px;
+    --mono:"SFMono-Regular",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--fg);
+    font-family:var(--sans);font-size:14px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .num{font-variant-numeric:tabular-nums}
+  a{color:var(--accent)}
+  button{font-family:inherit}
+
+  /* ---- Giriş ekranı ---- */
+  #login{
+    min-height:100%;display:grid;place-items:center;padding:24px;
+  }
+  .card{
+    width:100%;max-width:380px;background:var(--panel);
+    border:1px solid var(--line);border-radius:var(--radius);padding:28px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+  .logo{
+    width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--accent),var(--gold));
+    color:var(--accent-ink);font-weight:800;font-size:16px;
+  }
+  .brand b{font-size:17px;letter-spacing:.3px}
+  .brand span{color:var(--faint);font-size:11px;text-transform:uppercase;letter-spacing:1.5px}
+  h1{font-size:18px;margin:18px 0 2px}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+  label{display:block;font-size:12px;color:var(--muted);margin:14px 0 6px}
+  input[type=email],input[type=password],input[type=text]{
+    width:100%;padding:11px 12px;background:var(--panel-2);color:var(--fg);
+    border:1px solid var(--line);border-radius:10px;font-size:14px;
+  }
+  input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+  .btn{
+    width:100%;margin-top:18px;padding:12px;border:0;border-radius:10px;cursor:pointer;
+    background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:14px;
+  }
+  .btn:hover{filter:brightness(1.05)}
+  .btn[disabled]{opacity:.5;cursor:default}
+  .btn-ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+  .msg{margin-top:14px;font-size:13px;min-height:18px}
+  .msg.err{color:var(--danger)}
+  .msg.ok{color:var(--ok)}
+
+  /* ---- Uygulama kabuğu ---- */
+  #app[hidden]{display:none}
+  .topbar{
+    position:sticky;top:env(safe-area-inset-top,0px);z-index:5;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    padding:12px 20px;background:rgba(11,15,23,.82);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .spacer{flex:1}
+  .who{font-size:12px;color:var(--muted);text-align:right;line-height:1.3}
+  .who b{color:var(--fg);display:block;font-size:13px}
+  .wrap{max-width:1160px;margin:0 auto;padding-block:20px;padding-left:20px;padding-right:20px}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+  @media(max-width:720px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+  .stat .k{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--faint)}
+  .stat .v{font-size:26px;font-weight:700;margin-top:6px}
+  .stat .v.good{color:var(--ok)} .stat .v.bad{color:var(--danger)}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+  .search{flex:1;min-width:200px;position:relative}
+  .search input{padding-left:34px}
+  .search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--faint)}
+  .pill-btn{
+    padding:9px 14px;border-radius:10px;border:1px solid var(--line);
+    background:var(--panel);color:var(--fg);cursor:pointer;font-size:13px
+  }
+  .pill-btn:hover{border-color:var(--faint)}
+
+  .tablewrap{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--panel)}
+  .scroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;min-width:760px}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{
+    font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--faint);
+    background:var(--panel-2);position:sticky;top:0;cursor:pointer;user-select:none
+  }
+  th .arrow{opacity:.5;font-size:10px}
+  tbody tr:hover{background:var(--panel-2)}
+  tbody tr:last-child td{border-bottom:0}
+  .uname{font-weight:600}
+  .email{color:var(--muted);font-family:var(--mono);font-size:12.5px}
+  .badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.2px}
+  .b-ok{background:rgba(47,230,166,.12);color:var(--ok)}
+  .b-ban{background:rgba(255,95,109,.14);color:var(--danger)}
+  .b-admin{background:rgba(232,179,74,.14);color:var(--gold)}
+  .b-user{background:rgba(138,151,173,.12);color:var(--muted)}
+  .row-actions{display:flex;gap:6px;justify-content:flex-end}
+  .mini{
+    padding:6px 10px;border-radius:8px;border:1px solid var(--line);
+    background:transparent;color:var(--fg);cursor:pointer;font-size:12px
+  }
+  .mini:hover{border-color:var(--faint)}
+  .mini.danger:hover{border-color:var(--danger);color:var(--danger)}
+  .mini.ok:hover{border-color:var(--ok);color:var(--ok)}
+  .empty,.loading{padding:40px;text-align:center;color:var(--muted)}
+
+  .note{
+    margin-top:16px;font-size:12px;color:var(--faint);
+    display:flex;gap:8px;align-items:flex-start
+  }
+  .note svg{flex:none;margin-top:1px}
+
+  /* ---- Onay / detay kutusu (modal) ---- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(4,7,12,.7);backdrop-filter:blur(3px);
+    display:grid;place-items:center;padding:20px;z-index:20
+  }
+  .overlay[hidden]{display:none}
+  .modal{
+    width:100%;max-width:420px;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px
+  }
+  .modal h3{margin:0 0 8px;font-size:16px}
+  .modal p{color:var(--muted);margin:0 0 6px;font-size:13.5px}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:14px 0;font-size:13px}
+  .kv dt{color:var(--faint)} .kv dd{margin:0;font-family:var(--mono);font-size:12.5px}
+  .modal-actions{display:flex;gap:10px;margin-top:18px}
+  .modal-actions .btn{margin-top:0}
+  .btn-danger{background:var(--danger);color:#1a0406}
+
+  /* ---- Kurulum uyarısı ---- */
+  .setup{max-width:560px;margin:60px auto;padding:0 20px}
+  .setup pre{
+    background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
+    padding:14px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;color:var(--accent)
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== GİRİŞ ========== -->
+<section id="login">
+  <form class="card" id="loginForm" autocomplete="on">
+    <div class="brand">
+      <div class="logo">C</div>
+      <div><b>COINFORCE</b><br><span>Yönetim Paneli</span></div>
+    </div>
+    <h1>Yönetici girişi</h1>
+    <p class="sub">Yalnızca yetkili hesaplar erişebilir.</p>
+
+    <label for="email">E-posta</label>
+    <input id="email" type="email" required autocomplete="username" placeholder="admin@coinforce.app">
+
+    <label for="password">Şifre</label>
+    <input id="password" type="password" required autocomplete="current-password" placeholder="••••••••">
+
+    <button class="btn" id="loginBtn" type="submit">Giriş yap</button>
+    <div class="msg" id="loginMsg"></div>
+  </form>
+</section>
+
+<!-- ========== UYGULAMA ========== -->
+<main id="app" hidden>
+  <header class="topbar">
+    <div class="brand"><div class="logo">C</div><b>COINFORCE</b></div>
+    <div class="spacer"></div>
+    <div class="who"><b id="whoName">—</b><span id="whoMail"></span></div>
+    <button class="pill-btn" id="refreshBtn">Yenile</button>
+    <button class="pill-btn" id="logoutBtn">Çıkış</button>
+  </header>
+
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><div class="k">Toplam hesap</div><div class="v num" id="sTotal">—</div></div>
+      <div class="stat"><div class="k">Aktif</div><div class="v num good" id="sActive">—</div></div>
+      <div class="stat"><div class="k">Banlı</div><div class="v num bad" id="sBanned">—</div></div>
+      <div class="stat"><div class="k">Yönetici</div><div class="v num" id="sAdmins">—</div></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="q" type="text" placeholder="Kullanıcı adı veya e-posta ara…">
+      </div>
+      <button class="pill-btn" id="fAll">Tümü</button>
+      <button class="pill-btn" id="fBanned">Yalnız banlılar</button>
+    </div>
+
+    <div class="tablewrap">
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="username">Kullanıcı adı <span class="arrow"></span></th>
+              <th data-sort="email">E-posta <span class="arrow"></span></th>
+              <th data-sort="created_at">Kayıt <span class="arrow"></span></th>
+              <th data-sort="last_sign_in_at">Son giriş <span class="arrow"></span></th>
+              <th data-sort="role">Rol <span class="arrow"></span></th>
+              <th data-sort="status">Durum <span class="arrow"></span></th>
+              <th style="text-align:right">İşlem</th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+            <tr><td colspan="7" class="loading">Yükleniyor…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="note">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      <span>Şifreler bu panelde <b>hiçbir zaman</b> gösterilmez — Supabase'de yalnızca geri döndürülemez (hash) halde tutulur. Erişim sorununda “Şifre sıfırla” ile kullanıcıya e-posta gönderilir.</span>
+    </div>
+  </div>
+</main>
+
+<!-- ========== MODAL ========== -->
+<div class="overlay" id="overlay" hidden>
+  <div class="modal" id="modal"></div>
+</div>
+
+<!-- ========== KURULUM UYARISI ========== -->
+<section class="setup" id="setup" hidden></section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+/* =======================================================================
+   AYARLAR  —  buraya kendi Supabase bilgilerini yaz
+   (anon key herkese açık olabilir; güvenlik RLS + admin fonksiyonlarındadır)
+   ======================================================================= */
+const SUPABASE_URL = "https://fudszshkuykhtbjrlrgv.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ1ZHN6c2hrdXlraHRianJscmd2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MDc2ODgsImV4cCI6MjEwNjI4MzY4OH0.eYVgU-SLp1sYhSQsGOFSqgCrQC6nGH4oGP2y1YDmPx0";
+const RESET_REDIRECT = window.location.origin + "/reset.html"; // şifre sıfırlama dönüş sayfan
+/* ======================================================================= */
+
+const $ = (s)=>document.querySelector(s);
+let sb=null, ALL=[], sortKey="created_at", sortDir=-1, filterBanned=false;
+
+/* --- kurulum yapılmış mı? --- */
+if(SUPABASE_URL.includes("PROJE_ID")||SUPABASE_ANON_KEY.includes("BURAYA")){
+  $("#login").hidden=true;
+  const s=$("#setup"); s.hidden=false;
+  s.innerHTML=`<div class="brand"><div class="logo">C</div><div><b>COINFORCE</b><br><span>Kurulum gerekli</span></div></div>
+  <h1 style="margin-top:18px">Önce ayarları gir</h1>
+  <p class="sub">Bu dosyadaki <code>&lt;script&gt;</code> bloğunda iki değeri doldur, sonra repona yükle:</p>
+  <pre>const SUPABASE_URL = "https://xxxxx.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOi...";</pre>
+  <p class="sub">Bu değerleri Supabase → Project Settings → API ekranında bulursun. Ardından yanındaki <b>coinforce-admin-setup.sql</b> dosyasını SQL Editor'de bir kez çalıştır.</p>`;
+}else{
+  sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  boot();
+}
+
+async function boot(){
+  const { data:{ session } } = await sb.auth.getSession();
+  if(session) enterApp(session); else $("#login").hidden=false;
+}
+
+/* ---------------- GİRİŞ ---------------- */
+$("#loginForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const btn=$("#loginBtn"), msg=$("#loginMsg");
+  msg.className="msg"; msg.textContent="";
+  btn.disabled=true; btn.textContent="Giriş yapılıyor…";
+  const { data, error } = await sb.auth.signInWithPassword({
+    email: $("#email").value.trim(), password: $("#password").value
+  });
+  btn.disabled=false; btn.textContent="Giriş yap";
+  if(error){ msg.className="msg err"; msg.textContent="Giriş başarısız: "+error.message; return; }
+  enterApp(data.session);
+});
+
+async function enterApp(session){
+  $("#login").hidden=true;
+  $("#app").hidden=false;
+  $("#whoMail").textContent = session.user.email;
+  await loadUsers();
+}
+
+$("#logoutBtn").onclick = async ()=>{ await sb.auth.signOut(); location.reload(); };
+$("#refreshBtn").onclick = ()=> loadUsers();
+
+/* ---------------- VERİ ---------------- */
+async function loadUsers(){
+  $("#rows").innerHTML = `<tr><td colspan="7" class="loading">Yükleniyor…</td></tr>`;
+  // Yetki kontrolü + güvenli alanlar sunucu tarafındaki fonksiyonda yapılır
+  const { data, error } = await sb.rpc("get_users_admin");
+  if(error){
+    const deny = /not authorized|permission/i.test(error.message);
+    $("#rows").innerHTML = `<tr><td colspan="7" class="empty">${
+      deny ? "Bu hesabın yönetici yetkisi yok." : "Yüklenemedi: "+error.message
+    }</td></tr>`;
+    return;
+  }
+  ALL = data||[];
+  const me = ALL.find(u=>u.email===$("#whoMail").textContent);
+  $("#whoName").textContent = me?.username || "Yönetici";
+  render();
+}
+
+function stats(){
+  const total=ALL.length;
+  const banned=ALL.filter(isBanned).length;
+  const admins=ALL.filter(u=>u.is_admin).length;
+  $("#sTotal").textContent=total;
+  $("#sActive").textContent=total-banned;
+  $("#sBanned").textContent=banned;
+  $("#sAdmins").textContent=admins;
+}
+
+const isBanned = (u)=> u.banned_until && new Date(u.banned_until) > new Date();
+const fmt = (d)=> d ? new Date(d).toLocaleString("tr-TR",{day:"2-digit",month:"short",year:"2-digit",hour:"2-digit",minute:"2-digit"}) : "—";
+
+function render(){
+  stats();
+  const q = $("#q").value.trim().toLowerCase();
+  let list = ALL.filter(u=>{
+    if(filterBanned && !isBanned(u)) return false;
+    if(!q) return true;
+    return (u.username||"").toLowerCase().includes(q) || (u.email||"").toLowerCase().includes(q);
+  });
+  list.sort((a,b)=>{
+    let va,vb;
+    if(sortKey==="role"){ va=a.is_admin?1:0; vb=b.is_admin?1:0; }
+    else if(sortKey==="status"){ va=isBanned(a)?1:0; vb=isBanned(b)?1:0; }
+    else { va=a[sortKey]??""; vb=b[sortKey]??""; }
+    if(va<vb) return -1*sortDir; if(va>vb) return 1*sortDir; return 0;
+  });
+
+  if(!list.length){ $("#rows").innerHTML=`<tr><td colspan="7" class="empty">Kayıt bulunamadı.</td></tr>`; return; }
+
+  $("#rows").innerHTML = list.map(u=>{
+    const banned = isBanned(u);
+    return `<tr>
+      <td class="uname">${esc(u.username)||"—"}</td>
+      <td class="email">${esc(u.email)}</td>
+      <td class="num">${fmt(u.created_at)}</td>
+      <td class="num">${fmt(u.last_sign_in_at)}</td>
+      <td>${u.is_admin?'<span class="badge b-admin">Yönetici</span>':'<span class="badge b-user">Kullanıcı</span>'}</td>
+      <td>${banned?'<span class="badge b-ban">Banlı</span>':'<span class="badge b-ok">Aktif</span>'}</td>
+      <td><div class="row-actions">
+        <button class="mini" data-act="detail" data-id="${u.id}">Detay</button>
+        <button class="mini ok" data-act="reset" data-id="${u.id}">Şifre sıfırla</button>
+        <button class="mini danger" data-act="ban" data-id="${u.id}">${banned?"Banı kaldır":"Banla"}</button>
+      </div></td>
+    </tr>`;
+  }).join("");
+}
+
+function esc(s){ return (s==null?"":String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ---------------- ETKİLEŞİM ---------------- */
+$("#q").addEventListener("input", render);
+$("#fAll").onclick=()=>{ filterBanned=false; render(); };
+$("#fBanned").onclick=()=>{ filterBanned=true; render(); };
+document.querySelectorAll("th[data-sort]").forEach(th=>{
+  th.onclick=()=>{
+    const k=th.dataset.sort;
+    if(sortKey===k) sortDir*=-1; else { sortKey=k; sortDir=1; }
+    document.querySelectorAll("th .arrow").forEach(a=>a.textContent="");
+    th.querySelector(".arrow").textContent = sortDir>0?"▲":"▼";
+    render();
+  };
+});
+
+$("#rows").addEventListener("click",(e)=>{
+  const b=e.target.closest("button[data-act]"); if(!b) return;
+  const u=ALL.find(x=>x.id===b.dataset.id); if(!u) return;
+  if(b.dataset.act==="detail") showDetail(u);
+  if(b.dataset.act==="reset")  showReset(u);
+  if(b.dataset.act==="ban")    showBan(u);
+});
+
+/* ---------------- MODAL ---------------- */
+const overlay=$("#overlay"), modal=$("#modal");
+function openModal(html){ modal.innerHTML=html; overlay.hidden=false; }
+function closeModal(){ overlay.hidden=true; }
+overlay.addEventListener("click",(e)=>{ if(e.target===overlay) closeModal(); });
+
+function showDetail(u){
+  openModal(`<h3>${esc(u.username)||"Kullanıcı"}</h3>
+    <dl class="kv">
+      <dt>E-posta</dt><dd>${esc(u.email)}</dd>
+      <dt>ID</dt><dd>${esc(u.id)}</dd>
+      <dt>Kayıt</dt><dd>${fmt(u.created_at)}</dd>
+      <dt>Son giriş</dt><dd>${fmt(u.last_sign_in_at)}</dd>
+      <dt>Rol</dt><dd>${u.is_admin?"Yönetici":"Kullanıcı"}</dd>
+      <dt>Durum</dt><dd>${isBanned(u)?"Banlı":"Aktif"}</dd>
+    </dl>
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Kapat</button></div>`);
+}
+
+function showReset(u){
+  openModal(`<h3>Şifre sıfırlama</h3>
+    <p><b>${esc(u.email)}</b> adresine şifre sıfırlama bağlantısı gönderilsin mi?</p>
+    <p>Kullanıcı kendi yeni şifresini belirler; mevcut şifre asla görüntülenmez.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Vazgeç</button>
+      <button class="btn" id="doReset">Gönder</button>
+    </div><div class="msg" id="mMsg"></div>`);
+  $("#doReset").onclick=async ()=>{
+    $("#doReset").disabled=true;
+    const { error } = await sb.auth.resetPasswordForEmail(u.email, { redirectTo: RESET_REDIRECT });
+    const m=$("#mMsg");
+    if(error){ m.className="msg err"; m.textContent="Hata: "+error.message; $("#doReset").disabled=false; }
+    else { m.className="msg ok"; m.textContent="Gönderildi."; setTimeout(closeModal,900); }
+  };
+}
+
+function showBan(u){
+  const banned=isBanned(u);
+  openModal(`<h3>${banned?"Banı kaldır":"Hesabı banla"}</h3>
+    <p><b>${esc(u.username)||esc(u.email)}</b> ${banned?"hesabının banını kaldırmak":"hesabını banlamak"} üzeresin.</p>
+    <p>${banned?"Kullanıcı tekrar giriş yapabilecek.":"Banlı kullanıcı giriş yapamaz; verileri silinmez."}</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Vazgeç</button>
+      <button class="btn ${banned?'':'btn-danger'}" id="doBan">${banned?"Banı kaldır":"Banla"}</button>
+    </div><div class="msg" id="mMsg"></div>`);
+  $("#doBan").onclick=async ()=>{
+    $("#doBan").disabled=true;
+    const { error } = await sb.rpc("admin_set_ban", { target: u.id, ban: !banned });
+    const m=$("#mMsg");
+    if(error){ m.className="msg err"; m.textContent="Hata: "+error.message; $("#doBan").disabled=false; }
+    else { m.className="msg ok"; m.textContent="Tamam."; await loadUsers(); setTimeout(closeModal,700); }
+  };
+}
+window.closeModal=closeModal;
+</script>
+</body>
+</html>
