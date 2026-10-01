@@ -216,7 +216,7 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .post-h .vip{flex:none}
 .bot-tag{display:inline-flex;align-items:center;gap:3px;flex:none;margin-left:6px;padding:2px 8px;border-radius:99px;font-size:12px;font-weight:700;color:#4fc3f7;background:color-mix(in srgb,#4fc3f7 16%,transparent);vertical-align:middle;white-space:nowrap}
 .bot-tag.sm{font-size:11px;padding:1px 6px}
-.up-banner{height:clamp(110px,30vw,170px);border-radius:18px;background:#16122e url(bot-banner.svg) center/cover no-repeat;margin-bottom:0}
+.up-banner{height:clamp(110px,30vw,170px);border-radius:18px;background:#16122e url("bot-banner.svg?v=2") center/cover no-repeat;margin-bottom:0}
 .up-top.has-ban{margin-top:-40px;padding:0 4px 0 14px}
 .up-top.has-ban .up-av{box-shadow:0 0 0 4px var(--bg)}
 .up-top.has-ban .up-fol{margin-top:48px}
@@ -1684,7 +1684,7 @@ function laurel(n){const col=["#f2b705","#b8c2cc","#d0803a"][n-1];
   return `<span class="laurel"><svg viewBox="0 0 40 30" aria-hidden="true">${leaf}<g transform="translate(40 0) scale(-1 1)">${leaf}</g></svg><b style="color:${col}">${n}</b></span>`}
 let VIP=new Set(),BOT=new Set();
 const vipTag=(id,sm)=>BOT.has(id)?`<span class="bot-tag${sm?" sm":""}" title="Otomatik işlem yapan bot hesabı">🤖 BOT</span>`:VIP.has(id)?`<span class="vip${sm?" sm":""}" title="Yönetici"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 12H5z"/></svg>VIP++</span>`:"";
-async function loadVIP(){sb.rpc("bot_users").then(({data,error})=>{if(!error&&Array.isArray(data)&&data.length){BOT=new Set(data.map(x=>typeof x==="string"?x:x.bot_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank()}});const {data,error}=await sb.rpc("vip_users");if(!error&&Array.isArray(data)){VIP=new Set(data.map(x=>typeof x==="string"?x:x.vip_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank()}}
+async function loadVIP(){sb.rpc("bot_users").then(({data,error})=>{if(!error&&Array.isArray(data)&&data.length){BOT=new Set(data.map(x=>typeof x==="string"?x:x.bot_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank();if(userData&&BOT.has(userData.id))renderUser()}});const {data,error}=await sb.rpc("vip_users");if(!error&&Array.isArray(data)){VIP=new Set(data.map(x=>typeof x==="string"?x:x.vip_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank()}}
 const safeUrl=u=>/^https:\/\//.test(u||"")?String(u).replace(/"/g,"%22"):"";
 const avHTML=(p,style="")=>safeUrl(p.a)?`<span class="av av-photo" style="${style}"><img class="av-img" src="${safeUrl(p.a)}" alt="" decoding="async"></span>`:`<span class="av av-g" style="background-color:${colorFor(p.h)};${style}">${esc(initial(p.n))}</span>`;
 function setAv(el,url,ini){if(!el)return;const u=safeUrl(url),key=u||("i:"+ini);if(el.dataset.av===key)return;el.dataset.av=key;el.classList.toggle("has-photo",!!u);el.innerHTML=u?`<img class="av-img" src="${u}" alt="" decoding="async">`:esc(ini)}
@@ -2232,7 +2232,7 @@ function uRecent(){const r=userData.recent||[];if(!r.length)return `<div class="
     return `<div class="up-row">${coinIc(x.symbol)}<div class="mid"><b>${UKIND[k]||k} <span class="muted" style="font-weight:600">${esc(t?t.s:x.symbol||"")}</span></b><small>${det}</small></div><div class="rt"><b>${usd(amt)}</b><small>${ago(Date.now()-new Date(x.at).getTime())} önce</small></div></div>`}).join("")}
 function renderUser(){const u=userData;if(!u)return;const n=u.full_name||u.username,url=safeUrl(u.avatar_url),hold=uDur(u.avg_hold);
   const nO=(u.open||[]).length;
-  const isBot=BOT.has(u.id);
+  const isBot=BOT.has(u.id)||String(u.username||"").toLowerCase()==="coinforce_bot";
   $("userBody").innerHTML=`${isBot?`<div class="up-banner" role="img" aria-label="COINFORCE Bot"></div>`:""}<div class="up-top${isBot?" has-ban":""}"><div class="up-av" style="background:${url?"var(--surface2)":colorFor(u.username)}">${url?`<img class="av-img" src="${url}" alt="">`:esc(initial(n))}</div>
       <button type="button" class="btn ${u.is_following?"btn-ghost":"btn-accent"} up-fol" id="userFollow" data-id="${u.id}" data-f="${u.is_following?1:0}">${u.is_following?"Takiptesin":"Takip et"}</button></div>
     <div class="up-name">${esc(n)}${vipTag(u.id)}</div><div class="up-handle">@${esc(u.username)}</div>
