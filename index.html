@@ -2905,12 +2905,12 @@ function renderDetailExtras(t){
   renderAuto(t);
 }
 // ----- otomatik al-sat
-let autoEdit=false;
+let autoEdit=false,auDraft=null;
 const pctTxt=v=>fmtN(+v,+v%1?(String(+v).split(".")[1]||"").length:0);
-function renderAuto(t){const box=$("dAuto");if(!box)return;const all=(st.auto||[]).filter(a=>a.symbol===t.s),a=all.find(x=>x.active),last=all[0];
-  const form=(v)=>`<div class="au-f"><label><span>Tutar ($)</span><input id="auAmt" inputmode="decimal" value="${v?inp(+v.amount_usd,2):"50"}"></label>
-      <label><span>▲ Yükselişte al %</span><input id="auUp" inputmode="decimal" value="${v?pctTxt(v.up_pct):(EN?"0.5":"0,5")}"></label>
-      <label><span>▼ Düşüşte sat %</span><input id="auDn" inputmode="decimal" value="${v?pctTxt(v.down_pct):(EN?"0.5":"0,5")}"></label></div>
+function renderAuto(t,force){const box=$("dAuto");if(!box)return;const fe=document.activeElement;if(!force&&fe&&fe.tagName==="INPUT"&&box.contains(fe))return;const dr=auDraft&&auDraft.s===t.s?auDraft:null;const all=(st.auto||[]).filter(a=>a.symbol===t.s),a=all.find(x=>x.active),last=all[0];
+  const form=(v)=>`<div class="au-f"><label><span>Tutar ($)</span><input id="auAmt" inputmode="decimal" value="${dr?esc(dr.amt):v?inp(+v.amount_usd,2):"50"}"></label>
+      <label><span>▲ Yükselişte al %</span><input id="auUp" inputmode="decimal" value="${dr?esc(dr.up):v?pctTxt(v.up_pct):(EN?"0.5":"0,5")}"></label>
+      <label><span>▼ Düşüşte sat %</span><input id="auDn" inputmode="decimal" value="${dr?esc(dr.dn):v?pctTxt(v.down_pct):(EN?"0.5":"0,5")}"></label></div>
     <div class="err" id="auErr"></div>
     <div class="au-b">${v?`<button type="button" class="btn btn-ghost" data-au="cancel">Vazgeç</button>`:""}<button type="button" class="btn btn-accent" data-au="start">${v?"Kaydet":"Başlat"}</button></div>`;
   const head=(on)=>`<div class="au-h"><b>🤖 Otomatik al-sat</b>${on?`<span class="au-on"><i></i>Çalışıyor</span>`:""}</div>`;
@@ -2929,15 +2929,16 @@ function renderAuto(t){const box=$("dAuto");if(!box)return;const all=(st.auto||[
     <div class="pos-row"><span class="lbl">İşlemler</span><span class="val">${nfmt(a.buys)} alım · ${nfmt(a.sells)} satım</span></div>
     ${autoEdit?form(a):`<div class="au-b"><button type="button" class="btn btn-ghost" data-au="edit">Ayarları değiştir</button><button type="button" class="btn btn-sell" data-au="stop">Durdur</button></div>`}
     <div class="au-note">${holding?"Durdurursan otomatik alınan coinler hesabında kalır.":"Fiyat yaklaşık 20 saniyede bir kontrol edilir."}</div></div>`}
+$("dAuto").addEventListener("input",e=>{if(!/^au(Amt|Up|Dn)$/.test(e.target.id)||!cur)return;auDraft={s:cur,amt:$("auAmt").value,up:$("auUp").value,dn:$("auDn").value}});
 $("dAuto").addEventListener("click",e=>{const b=e.target.closest("[data-au]");if(!b||!cur)return;const k=b.dataset.au,t=find(cur);
-  if(k==="edit"){autoEdit=true;renderAuto(t);return}
-  if(k==="cancel"){autoEdit=false;renderAuto(t);return}
+  if(k==="edit"){autoEdit=true;auDraft=null;renderAuto(t,1);return}
+  if(k==="cancel"){autoEdit=false;auDraft=null;renderAuto(t,1);return}
   if(k==="stop"){if(b.dataset.sure!=="1"){b.dataset.sure="1";b.textContent="Emin misin?";return}
-    busy(b,async()=>{const r=await call("stop_auto_trade",{p_symbol:t.s});if(r.err)return;await loadAll();renderAuto(t);toast("Otomatik al-sat durduruldu")});return}
+    busy(b,async()=>{const r=await call("stop_auto_trade",{p_symbol:t.s});if(r.err)return;await loadAll();renderAuto(t,1);toast("Otomatik al-sat durduruldu")});return}
   if(k==="start")busy(b,async()=>{const pp=v=>parseFloat(String(v).trim().replace("%","").replace(",","."))||0,amt=parseAmt($("auAmt").value),up=pp($("auUp").value),dn=pp($("auDn").value);
     if(!(amt>=5))return $("auErr").textContent="Alım tutarı en az $5 olmalı";
     if(!(up>=0.1&&up<=50&&dn>=0.1&&dn<=50))return $("auErr").textContent="Yüzdeler %0,1 ile %50 arasında olmalı";
-    const r=await call("start_auto_trade",{p_symbol:t.s,p_amount:amt,p_up:up,p_down:dn},"auErr");if(r.err)return;autoEdit=false;await loadAll();renderAuto(t);toast(`Otomatik al-sat çalışıyor: ${t.s}`)})});
+    const r=await call("start_auto_trade",{p_symbol:t.s,p_amount:amt,p_up:up,p_down:dn},"auErr");if(r.err)return;autoEdit=false;auDraft=null;document.activeElement&&document.activeElement.blur();await loadAll();renderAuto(t,1);toast(`Otomatik al-sat çalışıyor: ${t.s}`)})});
 // ----- alerts
 function alertRow(a){const t=find(a.s);return `<div class="orow"><span class="tag ${a.dir>0?"b":"s"}">${a.dir>0?"↑ ÜSTÜ":"↓ ALTI"}</span><div class="mid">${usd(a.px,t.d)}<small>Şu an ${usd(t.p,t.d)}</small></div><button type="button" class="x-btn" data-delal="${a.id}">Sil</button></div>`}
 function openAlert(){const t=find(cur);if(!t)return;$("alTitle").textContent=`${t.s} fiyat alarmı`;$("alSub").textContent=`Fiyat seçtiğin seviyeye gelince bildirim alırsın.`;$("alPx").value=inp(t.p*1.05,t.d);
