@@ -2921,8 +2921,7 @@ const auPP=v=>parseFloat(String(v).trim().replace(/[%$\s]/g,"").replace(",",".")
 function auLeft(ts){const s=Math.max(0,Math.round((Date.parse(ts)-Date.now())/1000));if(s<5)return EN?"now":"şimdi";const m=Math.floor(s/60),x=s%60;return EN?`in ${m?m+" min ":""}${x} s`:`${m?m+" dk ":""}${x} sn sonra`}
 function renderAuto(t,force){const box=$("dAuto");if(!box)return;const fe=document.activeElement;if(!force&&fe&&fe.tagName==="INPUT"&&box.contains(fe))return;
   const dr=auDraft&&auDraft.s===t.s?auDraft:null;const all=(st.auto||[]).filter(a=>a.symbol===t.s),a=all.find(x=>x.active),last=all[0];
-  const mode=auMode||(a&&a.mode)||"trend";if(t.custom&&mode==="timer"&&!a)auMode="trend";
-  const m=t.custom&&!a?"trend":mode,ty=dr&&dr.ty||auType;
+  const m=auMode||(a&&a.mode)||"trend",ty=dr&&dr.ty||auType;
   const dv=(k,d)=>dr&&dr[k]!=null?esc(dr[k]):d;
   const tabs=`<div class="seg au-seg"><button type="button" data-au="m-trend" class="${m==="trend"?"on":""}">📈 Yüzdeye göre</button><button type="button" data-au="m-timer" class="${m==="timer"?"on":""}">⏱ Süreli</button></div>`;
   const btns=v=>`<div class="err" id="auErr"></div><div class="au-b">${v?`<button type="button" class="btn btn-ghost" data-au="cancel">Vazgeç</button>`:""}<button type="button" class="btn btn-accent" data-au="start">${v?"Kaydet":"Başlat"}</button></div>`;
@@ -2931,7 +2930,7 @@ function renderAuto(t,force){const box=$("dAuto");if(!box)return;const fe=docume
       <label><span>▲ Yükselişte al %</span><input id="auUp" inputmode="decimal" value="${dv("up",v&&v.mode==="trend"?pctTxt(v.up_pct):(EN?"0.5":"0,5"))}"></label>
       <label><span>▼ Düşüşte sat %</span><input id="auDn" inputmode="decimal" value="${dv("dn",v&&v.mode==="trend"?pctTxt(v.down_pct):(EN?"0.5":"0,5"))}"></label></div>${btns(v)}`;
   const vt=v=>v&&v.mode==="timer"?v:null;
-  const formTimer=v=>{const w=vt(v),tt=dr&&dr.ty||(w?w.amt_type:ty);return t.custom?`<div class="au-warn">Süreli mod COINFORCE coinlerinde kullanılamaz.</div>`:`<div class="au-d">${EN?"It trades on a timer: every interval it makes one buy, then one sell, in turn. Leave a side at 0 to only buy or only sell.":"Seçtiğin her sürede sırayla bir alış, bir satış yapar. Bir tarafı 0 bırakırsan sadece alır ya da sadece satar."}</div>
+  const formTimer=v=>{const w=vt(v),tt=dr&&dr.ty||(w?w.amt_type:ty);return t.custom?`<div class="au-warn">${EN?"Timed mode isn't available for COINFORCE coins. You can use the “By percent” mode for this coin.":"Süreli mod COINFORCE coinlerinde kullanılamaz. Bu coinde “Yüzdeye göre” modunu kullanabilirsin."}</div>${v?`<div class="au-b"><button type="button" class="btn btn-ghost" data-au="cancel">Vazgeç</button></div>`:""}`:`<div class="au-d">${EN?"It trades on a timer: every interval it makes one buy, then one sell, in turn. Leave a side at 0 to only buy or only sell.":"Seçtiğin her sürede sırayla bir alış, bir satış yapar. Bir tarafı 0 bırakırsan sadece alır ya da sadece satar."}</div>
     <div class="au-row"><label class="au-one"><span>Süre (dakika)</span><input id="auMin" inputmode="numeric" value="${dv("min",w?w.interval_min:"2")}"></label>
       <div class="au-chips">${[1,2,5,15,60].map(x=>`<button type="button" data-au="min-${x}">${x} dk</button>`).join("")}</div></div>
     <div class="seg au-seg sm"><button type="button" data-au="t-usd" class="${tt==="usd"?"on":""}">$ Tutar</button><button type="button" data-au="t-pct" class="${tt==="pct"?"on":""}">% Bakiye</button></div>
