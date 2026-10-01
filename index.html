@@ -731,7 +731,9 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 .scrim.show{opacity:1;pointer-events:auto}
 .sheet{position:fixed;left:50%;bottom:0;width:min(460px,100%);transform:translate(-50%,105%);background:var(--surface);border-radius:26px 26px 0 0;z-index:41;padding:10px 20px calc(22px + env(safe-area-inset-bottom,0px));transition:transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s .28s;visibility:hidden;max-height:88%;overflow:auto}
 .sheet.show{transform:translate(-50%,0);visibility:visible;transition:transform .28s cubic-bezier(.2,.8,.2,1)}
-.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 14px}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:0 auto 14px;position:relative;touch-action:none;cursor:grab}
+.grab::before{content:"";position:absolute;left:-150px;right:-150px;top:-14px;bottom:-12px}
+.sheet.dragging{transition:none!important}
 .sheet h3{margin:0 0 4px;font-size:19px}
 .sheet .sub{color:var(--muted);font-size:13px;margin-bottom:18px}
 .amt{display:flex;align-items:baseline;justify-content:center;gap:6px;margin:14px 0 4px}
@@ -2423,6 +2425,19 @@ document.querySelector(".tabs").addEventListener("click",e=>{const b=e.target.cl
 $("chips").addEventListener("click",e=>{const b=e.target.closest("[data-f]");if(!b)return;filt=b.dataset.f;[...$("chips").children].forEach(x=>x.classList.toggle("on",x===b));renderList()});
 
 
+
+// Açılan sayfalar: üstteki çizgiden (ya da sayfa en üstteyken başlık bölgesinden) tutup aşağı çekince kapanır
+(function(){let sh=null,y0=0,dy=0,t0=0,on=false;
+  const grabVisible=x=>{const g=x.querySelector(".grab");return g&&getComputedStyle(g).display!=="none"};
+  addEventListener("touchstart",e=>{if(e.touches.length!==1){sh=null;return}const x=e.target.closest(".sheet.show");if(!x||!grabVisible(x)){sh=null;return}
+    const r=x.getBoundingClientRect(),y=e.touches[0].clientY,onGrab=!!e.target.closest(".grab"),inHead=y-r.top<56&&!e.target.closest("input,textarea,select,button,a,canvas");
+    if(!(onGrab||(inHead&&x.scrollTop<=0))){sh=null;return}sh=x;y0=y;dy=0;t0=Date.now();on=false},{passive:true});
+  addEventListener("touchmove",e=>{if(!sh)return;dy=e.touches[0].clientY-y0;if(!on){if(dy<6){if(dy<-6)sh=null;return}on=true;sh.classList.add("dragging")}
+    if(e.cancelable)e.preventDefault();const d=Math.max(0,dy);sh.style.transform=`translate(-50%,${d}px)`;$("scrim").style.opacity=String(Math.max(0,1-d/(sh.offsetHeight||400)))},{passive:false});
+  const end=()=>{if(!sh)return;const x=sh;sh=null;if(!on)return;on=false;x.classList.remove("dragging");const v=dy/Math.max(1,Date.now()-t0);
+    if(dy>Math.min(140,x.offsetHeight*.3)||(dy>40&&v>.6)){x.style.transform="translate(-50%,105%)";$("scrim").style.opacity="";setTimeout(()=>{x.style.transform="";closeSheet()},230)}
+    else{x.style.transform="";$("scrim").style.opacity=""}};
+  addEventListener("touchend",end,{passive:true});addEventListener("touchcancel",end,{passive:true})})();
 // ---------- Günlük değişim detayı (bakiyenin altındaki +/- satırı)
 function dayStart(){return Date.now()-864e5}
 function pnlRows(){const m={};const add=(sym,q,locked)=>{const t=find(sym);if(!t||!(q>0))return;const r=m[sym]||(m[sym]={t,q:0,lq:0});r.q+=q;if(locked)r.lq+=q};
