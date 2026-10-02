@@ -241,6 +241,7 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .up-banner{height:clamp(110px,30vw,170px);border-radius:18px;background:#16122e url("bot-banner.svg?v=2") center/cover no-repeat;margin-bottom:0}
 .up-banner.ban-ceo{background:#100c1e url("ceo-banner.svg?v=1") center/cover no-repeat}
 .p-band.ban-ceo{background:#100c1e url("ceo-banner.svg?v=1") center/cover no-repeat}
+.up-banner.ban-wheel,.p-band.ban-wheel{background:#150d2e url("wheel-banner.svg?v=1") center/cover no-repeat}
 .up-banner.ban-partner,.p-band.ban-partner{background:#0a1418 url("partner-banner.svg?v=1") center/cover no-repeat}
 .ceo-tag{display:inline-flex;align-items:center;gap:4px;flex:none;margin-left:6px;padding:2px 9px 2px 7px;border-radius:99px;font-size:12px;font-weight:800;letter-spacing:.06em;color:#1a1204;background:linear-gradient(135deg,#fff1b8,#f2c14e 55%,#c8912b);box-shadow:0 0 0 1px rgba(242,193,78,.5),0 2px 10px rgba(242,193,78,.25);vertical-align:middle;white-space:nowrap}
 .ceo-tag svg{width:13px;height:13px}.ceo-tag.sm{font-size:11px;padding:1px 7px 1px 5px}.ceo-tag.sm svg{width:11px;height:11px}
@@ -1997,8 +1998,8 @@ function drawPortfolio(pts){
 $("pChart").addEventListener("click",e=>{const r=$("pChart").getBoundingClientRect(),ex=e.clientX-r.left,ey=e.clientY-r.top;
   let best=null,bd=22;pMarks.forEach(m=>{const d=Math.hypot(m.x-ex,m.y-ey);if(d<bd){bd=d;best=m}});if(!best)return;const p=best.p;
   toast(`${p.ms||""} ${p.m==="sell"?"satış":"alım"} · ${usd(p.mu)} · ${new Date(p.t).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}`)});
-function bannerFor(id,uname){const n=String(uname||"").toLowerCase();return CEO.has(id)||n==="coinforcedeluxe"?"ban-ceo":BOT.has(id)||n==="coinforce_bot"?"ban-bot":n==="egmnnarsln"?"ban-partner":""}
-function renderProfile(){const bn=me?bannerFor(me.id,st.prof.handle):"";$("pBand").classList.toggle("ban-ceo",bn==="ban-ceo");$("pBand").classList.toggle("ban-partner",bn==="ban-partner");$("pAdmin").hidden=!st.admin;$("setAdmin").hidden=!st.admin;
+function bannerFor(id,uname){const n=String(uname||"").toLowerCase();return CEO.has(id)||n==="coinforcedeluxe"?"ban-ceo":BOT.has(id)||n==="coinforce_bot"?"ban-bot":n==="egmnnarsln"?"ban-partner":n==="pedrigavifrenki"?"ban-wheel":""}
+function renderProfile(){const bn=me?bannerFor(me.id,st.prof.handle):"";$("pBand").classList.toggle("ban-ceo",bn==="ban-ceo");$("pBand").classList.toggle("ban-partner",bn==="ban-partner");$("pBand").classList.toggle("ban-wheel",bn==="ban-wheel");$("pAdmin").hidden=!st.admin;$("setAdmin").hidden=!st.admin;
   const p=st.prof,ini=(p.name||"?").trim().charAt(0).toLocaleUpperCase("tr-TR")||"?";
   setAv($("pAv"),st.prof.avatar,ini);setAv($("navAv"),st.prof.avatar,ini);
   $("pName").innerHTML=esc(p.name)+(me?vipTag(me.id):"");$("pFollowing").textContent=cnt(st.friends.length+(p.gb||0));$("pFollowers").textContent=cnt((st.followers||0)+(p.fb||0));$("pHandle").textContent="@"+p.handle;
@@ -2406,7 +2407,7 @@ function uRecent(){const r=userData.recent||[];if(!r.length)return `<div class="
 function renderUser(){const u=userData;if(!u)return;const n=u.full_name||u.username,url=safeUrl(u.avatar_url),hold=uDur(u.avg_hold);
   const nO=(u.open||[]).length;
   const ban=bannerFor(u.id,u.username);
-  $("userBody").innerHTML=`${ban?`<div class="up-banner ${ban}" role="img" aria-label="${ban==="ban-ceo"?"COINFORCE CEO":ban==="ban-partner"?"COINFORCE Partner":"COINFORCE Bot"}"></div>`:""}<div class="up-top${ban?" has-ban":""}"><div class="up-av" style="background:${url?"var(--surface2)":colorFor(u.username)}">${url?`<img class="av-img" src="${url}" alt="">`:esc(initial(n))}</div>
+  $("userBody").innerHTML=`${ban?`<div class="up-banner ${ban}" role="img" aria-label="${ban==="ban-ceo"?"COINFORCE CEO":ban==="ban-partner"?"COINFORCE Partner":ban==="ban-wheel"?"Banner":"COINFORCE Bot"}"></div>`:""}<div class="up-top${ban?" has-ban":""}"><div class="up-av" style="background:${url?"var(--surface2)":colorFor(u.username)}">${url?`<img class="av-img" src="${url}" alt="">`:esc(initial(n))}</div>
       <button type="button" class="btn ${u.is_following?"btn-ghost":"btn-accent"} up-fol" id="userFollow" data-id="${u.id}" data-f="${u.is_following?1:0}">${u.is_following?"Takiptesin":"Takip et"}</button></div>
     <div class="up-name">${esc(n)}${vipTag(u.id)}</div><div class="up-handle">@${esc(u.username)}</div>
     ${u.bio?`<p class="up-bio" translate="no">${esc(u.bio)}</p>`:""}
