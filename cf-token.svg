@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="rim" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7c5cff"/><stop offset=".5" stop-color="#a78bfa"/><stop offset="1" stop-color="#5ee0c4"/></linearGradient>
+    <linearGradient id="face" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#241a4a"/><stop offset="1" stop-color="#0d1a24"/></linearGradient>
+    <linearGradient id="ink" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#c9b8ff"/><stop offset="1" stop-color="#7ff5dc"/></linearGradient>
+    <linearGradient id="hi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+  </defs>
+  <circle cx="64" cy="64" r="62" fill="url(#rim)"/>
+  <circle cx="64" cy="64" r="62" fill="url(#hi)"/>
+  <circle cx="64" cy="64" r="51" fill="url(#face)"/>
+  <g fill="none" stroke="#120b24" stroke-opacity=".45" stroke-width="3" stroke-linecap="round">
+    <path d="M64 5v6M64 117v6M5 64h6M117 64h6M22.300 22.300l4.200 4.200M101.500 101.500l4.200 4.200M22.300 105.700l4.200-4.200M101.500 26.500l4.200-4.200"/>
+  </g>
+  <path d="M64 21 L101 42.500 V85.500 L64 107 L27 85.500 V42.500 Z" fill="none" stroke="url(#ink)" stroke-opacity=".35" stroke-width="2.500" stroke-linejoin="round"/>
+  <!-- C -->
+  <path d="M61 46.500 A19.500 19.500 0 1 0 61 81.500" fill="none" stroke="url(#ink)" stroke-width="9.500" stroke-linecap="round"/>
+  <!-- F -->
+  <path d="M72 84 V45 H91 M72 63.500 H86" fill="none" stroke="url(#ink)" stroke-width="9.500" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- rising tick from the brand mark -->
+  <path d="M86 34 l10 -8 M89 25.500 h7.500 v7.500" fill="none" stroke="#5ee0c4" stroke-width="4.500" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
