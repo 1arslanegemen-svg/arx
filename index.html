@@ -1945,7 +1945,7 @@ function renderList(){
   $("noteText").innerHTML=EN?(tab==="perps"?"Go long or short with <b>up to 50x</b> leverage. Tap a token.":tab==="watch"?"Tokens you star are listed here.":"<b>0.08% fee</b> — the lowest on major coins."):tab==="perps"?"<b>50x'e kadar</b> kaldıraçla long ya da short aç. Bir tokene dokun.":tab==="watch"?"Yıldızladığın tokenler burada listelenir.":"<b>%0,08 komisyon</b> ile büyük coinlerde en düşük ücret.";
   renderPerpPos();
   const wa=tab==="watch"?MYA.filter(a=>a.watching):[];
-  $("tokList").innerHTML=(arr.length?arr.map(t=>tokRow(t,{perp:tab==="perps"})).join(""):"")+(wa.length?`<div class="sec-t" style="margin:16px 0 8px">CF Auction</div>`+wa.map(a=>{const c=aucCur(a);return `<div class="tok" data-auc="${a.id}" role="button" tabindex="0">${aucImg(a,"sm wl")}<div class="mid"><div class="sym">${esc(a.title)}</div><div class="sub">${a.status==="ended"?L("Sona erdi","Ended"):aucLeft(a)}</div></div><div class="rt"><div class="px">${c!=null?cfT(c):cfT(a.start_price)}</div><div class="sub">${c!=null?(a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current bid")):L("Başlangıç","Starting bid")}</div></div></div>`}).join(""):"")
+  $("tokList").innerHTML=(arr.length?arr.map(t=>tokRow(t,{perp:tab==="perps"})).join(""):"")+(wa.length?`<div class="sec-t" style="margin:16px 0 8px">CF Auction</div>`+wa.map(a=>{const c=aucCur(a);return `<div class="tok" data-auc="${a.id}" role="button" tabindex="0">${aucImg(a,"sm wl")}<div class="mid"><div class="sym">${esc(aT(a))}</div><div class="sub">${a.status==="ended"?L("Sona erdi","Ended"):aucLeft(a)}</div></div><div class="rt"><div class="px">${c!=null?cfT(c):cfT(a.start_price)}</div><div class="sub">${c!=null?(a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current bid")):L("Başlangıç","Starting bid")}</div></div></div>`}).join(""):"")
     ||`<div class="empty">İzleme listen boş.<br>Bir tokenin sayfasında yıldıza dokunarak ekle.</div>`;
 }
 
@@ -2807,6 +2807,37 @@ $("adScan").onclick=async()=>{qrStop();const b=$("adQRBox");b.dataset.k="scan";b
   catch(e){$("adErr").textContent="Kameraya erişilemedi. İzin ver ya da aşağıdan fotoğraf çek."}};
 // ---------- CF Token + CF AUCTION
 const L=(tr,en)=>EN?en:tr;
+const AUC_EN={
+"Bull Run Su Şişesi №1":["Bull Run Water Bottle №1","The bottle for those who stay hydrated through the bull season. Gold cap, one of one."],
+"\"Buy the Dip\" Kupası":["\"Buy the Dip\" Mug","A sip for every dip. A staple of the trader's desk."],
+"HODL Miğferi":["HODL Helmet","Steel protection against red candles. Armour for those who never sell."],
+"Altın Boğa Heykeli":["Golden Bull Statue","The symbol of the uptrend, a trophy with a solid-gold look."],
+"Elmas Eller":["Diamond Hands","The award for those who never let go, no matter what."],
+"Balina Rozeti":["Whale Badge","The badge of those who move the market with a single order."],
+"Dev Yeşil Mum":["Giant Green Candle","The best moment on the chart: a new high in one candle."],
+"Aya Giden Roket":["Rocket to the Moon","The collector's edition of the \"to the moon\" legend."],
+"Genesis Blok #0":["Genesis Block #0","The first block of the chain. Where it all began."],
+"COINFORCE Kurucu Madalyonu 2026":["COINFORCE Founder Medallion 2026","A one-of-one founder medallion minted to mark the first year."],
+"Rosetta Taşı":["Rosetta Stone","196 BC. The inscription that unlocked Egyptian hieroglyphs. Photo: Hans Hillewaert, CC BY-SA 4.0, Wikimedia Commons."],
+"Tutankhamun'un Altın Maskesi":["Golden Mask of Tutankhamun","c. 1323 BC. The most recognised object of ancient Egypt. Photo: Bjørn Christian Tørrissen, CC BY-SA 3.0, Wikimedia Commons."],
+"Nefertiti Büstü":["Bust of Nefertiti","c. 1345 BC. Attributed to the sculptor Thutmose. Photo: Philip Pikart, CC BY-SA 3.0, Wikimedia Commons."],
+"Milo Venüsü":["Venus de Milo","c. 150–125 BC. Marble statue of the Hellenistic period. Photo: Wikimedia Commons."],
+"Antikythera Mekanizması":["Antikythera Mechanism","c. 100 BC. The oldest known analogue computer. Photo: Marsyas, CC BY 2.5, Wikimedia Commons."],
+"Kolezyum":["Colosseum","AD 80, Rome. The largest arena of the ancient world. Photo: FeaturedPics, CC BY-SA 4.0, Wikimedia Commons."],
+"Giza Piramitleri":["Pyramids of Giza","c. 2600–2500 BC. The only surviving wonder of the ancient world. Photo: Ricardo Liberato, CC BY-SA 2.0, Wikimedia Commons."],
+"Mona Lisa – Digital Collection Edition":[0,"Leonardo da Vinci, c. 1503–1519. The COINFORCE Digital Collection edition of the most recognised portrait of the Renaissance."],
+"The Starry Night – Digital Collection Edition":[0,"Vincent van Gogh, 1889. The night sky painted at Saint-Rémy."],
+"Girl with a Pearl Earring – Digital Collection Edition":[0,"Johannes Vermeer, c. 1665. An icon of the Dutch Golden Age."],
+"The Great Wave off Kanagawa – Digital Collection Edition":[0,"Katsushika Hokusai, c. 1831. From the series Thirty-Six Views of Mount Fuji."],
+"The Scream – Digital Collection Edition":[0,"Edvard Munch, 1893. The symbol of modern anxiety."],
+"The Night Watch – Digital Collection Edition":[0,"Rembrandt van Rijn, 1642. The greatest group portrait of the Dutch Golden Age."],
+"The Birth of Venus – Digital Collection Edition":[0,"Sandro Botticelli, c. 1485. A masterpiece of the Florentine Renaissance."],
+"The Kiss – Digital Collection Edition":[0,"Gustav Klimt, 1907–1908. The best-known work of his golden period."],
+"Impression, Sunrise – Digital Collection Edition":[0,"Claude Monet, 1872. The painting that gave Impressionism its name."],
+"The Last Supper – Digital Collection Edition":[0,"Leonardo da Vinci, 1495–1498. The mural in Milan."]};
+const aT=a=>EN&&AUC_EN[a.title]&&AUC_EN[a.title][0]||a.title,aD=a=>EN&&AUC_EN[a.title]&&AUC_EN[a.title][1]||a.description||"",
+  aTm=a=>{const t=a.terms||"";if(!EN)return t;if(/COINFORCE Originals/.test(t))return "This auction is for the numbered digital collectible record in the COINFORCE Originals series. No physical item is delivered. The design belongs to COINFORCE and is not affiliated with any real person or brand.";if(/müze ya da kurumla/.test(t))return "This auction is for the numbered digital collection record of the work in the COINFORCE Digital Collection. The work itself, its ownership, copyright or reproduction rights are not transferred. COINFORCE is not affiliated with the museum or institution that holds the work.";if(/eser kamu malıdır/.test(t))return "This auction is for the numbered digital collection record of the work in the COINFORCE Digital Collection. The physical work, copyright or reproduction rights are not transferred; the work is in the public domain.";return t};
+
 const CFI=`<img class="cf-ic" src="cf-token.svg?v=1" alt="CF">`;
 const cfN=v=>fmtN(+v||0,(+v||0)%1?2:0),cfT=v=>`${cfN(v)} CF`;
 var CF=null,AUC=[],aucOpen=null,aucData=null,aucOff=0,aucPoll=0,aucClock=0,myAucTab="active",MYA=[];
@@ -2820,7 +2851,7 @@ window.__aucErr=im=>{const W=["960","500","330","250"],m=im.src.match(/[?&]width
 const aucCur=a=>a.current_bid!=null?+a.current_bid:null,aucMin=a=>aucCur(a)==null?+a.start_price:aucCur(a)+ +a.min_increment;
 function aucBadge(a){return a.status==="ended"?(a.i_won?`<span class="auc-tag won">🏆 ${L("Kazandın","Won")}</span>`:`<span class="auc-tag end">${L("Bitti","Ended")}</span>`):a.status==="paused"?`<span class="auc-tag end">${L("Durduruldu","Paused")}</span>`:a.i_lead?`<span class="auc-tag lead">${L("En yüksek teklif sende","You lead")}</span>`:a.my_bid!=null?`<span class="auc-tag out">${L("Teklifin geçildi","Outbid")}</span>`:`<span class="auc-tag live"><i></i>LIVE</span>`}
 function aucCard(a){const c=aucCur(a),live=a.status==="live";return `<article class="auc-card" data-auc="${a.id}">${aucImg(a)}<button type="button" class="auc-star${a.watching?" on":""}" data-aucw="${a.id}" aria-label="Watchlist">★</button>
-  <div class="auc-b"><div class="auc-top"><small>${esc(a.category)}${a.collection_no?" · #"+esc(a.collection_no):""}</small>${aucBadge(a)}</div><h4>${esc(a.title)}</h4>
+  <div class="auc-b"><div class="auc-top"><small>${esc(a.category)}${a.collection_no?" · #"+esc(a.collection_no):""}</small>${aucBadge(a)}</div><h4>${esc(aT(a))}</h4>
   <div class="auc-px"><div><small>${a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current bid")}</small><b>${CFI}${c!=null?cfT(c):"—"}</b></div><div><small>${L("Başlangıç","Starting bid")}</small><span>${cfT(a.start_price)}</span></div></div>
   <div class="auc-meta"><span>${nfmt(a.bid_count)} ${L("teklif","bids")} · ${nfmt(a.bidders)} ${L("kişi","bidders")}</span><span class="auc-t" data-auct="${a.id}">${aucLeft(a)}</span></div>
   ${live?`<button type="button" class="btn btn-accent full" data-bid="${a.id}">BID NOW</button>`:`<button type="button" class="btn btn-ghost full">${L("Detayları gör","View details")}</button>`}</div></article>`}
@@ -2840,12 +2871,12 @@ function aucStart(){clearInterval(aucPoll);clearInterval(aucClock);aucClock=setI
 let ALB=[],albSig="";
 const rkCls=r=>r===1?"r1":r===2?"r2":r===3?"r3":r<=10?"r10":"rx";
 async function loadAucLB(){const r=await sb.rpc("auction_leaderboard");if(r.error)return;ALB=r.data||[];const sg=JSON.stringify(ALB.map(x=>[x.id,x.rank,x.price_cf,x.price_usd]))+LANG;if(sg===albSig)return;albSig=sg;
-  $("aucLB").innerHTML=ALB.length?`<div class="sub" style="margin:4px 0 8px">${L("Satılan varlıklar, en pahalıdan en ucuza.","Sold assets, most expensive first.")}</div>`+ALB.map(x=>`<div class="alb" data-auc="${x.id}"><span class="alb-rk ${rkCls(+x.rank)}">${x.rank}</span>${aucImg(x,"sm wl")}<div class="mid"><b>${esc(x.title)}</b><small>@${esc(x.winner)}</small></div><div class="rt"><b>${CFI}${cfT(x.price_cf)}</b><small>${usd(+x.price_usd)}</small></div></div>`).join(""):`<div class="empty" style="padding:30px 10px">${L("Henüz satılan bir varlık yok.","No assets sold yet.")}</div>`}
+  $("aucLB").innerHTML=ALB.length?`<div class="sub" style="margin:4px 0 8px">${L("Satılan varlıklar, en pahalıdan en ucuza.","Sold assets, most expensive first.")}</div>`+ALB.map(x=>`<div class="alb" data-auc="${x.id}"><span class="alb-rk ${rkCls(+x.rank)}">${x.rank}</span>${aucImg(x,"sm wl")}<div class="mid"><b>${esc(aT(x))}</b><small>@${esc(x.winner)}</small></div><div class="rt"><b>${CFI}${cfT(x.price_cf)}</b><small>${usd(+x.price_usd)}</small></div></div>`).join(""):`<div class="empty" style="padding:30px 10px">${L("Henüz satılan bir varlık yok.","No assets sold yet.")}</div>`}
 let lbKind="pnl";
 function setLbKind(k){lbKind=k;[...$("lbKind").children].forEach(b=>b.classList.toggle("on",b.dataset.lk===k));$("lbPnl").hidden=k!=="pnl";$("aucLB").hidden=k!=="auc";if(k==="auc"){albSig="";loadAucLB()}}
 $("lbKind").addEventListener("click",e=>{const b=e.target.closest("[data-lk]");if(b)setLbKind(b.dataset.lk)});
 $("aucToLB").onclick=()=>{go("rank");$("rTabs").querySelector('[data-rt="board"]').click();setLbKind("auc")};
-function paHTML(list){return list.length?`<div class="sec-t" style="margin:14px 0 2px;font-size:15px">Auctions <span class="muted" style="font-weight:500">· ${list.length}</span></div><div class="pa-rail">${list.map(x=>`<button type="button" class="pa ${rkCls(+x.rank)}" data-auc="${x.id}" title="${esc(x.title)}">${aucImg(x,"pa-img")}<span class="pa-rk">#${x.rank}</span><em>${cfT(x.price_cf)}</em></button>`).join("")}</div>`:""}
+function paHTML(list){return list.length?`<div class="sec-t" style="margin:14px 0 2px;font-size:15px">Auctions <span class="muted" style="font-weight:500">· ${list.length}</span></div><div class="pa-rail">${list.map(x=>`<button type="button" class="pa ${rkCls(+x.rank)}" data-auc="${x.id}" title="${esc(aT(x))}">${aucImg(x,"pa-img")}<span class="pa-rk">#${x.rank}</span><em>${cfT(x.price_cf)}</em></button>`).join("")}</div>`:""}
 async function loadPA(uid,el){const r=await sb.rpc("user_auctions",{p_user:uid});const e=$(el);if(!e||r.error)return;if(el==="upAucs"&&userOpen!==uid)return;const h=paHTML(r.data||[]);if(e.dataset.h!==h){e.dataset.h=h;e.innerHTML=h}}
 function showAuction(){loadCF();loadAuctions();aucStart()}
 // detay
@@ -2863,16 +2894,16 @@ function renderAuc(){const a=aucData,c=aucCur(a),live=a.status==="live",open_=a.
   const oldImg=$("aucBody").querySelector(".auc-img.big"),keep=oldImg&&oldImg.dataset.k===a.id+"|"+(a.image||"").length?oldImg:null;
   $("aucBody").innerHTML=`${aucImg(a,"big")}
     <div class="auc-top" style="margin-top:14px"><small>${esc(a.category)}${a.collection_no?" · #"+esc(a.collection_no):""}</small>${aucBadge(a)}</div>
-    <h2 class="auc-h">${esc(a.title)}</h2>
+    <h2 class="auc-h">${esc(aT(a))}</h2>
     <div class="auc-now"><div><small>${a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current bid")}</small><b>${CFI}${c!=null?cfT(c):"—"}</b>${a.leader?`<em>@${esc(a.status==="ended"?(a.winner||a.leader):a.leader)}</em>`:""}</div><div><small>${L("Kalan süre","Time left")}</small><b class="auc-t" data-auct="${a.id}">${aucLeft(a)}</b></div></div>
     ${a.status==="ended"&&a.i_won?`<div class="auc-won">🏆 <b>AUCTION WON</b><br>${L(`Tebrikler! Bu dijital varlığı ${cfT(c)} ile kazandın.`,`Congratulations! You won this digital asset for ${cfT(c)}.`)}</div>`:""}
     <div class="au-b" style="margin:12px 0 4px">${live?`<button type="button" class="btn btn-accent" data-bid="${a.id}">${a.my_bid!=null&&!a.i_lead?L("Teklifi artır","Increase Bid"):"BID NOW"}</button>`:""}<button type="button" class="btn btn-ghost" data-aucw="${a.id}">${a.watching?"★ "+L("İzleniyor","Watching"):"☆ Watchlist"}</button></div>
     <div class="wd-cap" style="margin:10px 0"><span class="muted">${L("CF bakiyen","Your CF balance")}</span><b>${CFI}<span data-cfbal>${cfT(CF?CF.available:0)}</span></b></div>
-    ${a.description?`<div class="sec-t" style="margin:16px 0 6px">${L("Açıklama","Description")}</div><p class="about" style="margin:0">${esc(a.description)}</p>`:""}
+    ${a.description?`<div class="sec-t" style="margin:16px 0 6px">${L("Açıklama","Description")}</div><p class="about" style="margin:0">${esc(aD(a))}</p>`:""}
     <div class="adm-kv" style="margin-top:14px"><span>${L("Kategori","Category")}</span><b>${esc(a.category)}</b><span>${L("Koleksiyon no","Collection no.")}</span><b>${esc(a.collection_no||"—")}</b><span>${L("Adet","Editions")}</span><b>${nfmt(a.editions)}</b>
       <span>${L("Yayınlanma","Published")}</span><b>${dtT(a.created_at)}</b><span>${L("Başlangıç","Start")}</span><b>${dtT(a.starts_at)}</b><span>${L("Bitiş","End")}</span><b>${a.status==="paused"?L("Durduruldu","Paused"):dtT(a.ends_at)}</b>
       <span>${L("Başlangıç fiyatı","Starting bid")}</span><b>${cfT(a.start_price)}</b><span>${L("Asgari artış","Min. increment")}</span><b>${cfT(a.min_increment)}</b></div>
-    ${a.terms?`<div class="sec-t" style="margin:14px 0 6px">${L("Koşullar ve haklar","Terms & rights")}</div><p class="about" style="margin:0;font-size:13.5px">${esc(a.terms)}</p>`:""}
+    ${a.terms?`<div class="sec-t" style="margin:14px 0 6px">${L("Koşullar ve haklar","Terms & rights")}</div><p class="about" style="margin:0;font-size:13.5px">${esc(aTm(a))}</p>`:""}
     <div class="sec-t" style="margin:18px 0 6px">${L("Teklif geçmişi","Bid history")} <span class="muted" style="font-weight:500">· ${nfmt(a.bid_count)}</span></div>
     ${a.bids.length?a.bids.map((b,i)=>`<div class="auc-bid${i?"":" top"}${b.mine?" mine":""}"><span>${i?"":"👑 "}@${esc(b.username)}${b.mine?L(" (sen)"," (you)"):""}</span><small>${new Date(b.created_at).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",second:"2-digit"})}</small><b>${cfT(b.amount)}</b></div>`).join(""):`<div class="hint">${L("Henüz teklif yok. İlk teklifi sen ver.","No bids yet. Be the first.")}</div>`}
     ${st.admin?`<label class="btn btn-ghost full" style="display:block;text-align:center;color:var(--fg);margin-top:16px">🖼 ${L("Görseli değiştir","Change image")}<input type="file" accept="image/*" data-aucimg="${a.id}" hidden></label>`:""}
@@ -2907,7 +2938,7 @@ function openMyAuc(){myAucTab="active";$("myAucList").innerHTML=`<div class="emp
 function renderMyAuc(){[...$("myAucTabs").children].forEach(b=>b.classList.toggle("on",b.dataset.mt===myAucTab));
   const f={active:a=>a.my_bid!=null&&a.status!=="ended",won:a=>a.status==="ended"&&a.i_won,lost:a=>a.status==="ended"&&a.my_bid!=null&&!a.i_won,watch:a=>a.watching}[myAucTab],list=MYA.filter(f);
   $("myAucList").innerHTML=list.length?list.map(a=>{const c=aucCur(a),stt=a.status==="ended"?(a.i_won?L("Kazandın","Won"):L("Kaybettin","Lost")):a.status==="paused"?L("Durduruldu","Paused"):a.my_bid==null?L("İzleniyor","Watching"):a.i_lead?L("En yüksek teklif","Leading"):L("Teklifin geçildi","Outbid");
-    return `<div class="my-auc" data-auc="${a.id}">${aucImg(a,"sm")}<div class="mid"><b>${esc(a.title)}</b>${a.my_bid!=null?`<small>${L("Teklifin","Your Bid")}: ${cfT(a.my_bid)}</small>`:""}<small>${a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current Bid")}: ${c!=null?cfT(c):"—"}</small><small>${L("Durum","Status")}: <span class="${a.i_lead||a.i_won?"up":a.my_bid!=null?"down":""}">${stt}</span> · <span data-auct="${a.id}">${aucLeft(a)}</span></small></div>
+    return `<div class="my-auc" data-auc="${a.id}">${aucImg(a,"sm")}<div class="mid"><b>${esc(aT(a))}</b>${a.my_bid!=null?`<small>${L("Teklifin","Your Bid")}: ${cfT(a.my_bid)}</small>`:""}<small>${a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current Bid")}: ${c!=null?cfT(c):"—"}</small><small>${L("Durum","Status")}: <span class="${a.i_lead||a.i_won?"up":a.my_bid!=null?"down":""}">${stt}</span> · <span data-auct="${a.id}">${aucLeft(a)}</span></small></div>
       ${a.status==="live"&&a.my_bid!=null&&!a.i_lead?`<button type="button" class="comm-btn" data-bid="${a.id}">${L("Teklifi artır","Increase Bid")}</button>`:a.status==="live"&&a.my_bid==null?`<button type="button" class="comm-btn" data-bid="${a.id}">Bid</button>`:""}</div>`}).join(""):`<div class="empty" style="padding:26px 10px">${{active:L("Aktif teklifin yok.","No active bids."),won:L("Henüz kazandığın açık artırma yok.","No won auctions yet."),lost:L("Kaybettiğin açık artırma yok.","No lost auctions."),watch:L("İzleme listen boş. Bir açık artırmada ★ simgesine dokun.","Your watchlist is empty. Tap ★ on an auction.")}[myAucTab]}</div>`}
 $("myAucTabs").addEventListener("click",e=>{const b=e.target.closest("[data-mt]");if(b){myAucTab=b.dataset.mt;renderMyAuc()}});
 // ortak tıklamalar
