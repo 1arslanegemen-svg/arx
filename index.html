@@ -1526,6 +1526,7 @@ var I18N=(function(){
     [/^(\d+) dk$/,function(m,a){return a+" min"}],
     [/^Satış \(% (.+)\)$/,function(m,a){return "Sell (% of "+a+")"}],
     [/^Hacim (.+) · 30g (.+) · 24s (.+)$/,function(m,a,b,c){return "Volume "+a+" · 30d "+b+" · 24h "+c}],
+    [/^(\$[^ ]+) · 30g (.+) · 24s (.+)$/,function(m,a,b,c){return a+" · 30d "+b+" · 24h "+c}],
     [/^(.+) hacim: ödül (.+) · toplam (.+)$/,function(m,a,b,c){return a+" volume: reward "+b+" · total "+c}],
     [/^(.+) hacim: toplam ödül (.+) \/ en fazla (.+?)( \(fazla, düşür\))?$/,function(m,a,b,c,d){return a+" volume: total reward "+b+" / max "+c+(d?" (too much, lower it)":"")}],
     [/^(.+) kaldı$/,"$1 to go"],
@@ -2670,7 +2671,7 @@ async function renderAdmUser(){const b=$("admBody");b.innerHTML=`<div class="xf-
   b.innerHTML=`<div class="xf-h"><button type="button" class="xf-back" data-admback aria-label="Geri">${BACK}</button><h3>@${esc(u.username)}</h3>${vipTag(u.id)}</div>
     <div class="adm-kv"><span>E-posta</span><b>${esc(u.email||"—")}</b><span>Katılım</span><b>${dt(u.created_at)}</b><span>Son giriş</span><b>${dt(u.last_sign_in_at)}</b>
       <span>Nakit (USDT)</span><b>${usd(+u.usdt)}</b><span>Toplam varlık</span><b>${usd(+u.equity)}</b><span>Kartla yatırılan</span><b>${usd(+u.real_deposited)}</b><span>Çekilen</span><b>${usd(+u.real_withdrawn)}</b>
-      <span>İşlem</span><b>${nfmt(u.trades)} · son ${dt(u.last_trade)}</b><span>Açık vadeli</span><b>${nfmt(u.open_positions)}</b><span>Gönderi</span><b>${nfmt(u.posts)}</b>
+      <span>İşlem</span><b>${nfmt(u.trades)} · son ${dt(u.last_trade)}</b><span>Hacim</span><b id="admVol">…</b><span>Açık vadeli</span><b>${nfmt(u.open_positions)}</b><span>Gönderi</span><b>${nfmt(u.posts)}</b>
       <span>Gerçek takip</span><b>${nfmt(u.following)} takip · ${nfmt(u.followers)} takipçi</b></div>
     <div class="adm-acts"><button type="button" data-admopen="${u.id}">👤 Profili aç</button><button type="button" data-admdep="${esc(u.username)}">💵 Bakiye yükle</button><button type="button" data-admban="1">🖼 Banner'ı kaldır</button></div>
     <div class="adm-kv"><span>Çekim / gönderim</span><b style="color:${u.on_hold?"#ff6b6b":"#3ddc97"}">${u.on_hold?"🔒 Durduruldu":"✅ Açık"}</b></div>
@@ -2682,7 +2683,8 @@ async function renderAdmUser(){const b=$("admBody");b.innerHTML=`<div class="xf-
       <div class="grid2" style="margin:0"><div><label>Ek takipçi</label><input id="aeFb" inputmode="numeric" value="${+u.follower_bonus||0}"></div><div><label>Ek takip</label><input id="aeGb" inputmode="numeric" value="${+u.following_bonus||0}"></div></div>
       ${u.badge==="ceo"?"":`<label class="adm-chk"><input type="checkbox" id="aeVip" ${u.badge==="vip"?"checked":""}> VIP++ rozeti</label>`}
       ${u.avatar_url?`<label class="adm-chk"><input type="checkbox" id="aeAv"> Profil fotoğrafını kaldır</label>`:""}
-      <div class="err" id="aeErr"></div><button type="button" class="btn btn-accent full" id="aeGo" style="margin-top:10px">Kaydet</button></div>`}
+      <div class="err" id="aeErr"></div><button type="button" class="btn btn-accent full" id="aeGo" style="margin-top:10px">Kaydet</button></div>`;
+  sb.rpc("admin_user_volume",{p_id:u.id}).then(({data,error})=>{const e=$("admVol");if(!e)return;e.textContent=error||!data?"—":`${usd(+data.total)} · 30g ${big(+data.d30)} · 24s ${big(+data.d1)}`})}
 $("admBody").addEventListener("click",e=>{
   const a=e.target.closest("[data-adm]");if(a){const k=a.dataset.adm;openSheet(k);return}
   const u=e.target.closest("[data-admu]");if(u){admUser=u.dataset.admu;admView="user";renderAdmin();return}
