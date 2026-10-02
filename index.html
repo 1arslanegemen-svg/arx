@@ -1141,6 +1141,8 @@ nav.bar button svg{width:22px;height:22px}
   </div>
 
   <div id="rBoard" hidden>
+    <div class="seg" id="lbKind" style="margin-top:12px"><button type="button" data-lk="pnl" class="on" data-en="Total profit">Toplam kâr</button><button type="button" data-lk="auc">Auctions</button></div>
+    <div id="lbPnl">
     <div class="r-filter">
       <div class="r-dd"><button type="button" id="ddBtn" aria-haspopup="listbox" aria-expanded="false"><span id="ddVal">Tümü</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="r-menu" id="ddMenu" role="listbox" hidden><button type="button" data-dd="all" class="on">Tümü</button><button type="button" data-dd="friends">Takip ettiklerim</button></div>
@@ -1156,6 +1158,8 @@ nav.bar button svg{width:22px;height:22px}
     </div>
     <div id="lbList"></div>
     <p class="muted" style="font-size:12px;margin:16px 0 0">Kâr = toplam portföy değeri − yüklenen bakiye − ödüller. Sadece bakiye yüklemiş kullanıcılar listelenir.</p>
+</div>
+    <div id="aucLB" hidden></div>
   </div>
 
   <div id="rFriends" hidden>
@@ -1174,7 +1178,7 @@ nav.bar button svg{width:22px;height:22px}
   <div class="auc-wal"><div><small data-en="CF Balance">CF Bakiyesi</small><b><svg class="cf-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#a78bfa"/><text x="12" y="15.6" text-anchor="middle" font-size="9.5" font-weight="900" fill="#120b24" font-family="Inter,Arial,sans-serif">CF</text></svg><span data-cfbal>0 CF</span></b></div>
     <div class="auc-wal-b"><button type="button" class="btn btn-ghost" data-open="myauc">My Auctions</button><button type="button" class="btn btn-accent" data-buycf>Buy CF</button></div></div>
   <div id="aucList"><div class="empty">Yükleniyor…</div></div>
-  <div id="aucLB"></div>
+  <button type="button" class="ed-ban" id="aucToLB" style="margin-top:8px"><span style="font-size:20px">🏆</span><b>Auctions Leaderboard<small style="display:block;font-weight:500;color:var(--muted)" data-en="Sold assets, most expensive first">Satılan varlıklar, en pahalıdan en ucuza</small></b><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></button>
 </div>
 <div class="screen" id="s-profile" hidden>
   <div class="cols p-cols"><div class="col-a">
@@ -2826,14 +2830,18 @@ function renderAuctions(){const live=AUC.filter(a=>a.status!=="ended"),done=AUC.
   document.querySelectorAll("#aucList .auc-card").forEach(c=>{const a=AUC.find(x=>x.id===c.dataset.auc),k=a?a.id+"|"+(a.image||"").length:"",im=c.querySelector(".auc-img");if(!im)return;if(aucImgs[k]&&aucImgs[k]!==im)im.replaceWith(aucImgs[k]);else aucImgs[k]=im})}
 const aucImgs={};
 function aucTickUI(){document.querySelectorAll("[data-auct]").forEach(e=>{const a=(aucData&&aucData.id===e.dataset.auct?aucData:null)||AUC.find(x=>x.id===e.dataset.auct)||MYA.find(x=>x.id===e.dataset.auct);if(a){e.textContent=aucLeft(a);e.classList.toggle("soon",a.status==="live"&&Date.parse(a.ends_at)-aucNow()<3e5)}})}
-function aucStart(){clearInterval(aucPoll);clearInterval(aucClock);aucClock=setInterval(aucTickUI,1000);aucPoll=setInterval(()=>{if(document.hidden)return;if(aucOpen)loadAuc(aucOpen,true);else if(view==="auction"){loadAuctions(true);loadAucLB()}else if(openId!=="myauc"){clearInterval(aucPoll);clearInterval(aucClock)}},5000)}
+function aucStart(){clearInterval(aucPoll);clearInterval(aucClock);aucClock=setInterval(aucTickUI,1000);aucPoll=setInterval(()=>{if(document.hidden)return;if(aucOpen)loadAuc(aucOpen,true);else if(view==="auction")loadAuctions(true);else if(openId!=="myauc"){clearInterval(aucPoll);clearInterval(aucClock)}},5000)}
 let ALB=[],albSig="";
 const rkCls=r=>r===1?"r1":r===2?"r2":r===3?"r3":r<=10?"r10":"rx";
 async function loadAucLB(){const r=await sb.rpc("auction_leaderboard");if(r.error)return;ALB=r.data||[];const sg=JSON.stringify(ALB.map(x=>[x.id,x.rank,x.price_cf,x.price_usd]))+LANG;if(sg===albSig)return;albSig=sg;
-  $("aucLB").innerHTML=ALB.length?`<div class="sec-t" style="margin:24px 0 4px">🏆 Leaderboard</div><div class="sub" style="margin-bottom:8px">${L("Satılan varlıklar, en pahalıdan en ucuza.","Sold assets, most expensive first.")}</div>`+ALB.map(x=>`<div class="alb" data-auc="${x.id}"><span class="alb-rk ${rkCls(+x.rank)}">${x.rank}</span>${aucImg(x,"sm wl")}<div class="mid"><b>${esc(x.title)}</b><small>@${esc(x.winner)}</small></div><div class="rt"><b>${CFI}${cfT(x.price_cf)}</b><small>${usd(+x.price_usd)}</small></div></div>`).join(""):""}
+  $("aucLB").innerHTML=ALB.length?`<div class="sub" style="margin:4px 0 8px">${L("Satılan varlıklar, en pahalıdan en ucuza.","Sold assets, most expensive first.")}</div>`+ALB.map(x=>`<div class="alb" data-auc="${x.id}"><span class="alb-rk ${rkCls(+x.rank)}">${x.rank}</span>${aucImg(x,"sm wl")}<div class="mid"><b>${esc(x.title)}</b><small>@${esc(x.winner)}</small></div><div class="rt"><b>${CFI}${cfT(x.price_cf)}</b><small>${usd(+x.price_usd)}</small></div></div>`).join(""):`<div class="empty" style="padding:30px 10px">${L("Henüz satılan bir varlık yok.","No assets sold yet.")}</div>`}
+let lbKind="pnl";
+function setLbKind(k){lbKind=k;[...$("lbKind").children].forEach(b=>b.classList.toggle("on",b.dataset.lk===k));$("lbPnl").hidden=k!=="pnl";$("aucLB").hidden=k!=="auc";if(k==="auc"){albSig="";loadAucLB()}}
+$("lbKind").addEventListener("click",e=>{const b=e.target.closest("[data-lk]");if(b)setLbKind(b.dataset.lk)});
+$("aucToLB").onclick=()=>{go("rank");$("rTabs").querySelector('[data-rt="board"]').click();setLbKind("auc")};
 function paHTML(list){return list.length?`<div class="sec-t" style="margin:14px 0 2px;font-size:15px">Auctions <span class="muted" style="font-weight:500">· ${list.length}</span></div><div class="pa-rail">${list.map(x=>`<button type="button" class="pa ${rkCls(+x.rank)}" data-auc="${x.id}" title="${esc(x.title)}">${aucImg(x,"pa-img")}<span class="pa-rk">#${x.rank}</span><em>${cfT(x.price_cf)}</em></button>`).join("")}</div>`:""}
 async function loadPA(uid,el){const r=await sb.rpc("user_auctions",{p_user:uid});const e=$(el);if(!e||r.error)return;if(el==="upAucs"&&userOpen!==uid)return;const h=paHTML(r.data||[]);if(e.dataset.h!==h){e.dataset.h=h;e.innerHTML=h}}
-function showAuction(){loadCF();loadAuctions();loadAucLB();aucStart()}
+function showAuction(){loadCF();loadAuctions();aucStart()}
 // detay
 function openAuc(id){closeSheet();aucOpen=id;aucData=null;$("aucBody").innerHTML=`<div class="empty" style="margin-top:40px">${L("Yükleniyor…","Loading…")}</div>`;$("aucPage").hidden=false;$("aucPage").scrollTop=0;document.documentElement.style.overflow="hidden";loadAuc(id);aucStart()}
 function closeAuc(){if($("aucPage").hidden)return;$("aucPage").hidden=true;aucOpen=null;aucData=null;document.documentElement.style.overflow="";if(view==="auction")loadAuctions(true)}
