@@ -931,7 +931,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 .auc-card{position:relative;border-radius:22px;overflow:hidden;background:var(--surface);border:1px solid var(--line);margin-bottom:16px;cursor:pointer}
 .auc-img{position:relative;aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden}.auc-img span{font-family:var(--display);font-size:54px;font-weight:800;color:rgba(255,255,255,.35)}
 .auc-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.auc-img.big{border-radius:22px;aspect-ratio:1}.auc-img.sm{width:64px;height:64px;aspect-ratio:1;border-radius:14px;flex:none}.auc-img.sm span{font-size:22px}
+.auc-img.big{border-radius:22px;aspect-ratio:1}.auc-img.sm{width:64px;height:64px;aspect-ratio:1;border-radius:14px;flex:none}.auc-img.sm span{font-size:22px}.auc-img.wl{width:40px;height:40px;border-radius:12px}.auc-img.wl span{font-size:16px}
 .auc-star{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;background:rgba(10,13,20,.6);backdrop-filter:blur(6px);color:#fff;font-size:18px;display:grid;place-items:center}.auc-star.on{color:#f2c14e}
 .auc-b{padding:14px 16px 16px}.auc-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.auc-top small{color:var(--muted);font-size:12px;letter-spacing:.03em;text-transform:uppercase}
 .auc-b h4{margin:6px 0 12px;font-size:17px;line-height:1.3}.auc-h{margin:6px 0 12px;font-size:23px;line-height:1.25;overflow-wrap:anywhere}
@@ -1921,7 +1921,9 @@ function renderList(){
   $("chips").hidden=tab==="watch";
   $("noteText").innerHTML=EN?(tab==="perps"?"Go long or short with <b>up to 50x</b> leverage. Tap a token.":tab==="watch"?"Tokens you star are listed here.":"<b>0.08% fee</b> — the lowest on major coins."):tab==="perps"?"<b>50x'e kadar</b> kaldıraçla long ya da short aç. Bir tokene dokun.":tab==="watch"?"Yıldızladığın tokenler burada listelenir.":"<b>%0,08 komisyon</b> ile büyük coinlerde en düşük ücret.";
   renderPerpPos();
-  $("tokList").innerHTML=arr.length?arr.map(t=>tokRow(t,{perp:tab==="perps"})).join(""):`<div class="empty">İzleme listen boş.<br>Bir tokenin sayfasında yıldıza dokunarak ekle.</div>`;
+  const wa=tab==="watch"?MYA.filter(a=>a.watching):[];
+  $("tokList").innerHTML=(arr.length?arr.map(t=>tokRow(t,{perp:tab==="perps"})).join(""):"")+(wa.length?`<div class="sec-t" style="margin:16px 0 8px">CF Auction</div>`+wa.map(a=>{const c=aucCur(a);return `<div class="tok" data-auc="${a.id}" role="button" tabindex="0">${aucImg(a,"sm wl")}<div class="mid"><div class="sym">${esc(a.title)}</div><div class="sub">${a.status==="ended"?L("Sona erdi","Ended"):aucLeft(a)}</div></div><div class="rt"><div class="px">${c!=null?cfT(c):cfT(a.start_price)}</div><div class="sub">${c!=null?(a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current bid")):L("Başlangıç","Starting bid")}</div></div></div>`}).join(""):"")
+    ||`<div class="empty">İzleme listen boş.<br>Bir tokenin sayfasında yıldıza dokunarak ekle.</div>`;
 }
 
 // ---------- detail
@@ -2096,7 +2098,7 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
       ot:(x.kind==="buy"||x.kind==="sell")&&x.note&&x.note!=="Piyasa"?x.note:"",
       txt:x.kind==="deposit"||x.kind==="withdraw_refund"?(x.note||""):x.kind==="swap"?(x.note||"")+" takas":x.kind==="perp_open"?`${x.symbol} ${x.note||""} açıldı`:x.kind==="perp_close"?`${x.symbol} pozisyonu kapatıldı`:x.kind==="liquidation"?`${x.symbol} likide oldu`:x.kind==="reward"?(String(x.note||"").startsWith("Kampanya")?x.note:rewardName(x.note)):x.kind==="cf_spend"?(x.note||""):""}));
     st.friendsP=fp;st.friends=fp.map(p=>p.username);st.followers=fer;
-    st.admin=adm;st.campMgr=cmg;st.auto=aut||[];st.banner=bnr||"";st.vol=vol;loadCF();st.frame=tierOk(frm)?frm:"";st.camps=(cmp||[]).map(c=>({...c,my_volume:+c.my_volume,participants:+c.participants,tiers:Array.isArray(c.tiers)?c.tiers:[],claimed:c.claimed||[]}));st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
+    st.admin=adm;st.campMgr=cmg;st.auto=aut||[];st.banner=bnr||"";st.vol=vol;loadCF();sb.rpc("my_auctions").then(r=>{if(!r.error){MYA=r.data||[];if(MYA[0])aucOff=Date.parse(MYA[0].now)-Date.now();if(view==="home"&&tab==="watch")renderList()}});st.frame=tierOk(frm)?frm:"";st.camps=(cmp||[]).map(c=>({...c,my_volume:+c.my_volume,participants:+c.participants,tiers:Array.isArray(c.tiers)?c.tiers:[],claimed:c.claimed||[]}));st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
     for(const k in PCH)PCH[k].t=0;
     if(prof){st.prof={fb:+prof.follower_bonus||0,gb:+prof.following_bonus||0,name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1,avatar:prof.avatar_url||""};st.onboarded=prof.onboarded}
   }catch(err){console.error(err);toast("Veriler yüklenemedi: "+errText(err))}
@@ -2782,7 +2784,7 @@ $("adScan").onclick=async()=>{qrStop();const b=$("adQRBox");b.dataset.k="scan";b
 const L=(tr,en)=>EN?en:tr;
 const CFI=`<svg class="cf-ic" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="cfg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#5ee0c4"/></linearGradient></defs><circle cx="12" cy="12" r="11" fill="url(#cfg)"/><circle cx="12" cy="12" r="8.4" fill="none" stroke="#120b24" stroke-opacity=".35" stroke-width="1"/><text x="12" y="15.6" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9.5" font-weight="900" fill="#120b24">CF</text></svg>`;
 const cfN=v=>fmtN(+v||0,(+v||0)%1?2:0),cfT=v=>`${cfN(v)} CF`;
-let CF=null,AUC=[],aucOpen=null,aucData=null,aucOff=0,aucPoll=0,aucClock=0,myAucTab="active",MYA=[];
+var CF=null,AUC=[],aucOpen=null,aucData=null,aucOff=0,aucPoll=0,aucClock=0,myAucTab="active",MYA=[];
 async function loadCF(){const r=await sb.rpc("cf_info");if(!r.error&&r.data){CF=r.data;renderCF()}return CF}
 function renderCF(){const a=CF?+CF.available:0;document.querySelectorAll("[data-cfbal]").forEach(e=>e.textContent=cfT(a));const h=$("homeCF");if(h)h.hidden=!CF}
 const aucNow=()=>Date.now()+aucOff;
@@ -2869,7 +2871,7 @@ function renderMyAuc(){[...$("myAucTabs").children].forEach(b=>b.classList.toggl
 $("myAucTabs").addEventListener("click",e=>{const b=e.target.closest("[data-mt]");if(b){myAucTab=b.dataset.mt;renderMyAuc()}});
 // ortak tıklamalar
 document.addEventListener("click",async e=>{
-  const w=e.target.closest("[data-aucw]");if(w){e.stopPropagation();const r=await call("toggle_watch",{p_id:w.dataset.aucw});if(r.err)return;toast(r.data?L("İzleme listesine eklendi","Added to watchlist"):L("İzleme listesinden çıkarıldı","Removed from watchlist"));if(aucOpen)loadAuc(aucOpen,true);if(view==="auction")loadAuctions(true);if(openId==="myauc")loadMyAuc();return}
+  const w=e.target.closest("[data-aucw]");if(w){e.stopPropagation();const r=await call("toggle_watch",{p_id:w.dataset.aucw});if(r.err)return;toast(r.data?L("İzleme listesine eklendi","Added to watchlist"):L("İzleme listesinden çıkarıldı","Removed from watchlist"));if(aucOpen)loadAuc(aucOpen,true);if(view==="auction")loadAuctions(true);await loadMyAuc();if(view==="home")renderList();return}
   const b=e.target.closest("[data-bid]");if(b){e.stopPropagation();const id=b.dataset.bid;if(openId==="myauc"){closeSheet();aucOpen=id;aucData=null;$("aucPage").hidden=false;document.documentElement.style.overflow="hidden";await loadAuc(id)}openBid(id);return}
   const ac=e.target.closest("[data-auca]");if(ac&&aucOpen){const k=ac.dataset.auca;if((k==="end"||k==="cancel")&&ac.dataset.sure!=="1"){ac.dataset.sure="1";ac.textContent=L("Emin misin?","Are you sure?");return}
     busy(ac,async()=>{const r=await call("admin_auction_action",{p_id:aucOpen,p_action:k},"aucaErr");if(r.err)return;toast(L("İşlem tamam","Done"));if(k==="cancel"){closeAuc();loadAuctions(true)}else loadAuc(aucOpen)});return}
