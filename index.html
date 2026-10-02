@@ -148,7 +148,7 @@ h2{font-size:20px;font-weight:700;margin:6px 0 14px;text-wrap:balance}
 .empty{text-align:center;color:var(--muted);padding:40px 10px;font-size:14px;line-height:1.5}
 
 /* nav */
-nav.bar{position:fixed;left:0;right:0;margin-inline:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(428px,calc(100% - 32px));background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:28px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:6px;box-shadow:var(--shadow);z-index:20}
+nav.bar{position:fixed;left:0;right:0;margin-inline:auto;bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(428px,calc(100% - 32px));background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:28px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding:6px;box-shadow:var(--shadow);z-index:20}
 nav.bar button{height:52px;border-radius:22px;display:grid;place-items:center;color:var(--muted)}
 nav.bar button svg{width:24px;height:24px}
 nav.bar button.on{background:var(--surface2);color:var(--fg)}
@@ -920,6 +920,39 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 .qr-cam{position:relative;width:min(100%,280px);aspect-ratio:1;margin:10px auto 6px;border-radius:18px;overflow:hidden;background:#000}
 .qr-cam video{width:100%;height:100%;object-fit:cover;display:block}
 .qr-cam i{position:absolute;inset:14%;border:3px solid var(--accent-2);border-radius:14px;box-shadow:0 0 0 999px rgba(0,0,0,.35)}
+.cf-ic{width:18px;height:18px;vertical-align:-3px;margin-right:5px;flex:none}
+.cf-row{display:inline-flex;align-items:center;gap:2px;margin-top:8px;padding:6px 10px;border-radius:999px;background:var(--surface2);font-size:13px;font-weight:700;color:var(--fg)}.cf-row em{font-style:normal;color:var(--accent);margin-left:8px;font-size:12px}
+.auc-hero{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:18px;border-radius:22px;margin-bottom:12px;background:radial-gradient(120% 140% at 100% 0%,rgba(94,224,196,.22),transparent 60%),radial-gradient(120% 140% at 0% 100%,rgba(167,139,250,.28),transparent 60%),var(--surface);border:1px solid var(--line)}
+.auc-hero h1{margin:0;font-family:var(--display);font-size:24px;letter-spacing:.06em;background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.auc-hero p{margin:6px 0 4px;font-size:14px;color:var(--fg)}.auc-hero small{color:var(--muted);font-size:12px;letter-spacing:.04em}
+.auc-wal{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);margin-bottom:16px}
+.auc-wal small{display:block;color:var(--muted);font-size:12px}.auc-wal b{display:flex;align-items:center;font-size:18px;margin-top:2px}
+.auc-wal-b{display:flex;gap:8px}.auc-wal-b .btn{padding:10px 12px;margin:0;font-size:13px}
+.auc-card{position:relative;border-radius:22px;overflow:hidden;background:var(--surface);border:1px solid var(--line);margin-bottom:16px;cursor:pointer}
+.auc-img{position:relative;aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden}.auc-img span{font-family:var(--display);font-size:54px;font-weight:800;color:rgba(255,255,255,.35)}
+.auc-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.auc-img.big{border-radius:22px;aspect-ratio:1}.auc-img.sm{width:64px;height:64px;aspect-ratio:1;border-radius:14px;flex:none}.auc-img.sm span{font-size:22px}
+.auc-star{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;background:rgba(10,13,20,.6);backdrop-filter:blur(6px);color:#fff;font-size:18px;display:grid;place-items:center}.auc-star.on{color:#f2c14e}
+.auc-b{padding:14px 16px 16px}.auc-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.auc-top small{color:var(--muted);font-size:12px;letter-spacing:.03em;text-transform:uppercase}
+.auc-b h4{margin:6px 0 12px;font-size:17px;line-height:1.3}.auc-h{margin:6px 0 12px;font-size:23px;line-height:1.25;overflow-wrap:anywhere}
+.auc-px{display:flex;justify-content:space-between;align-items:flex-end;gap:10px}.auc-px small,.auc-now small{display:block;color:var(--muted);font-size:12px;margin-bottom:2px}
+.auc-px b{display:flex;align-items:center;font-size:22px;font-variant-numeric:tabular-nums}.auc-px span{font-weight:600;color:var(--muted)}.auc-px div:last-child{text-align:right}
+.auc-meta{display:flex;justify-content:space-between;gap:8px;margin:12px 0;font-size:13px;color:var(--muted)}
+.auc-t{font-variant-numeric:tabular-nums;font-weight:700;color:var(--fg)}.auc-t.soon{color:var(--down)}
+.auc-tag{font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;white-space:nowrap;display:inline-flex;align-items:center;gap:5px}
+.auc-tag.live{background:rgba(60,207,142,.14);color:var(--up)}.auc-tag.live i{width:6px;height:6px;border-radius:50%;background:var(--up);animation:auPulse 1.6s infinite}
+.auc-tag.lead{background:var(--accent-soft);color:var(--accent)}.auc-tag.out{background:rgba(255,107,94,.14);color:var(--down)}.auc-tag.end{background:var(--surface2);color:var(--muted)}.auc-tag.won{background:rgba(242,193,78,.18);color:#f2c14e}
+.auc-now{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.auc-now b{display:flex;align-items:center;font-size:20px;font-variant-numeric:tabular-nums}.auc-now em{display:block;font-style:normal;color:var(--muted);font-size:12.5px;margin-top:2px}.auc-now div:last-child b{font-size:15px}
+.auc-won{margin-top:12px;padding:14px;border-radius:16px;background:rgba(242,193,78,.12);border:1px solid rgba(242,193,78,.4);text-align:center;line-height:1.5}
+.auc-bid{display:grid;grid-template-columns:1fr auto;gap:0 10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}.auc-bid small{grid-column:1;color:var(--muted);font-size:12px}.auc-bid b{grid-column:2;grid-row:1/3;align-self:center;font-variant-numeric:tabular-nums}
+.auc-bid.top b{color:var(--up);font-size:16px}.auc-bid.mine span{color:var(--accent);font-weight:700}
+.bid-kv b{display:flex;align-items:center;justify-content:flex-end;font-size:15px}
+.my-auc{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);cursor:pointer}.my-auc .mid{flex:1;min-width:0}.my-auc .mid b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.my-auc small{display:block;color:var(--muted);font-size:12.5px}
+.an-prev{width:72px;height:72px;border-radius:14px;background:var(--bg);border:1px dashed var(--line);overflow:hidden;flex:none}.an-prev img{width:100%;height:100%;object-fit:cover}
+.won-box{border-color:rgba(242,193,78,.5)}.won-cup{font-size:54px;animation:wonPop .6s ease-out}.won-box h3{letter-spacing:.08em;color:#f2c14e}
+@keyframes wonPop{from{transform:scale(.3) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
+nav.bar button svg{width:22px;height:22px}
 </style>
 
 </head>
@@ -995,6 +1028,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
             <button type="button" data-cur="AED"><b>د.إ</b><span>AED</span><small>BAE Dirhemi</small></button>
           </div></div></div>
       <button type="button" class="bal-chg" id="balChg" data-open="pnl">-- 24s</button>
+      <button type="button" class="cf-row" id="homeCF" data-buycf hidden><svg class="cf-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#a78bfa"/><text x="12" y="15.6" text-anchor="middle" font-size="9.5" font-weight="900" fill="#120b24" font-family="Inter,Arial,sans-serif">CF</text></svg><span data-cfbal>0 CF</span><em>+ Buy CF</em></button>
     </div>
     <div class="bal-acts"><button class="btn btn-accent" type="button" data-open="recv">Yatır</button><button class="btn btn-ghost" type="button" data-open="withdraw">Çek</button><button class="btn btn-ghost" type="button" data-open="send">Gönder</button></div>
   </div>
@@ -1119,6 +1153,13 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 </div>
 
 <!-- PROFILE -->
+<div class="screen" id="s-auction" hidden>
+  <div class="auc-hero"><div><h1>CF AUCTION</h1><p>Rare Digital Assets. Real-Time Bidding.</p><small>Powered by CF Token</small></div>
+    <button type="button" class="r-link" id="aucNew" data-open="aucnew" hidden>+ Create Auction</button></div>
+  <div class="auc-wal"><div><small data-en="CF Balance">CF Bakiyesi</small><b><svg class="cf-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#a78bfa"/><text x="12" y="15.6" text-anchor="middle" font-size="9.5" font-weight="900" fill="#120b24" font-family="Inter,Arial,sans-serif">CF</text></svg><span data-cfbal>0 CF</span></b></div>
+    <div class="auc-wal-b"><button type="button" class="btn btn-ghost" data-open="myauc">My Auctions</button><button type="button" class="btn btn-accent" data-buycf>Buy CF</button></div></div>
+  <div id="aucList"><div class="empty">Yükleniyor…</div></div>
+</div>
 <div class="screen" id="s-profile" hidden>
   <div class="cols p-cols"><div class="col-a">
   <div class="p-band" id="pBand">
@@ -1165,6 +1206,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
     </div>
     <div class="promo-art" id="promoArt" aria-hidden="true"></div>
   </div>
+  <button type="button" class="ed-ban" data-open="myauc" style="margin:0 0 12px"><span style="font-size:20px">🔨</span><b>My Auctions<small style="display:block;font-weight:500;color:var(--muted)">Active Bids · Won · Lost · Watchlist</small></b><b data-cfbal style="flex:none;font-size:13px">0 CF</b></button>
   <div class="grid2 p-dep"><button class="btn btn-accent" type="button" data-open="recv">Yatır</button><button class="btn btn-ghost" type="button" data-open="send">Gönder</button></div>
   </div></div>
 </div>
@@ -1181,6 +1223,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   <button type="button" data-go="search" aria-label="Keşfet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4" stroke-linecap="round"/></svg></button>
   <button type="button" class="mid-btn" data-open="swap" aria-label="Takas"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v14M3 14l4 4 4-4M17 20V6M13 10l4-4 4 4"/></svg></span></button>
   <button type="button" data-go="rank" aria-label="Sıralama"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.6"/><path d="M17 14.5c2.4 0 4 1.5 4.5 4"/></svg></button>
+  <button type="button" data-go="auction" aria-label="Auction"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4l6 6M11 7l6 6M12.5 5.5l-6 6M9.5 14.5l-6 6M4 20.5h9M13.5 9.5l-4 4"/></svg></button>
   <button type="button" data-go="profile" aria-label="Hesabım"><span class="nav-av" id="navAv">E</span></button>
 </nav>
 
@@ -1192,6 +1235,9 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
   </div>
 </div>
 
+<div class="upage" id="aucPage" hidden role="dialog" aria-label="CF Auction">
+  <div class="upage-in"><div class="back-row"><button class="icon-btn" type="button" id="aucBack" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button></div><div id="aucBody"></div></div>
+</div>
 <div class="upage" id="commPage" hidden role="dialog" aria-label="Topluluk">
   <div class="upage-in">
     <div class="back-row"><button class="icon-btn" type="button" id="commBack" aria-label="Geri"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button></div>
@@ -1442,6 +1488,42 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 <div class="sheet" id="sh-recv" role="dialog" aria-label="Kripto yatır"><div class="grab"></div><div id="recvBody"></div></div>
 <div class="sheet" id="sh-send" role="dialog" aria-label="Kripto gönder"><div class="grab"></div><div id="sendBody"></div></div>
 
+<div class="sheet" id="sh-bid" role="dialog" aria-label="Bid">
+  <div class="grab"></div><h3>Place a Bid</h3><div class="sub" id="bidT"></div>
+  <div class="adm-kv bid-kv"><span data-en="Current Bid">Güncel teklif</span><b id="bidCur"></b><span data-en="Minimum Next Bid">En düşük sonraki teklif</span><b id="bidMin"></b><span data-en="Your Balance">Bakiyen</span><b id="bidBal"></b></div>
+  <div id="bidForm"><label class="fld"><span data-en="Your bid (CF)">Teklifin (CF)</span><input id="bidAmt" inputmode="decimal"></label></div>
+  <div id="bidConf" class="wd-info" hidden><span id="bidConfT"></span><div style="margin-top:10px"><button type="button" class="r-link" id="bidBack" data-en="← Change amount">← Tutarı değiştir</button></div></div>
+  <div id="bidShort" class="au-warn" hidden><b>Insufficient CF Balance</b><br><span data-en="Your balance is not enough to place this bid.">Bakiyen bu teklifi vermek için yeterli değil.</span><button type="button" class="btn btn-accent full" data-buycf style="margin-top:10px">Buy CF</button></div>
+  <div class="err" id="bidErr"></div>
+  <button class="btn btn-accent full" type="button" id="bidGo">Devam</button>
+</div>
+<div class="sheet" id="sh-cf" role="dialog" aria-label="Buy CF">
+  <div class="grab"></div><h3>Buy CF Token</h3><div class="sub" data-en="CF Token is bought with your USDT balance and used for bids in CF Auction.">CF Token, USDT bakiyenle alınır ve CF Auction'da teklif vermek için kullanılır.</div>
+  <div class="adm-kv bid-kv"><span data-en="Rate">Kur</span><b id="cfRate"></b><span data-en="Your CF">CF bakiyen</span><b id="cfHave"></b><span data-en="USDT balance">USDT bakiyen</span><b id="cfUsd"></b></div>
+  <label class="fld"><span data-en="Amount (CF)">Miktar (CF)</span><input id="cfAmt" inputmode="decimal" placeholder="10"></label>
+  <div class="au-chips" id="cfPre" style="margin-bottom:10px"><button type="button" data-cfp="1">1 CF</button><button type="button" data-cfp="10">10 CF</button><button type="button" data-cfp="50">50 CF</button><button type="button" data-cfp="100">100 CF</button></div>
+  <div class="wd-cap"><span class="muted" data-en="Cost">Tutar</span><b id="cfCost">—</b></div>
+  <div class="err" id="cfErr"></div><button class="btn btn-accent full" type="button" id="cfGo">Buy CF</button>
+</div>
+<div class="sheet" id="sh-myauc" role="dialog" aria-label="My Auctions">
+  <div class="grab"></div><h3>My Auctions</h3>
+  <div class="seg au-seg" id="myAucTabs"><button type="button" data-mt="active" class="on">Active Bids</button><button type="button" data-mt="won">Won</button><button type="button" data-mt="lost">Lost</button><button type="button" data-mt="watch">Watchlist</button></div>
+  <div id="myAucList"></div>
+</div>
+<div class="sheet" id="sh-aucnew" role="dialog" aria-label="Create Auction">
+  <div class="grab"></div><h3>Create Auction</h3>
+  <div class="adm-f">
+    <label>Image</label><div class="cm-logo"><div class="an-prev" id="anPrev"></div><label class="btn btn-ghost" style="margin:0;padding:10px 14px;color:var(--fg)"><span data-en="Choose image">Görsel seç</span><input type="file" id="anFile" accept="image/*" hidden></label></div>
+    <label>Asset name</label><input id="anTitle" maxlength="80" placeholder="Mona Lisa – Digital Collection Edition">
+    <label>Description</label><textarea id="anDesc" rows="3" maxlength="1500"></textarea>
+    <div class="grid2" style="margin:0"><div><label>Category</label><input id="anCat" maxlength="30" value="Art"></div><div><label>Collection no.</label><input id="anNo" maxlength="20" placeholder="CF-0005"></div></div>
+    <div class="grid2" style="margin:0"><div><label>Starting price (CF)</label><input id="anStart" inputmode="decimal"></div><div><label>Min. bid increment (CF)</label><input id="anInc" inputmode="decimal"></div></div>
+    <div class="grid2" style="margin:0"><div><label>Start date</label><input id="anFrom" type="datetime-local"></div><div><label>End date</label><input id="anTo" type="datetime-local"></div></div>
+    <label>Max. editions</label><input id="anEd" inputmode="numeric" value="1">
+    <label>Terms / rights description</label><textarea id="anTerms" rows="3" maxlength="1500" placeholder="Kazanan neyi alır, hangi haklar devredilir / devredilmez?"></textarea>
+  </div>
+  <div class="err" id="anErr"></div><button class="btn btn-accent full" type="button" id="anGo">Create Auction</button>
+</div>
 <div class="sheet" id="sh-airdrop" role="dialog" aria-label="Airdrop">
   <div class="grab"></div>
   <h3>🪂 Airdrop</h3>
@@ -1980,7 +2062,7 @@ function holdAlert(m){let d=$("holdDlg");if(!d){d=document.createElement("div");
   document.body.appendChild(d);d.addEventListener("click",e=>{if(e.target===d||e.target.id==="holdOk")d.classList.remove("show")})}
   $("holdMsg").textContent=m;d.classList.add("show");$("holdOk").focus()}
 async function busy(btn,fn){if(btn.disabled)return;btn.disabled=true;try{await fn()}finally{btn.disabled=false}}
-const KIND={deposit:"dep",withdraw:"wd",withdraw_refund:"wdr",reward:"rew",perp_open:"perp",perp_close:"perp",liquidation:"perp",transfer_out:"tout",transfer_in:"tin"};
+const KIND={deposit:"dep",withdraw:"wd",withdraw_refund:"wdr",reward:"rew",perp_open:"perp",perp_close:"perp",liquidation:"perp",transfer_out:"tout",transfer_in:"tin",cf_buy:"cfb",cf_spend:"cfs"};
 async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(r.error)throw r.error;return r.data});
   try{
     const [acc,hold,ord,pos,al,nt,tx,fol,fer,les,cl,prof,adm,cmp,cmg,aut,bnr,vol,frm]=await Promise.all([
@@ -2012,9 +2094,9 @@ async function loadAll(){if(!me)return;const uid=me.id;const q=p=>p.then(r=>{if(
     st.notifs=nt.map(n=>({id:n.id,txt:n.body,t:Date.parse(n.created_at),read:n.read,s:n.symbol}));
     st.hist=tx.map(x=>({k:KIND[x.kind]||x.kind,s:x.symbol,v:x.kind==="perp_open"?-x.amount_usd:+x.amount_usd,t:Date.parse(x.created_at),
       ot:(x.kind==="buy"||x.kind==="sell")&&x.note&&x.note!=="Piyasa"?x.note:"",
-      txt:x.kind==="deposit"||x.kind==="withdraw_refund"?(x.note||""):x.kind==="swap"?(x.note||"")+" takas":x.kind==="perp_open"?`${x.symbol} ${x.note||""} açıldı`:x.kind==="perp_close"?`${x.symbol} pozisyonu kapatıldı`:x.kind==="liquidation"?`${x.symbol} likide oldu`:x.kind==="reward"?(String(x.note||"").startsWith("Kampanya")?x.note:rewardName(x.note)):""}));
+      txt:x.kind==="deposit"||x.kind==="withdraw_refund"?(x.note||""):x.kind==="swap"?(x.note||"")+" takas":x.kind==="perp_open"?`${x.symbol} ${x.note||""} açıldı`:x.kind==="perp_close"?`${x.symbol} pozisyonu kapatıldı`:x.kind==="liquidation"?`${x.symbol} likide oldu`:x.kind==="reward"?(String(x.note||"").startsWith("Kampanya")?x.note:rewardName(x.note)):x.kind==="cf_spend"?(x.note||""):""}));
     st.friendsP=fp;st.friends=fp.map(p=>p.username);st.followers=fer;
-    st.admin=adm;st.campMgr=cmg;st.auto=aut||[];st.banner=bnr||"";st.vol=vol;st.frame=tierOk(frm)?frm:"";st.camps=(cmp||[]).map(c=>({...c,my_volume:+c.my_volume,participants:+c.participants,tiers:Array.isArray(c.tiers)?c.tiers:[],claimed:c.claimed||[]}));st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
+    st.admin=adm;st.campMgr=cmg;st.auto=aut||[];st.banner=bnr||"";st.vol=vol;loadCF();st.frame=tierOk(frm)?frm:"";st.camps=(cmp||[]).map(c=>({...c,my_volume:+c.my_volume,participants:+c.participants,tiers:Array.isArray(c.tiers)?c.tiers:[],claimed:c.claimed||[]}));st.lessons=les.map(l=>l.lesson);st.claimed=cl.map(c=>c.reward);
     for(const k in PCH)PCH[k].t=0;
     if(prof){st.prof={fb:+prof.follower_bonus||0,gb:+prof.following_bonus||0,name:prof.full_name||prof.username,handle:prof.username,bio:prof.bio||"",joined:Date.parse(prof.created_at),custom:1,avatar:prof.avatar_url||""};st.onboarded=prof.onboarded}
   }catch(err){console.error(err);toast("Veriler yüklenemedi: "+errText(err))}
@@ -2179,8 +2261,8 @@ function renderProfile(){const bn=me?bannerFor(me.id,st.prof.handle):"";$("pBand
   $("rewDot").hidden=!rewards().some(r=>r.done&&!st.claimed.includes(r.id));
 }
 function renderHistory(){
-  $("histList").innerHTML=st.hist.slice(0,40).map(h=>{const cash=h.k==="dep"||h.k==="wd"||h.k==="wdr"||h.k==="rew"||((h.k==="tin"||h.k==="tout")&&h.s==="USDT");const title={dep:String(h.txt||"").startsWith("Kartla")?h.txt:"Bakiye yükleme",wd:"Para çekme talebi",wdr:h.txt||"Çekim iadesi",rew:"Ödül: "+(h.txt||""),buy:h.s+" alındı"+(h.ot?` (${h.ot})`:""),sell:h.s+" satıldı"+(h.ot?` (${h.ot})`:""),swap:h.txt,perp:h.txt,tout:h.s+" gönderildi",tin:h.s+" transfer olarak geldi"}[h.k]||h.txt||"";
-    if(h.k==="tout"||h.k==="wd")return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span>-${usd(Math.abs(h.v))}</span></div>`;
+  $("histList").innerHTML=st.hist.slice(0,40).map(h=>{const cash=h.k==="dep"||h.k==="wd"||h.k==="wdr"||h.k==="rew"||((h.k==="tin"||h.k==="tout")&&h.s==="USDT");const title={dep:String(h.txt||"").startsWith("Kartla")?h.txt:"Bakiye yükleme",wd:"Para çekme talebi",wdr:h.txt||"Çekim iadesi",rew:"Ödül: "+(h.txt||""),buy:h.s+" alındı"+(h.ot?` (${h.ot})`:""),sell:h.s+" satıldı"+(h.ot?` (${h.ot})`:""),swap:h.txt,perp:h.txt,tout:h.s+" gönderildi",tin:h.s+" transfer olarak geldi",cfb:"CF Token alımı",cfs:h.txt||"CF Auction"}[h.k]||h.txt||"";
+    if(h.k==="tout"||h.k==="wd"||h.k==="cfb"||h.k==="cfs")return `<div class="hist">${h.k==="cfb"||h.k==="cfs"?`<div class="coin sm" style="background:none">${CFI}</div>`:cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span>-${usd(Math.abs(h.v))}</span></div>`;
     return `<div class="hist">${cash?usdtCoin:coinHTML(find(h.s)||T[0],"sm")}<div class="mid">${esc(title)}<small>${new Date(h.t).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><span class="${h.k==="sell"||cash?"up":""}">${h.k==="buy"?"-":h.k==="swap"?"":h.k==="perp"?(h.v>=0?"+":"-"):"+"}${usd(Math.abs(h.v))}</span></div>`}).join("")||`<div class="empty" style="padding:30px 10px">Henüz işlem yok.</div>`}
 $("pRanges").addEventListener("click",e=>{const r=e.target.dataset.r;if(!r)return;pRange=r;[...$("pRanges").children].forEach(b=>b.classList.toggle("on",b===e.target));renderProfile();loadPChart(true)});
 $("pShare").onclick=()=>{const{v}=portfolio();const txt=`COINFORCE profilim: @${st.prof.handle} · Portföy ${usd(v)} · ${tradeCount()} işlem`;
@@ -2696,6 +2778,109 @@ $("adScan").onclick=async()=>{qrStop();const b=$("adQRBox");b.dataset.k="scan";b
   try{qrStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"environment"},audio:false});const v=$("qrVid");if(!v){qrStop();return}v.srcObject=qrStream;await v.play();
     const tick=()=>{if(!qrStream||!$("qrVid"))return;if(v.readyState>=2&&v.videoWidth){const t=qrDecode(v,v.videoWidth,v.videoHeight),u=qrUser(t);if(u)return qrAdd(u);if(t)$("adErr").textContent="Bu bir COINFORCE kodu değil."}qrRaf=requestAnimationFrame(tick)};tick()}
   catch(e){$("adErr").textContent="Kameraya erişilemedi. İzin ver ya da aşağıdan fotoğraf çek."}};
+// ---------- CF Token + CF AUCTION
+const L=(tr,en)=>EN?en:tr;
+const CFI=`<svg class="cf-ic" viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="cfg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#5ee0c4"/></linearGradient></defs><circle cx="12" cy="12" r="11" fill="url(#cfg)"/><circle cx="12" cy="12" r="8.4" fill="none" stroke="#120b24" stroke-opacity=".35" stroke-width="1"/><text x="12" y="15.6" text-anchor="middle" font-family="Inter,Helvetica,Arial,sans-serif" font-size="9.5" font-weight="900" fill="#120b24">CF</text></svg>`;
+const cfN=v=>fmtN(+v||0,(+v||0)%1?2:0),cfT=v=>`${cfN(v)} CF`;
+let CF=null,AUC=[],aucOpen=null,aucData=null,aucOff=0,aucPoll=0,aucClock=0,myAucTab="active",MYA=[];
+async function loadCF(){const r=await sb.rpc("cf_info");if(!r.error&&r.data){CF=r.data;renderCF()}return CF}
+function renderCF(){const a=CF?+CF.available:0;document.querySelectorAll("[data-cfbal]").forEach(e=>e.textContent=cfT(a));const h=$("homeCF");if(h)h.hidden=!CF}
+const aucNow=()=>Date.now()+aucOff;
+function aucLeft(a){if(a.status==="paused")return L("Durduruldu","Paused");if(a.status==="ended")return L("Sona erdi","Ended");const st0=Date.parse(a.starts_at);if(aucNow()<st0)return L("Başlamasına ","Starts in ")+durTxt(st0-aucNow());const ms=Date.parse(a.ends_at)-aucNow();return ms<=0?L("Sonuçlanıyor…","Finalizing…"):durTxt(ms)+L(" kaldı"," remaining")}
+function durTxt(ms){let s=Math.max(0,Math.floor(ms/1000));const d=Math.floor(s/86400);s%=86400;const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60,p=n=>String(n).padStart(2,"0");return (d?d+L("g ","d "):"")+`${p(h)}${L("sa","h")} ${p(m)}${L("dk","m")} ${p(x)}${L("sn","s")}`}
+function aucImg(a,cls=""){const u=logoUrl(a.image)||"";return `<div class="auc-img ${cls}" style="background:linear-gradient(145deg,${colorFor(a.title)},#16122e)">${u?`<img src="${u}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:""}<span>${esc(initial(a.title))}</span></div>`}
+const aucCur=a=>a.current_bid!=null?+a.current_bid:null,aucMin=a=>aucCur(a)==null?+a.start_price:aucCur(a)+ +a.min_increment;
+function aucBadge(a){return a.status==="ended"?(a.i_won?`<span class="auc-tag won">🏆 ${L("Kazandın","Won")}</span>`:`<span class="auc-tag end">${L("Bitti","Ended")}</span>`):a.status==="paused"?`<span class="auc-tag end">${L("Durduruldu","Paused")}</span>`:a.i_lead?`<span class="auc-tag lead">${L("En yüksek teklif sende","You lead")}</span>`:a.my_bid!=null?`<span class="auc-tag out">${L("Teklifin geçildi","Outbid")}</span>`:`<span class="auc-tag live"><i></i>LIVE</span>`}
+function aucCard(a){const c=aucCur(a),live=a.status==="live";return `<article class="auc-card" data-auc="${a.id}">${aucImg(a)}<button type="button" class="auc-star${a.watching?" on":""}" data-aucw="${a.id}" aria-label="Watchlist">★</button>
+  <div class="auc-b"><div class="auc-top"><small>${esc(a.category)}${a.collection_no?" · #"+esc(a.collection_no):""}</small>${aucBadge(a)}</div><h4>${esc(a.title)}</h4>
+  <div class="auc-px"><div><small>${a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current bid")}</small><b>${CFI}${c!=null?cfT(c):"—"}</b></div><div><small>${L("Başlangıç","Starting bid")}</small><span>${cfT(a.start_price)}</span></div></div>
+  <div class="auc-meta"><span>${nfmt(a.bid_count)} ${L("teklif","bids")} · ${nfmt(a.bidders)} ${L("kişi","bidders")}</span><span class="auc-t" data-auct="${a.id}">${aucLeft(a)}</span></div>
+  ${live?`<button type="button" class="btn btn-accent full" data-bid="${a.id}">BID NOW</button>`:`<button type="button" class="btn btn-ghost full">${L("Detayları gör","View details")}</button>`}</div></article>`}
+async function loadAuctions(silent){const r=await sb.rpc("auctions_list");if(r.error){if(!silent)$("aucList").innerHTML=`<div class="empty">${esc(errText(r.error))}</div>`;return}AUC=r.data||[];if(AUC[0])aucOff=Date.parse(AUC[0].now)-Date.now();renderAuctions()}
+function renderAuctions(){const live=AUC.filter(a=>a.status!=="ended"),done=AUC.filter(a=>a.status==="ended");
+  $("aucList").innerHTML=(live.length?live.map(aucCard).join(""):`<div class="empty" style="padding:30px 10px">${L("Şu an aktif açık artırma yok.","No active auctions right now.")}</div>`)+(done.length?`<div class="sec-t" style="margin:22px 0 10px">${L("Sonuçlananlar","Ended")}</div>`+done.map(aucCard).join(""):"");
+  $("aucNew").hidden=!st.admin}
+function aucTickUI(){document.querySelectorAll("[data-auct]").forEach(e=>{const a=(aucData&&aucData.id===e.dataset.auct?aucData:null)||AUC.find(x=>x.id===e.dataset.auct)||MYA.find(x=>x.id===e.dataset.auct);if(a){e.textContent=aucLeft(a);e.classList.toggle("soon",a.status==="live"&&Date.parse(a.ends_at)-aucNow()<3e5)}})}
+function aucStart(){clearInterval(aucPoll);clearInterval(aucClock);aucClock=setInterval(aucTickUI,1000);aucPoll=setInterval(()=>{if(document.hidden)return;if(aucOpen)loadAuc(aucOpen,true);else if(view==="auction")loadAuctions(true);else if(openId!=="myauc"){clearInterval(aucPoll);clearInterval(aucClock)}},5000)}
+function showAuction(){loadCF();loadAuctions();aucStart()}
+// detay
+function openAuc(id){closeSheet();aucOpen=id;aucData=null;$("aucBody").innerHTML=`<div class="empty" style="margin-top:40px">${L("Yükleniyor…","Loading…")}</div>`;$("aucPage").hidden=false;$("aucPage").scrollTop=0;document.documentElement.style.overflow="hidden";loadAuc(id);aucStart()}
+function closeAuc(){if($("aucPage").hidden)return;$("aucPage").hidden=true;aucOpen=null;aucData=null;document.documentElement.style.overflow="";if(view==="auction")loadAuctions(true)}
+async function loadAuc(id,silent){const r=await sb.rpc("auction_detail",{p_id:id});if(aucOpen!==id)return;if(r.error||!r.data){if(!silent)$("aucBody").innerHTML=`<div class="empty" style="margin-top:40px">${r.error?esc(errText(r.error)):L("Açık artırma bulunamadı.","Auction not found.")}</div>`;return}
+  const was=aucData;aucData=r.data.auction;aucData.bids=r.data.bids||[];if(r.data.cf){CF=r.data.cf;renderCF()}aucOff=Date.parse(aucData.now)-Date.now();
+  const fe=document.activeElement;if(silent&&was&&JSON.stringify([was.current_bid,was.status,was.ends_at,was.bid_count,was.watching])===JSON.stringify([aucData.current_bid,aucData.status,aucData.ends_at,aucData.bid_count,aucData.watching]))return;
+  renderAuc();if(openId==="bid"&&!(fe&&fe.id==="bidAmt"))renderBid();
+  if(aucData.status==="ended"&&aucData.i_won){let seen=[];try{seen=JSON.parse(localStorage.getItem("cf_won")||"[]")}catch(e){}if(!seen.includes(id)){seen.push(id);try{localStorage.setItem("cf_won",JSON.stringify(seen.slice(-50)))}catch(e){}aucWon(aucData)}}}
+function aucWon(a){let d=$("wonDlg");if(!d){d=document.createElement("div");d.id="wonDlg";d.className="hold-dlg";d.innerHTML=`<div class="hold-box won-box"><div class="won-cup">🏆</div><h3>AUCTION WON</h3><p id="wonMsg"></p><button type="button" class="btn btn-accent full" id="wonOk">OK</button></div>`;document.body.appendChild(d);d.addEventListener("click",e=>{if(e.target===d||e.target.id==="wonOk")d.classList.remove("show")})}
+  $("wonMsg").textContent=L(`Tebrikler! Bu dijital varlığı ${cfT(a.current_bid)} ile kazandın.`,`Congratulations! You won this digital asset for ${cfT(a.current_bid)}.`);d.classList.add("show")}
+const dtT=t=>new Date(t).toLocaleString(LOC,{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+function renderAuc(){const a=aucData,c=aucCur(a),live=a.status==="live",open_=a.status==="live"||a.status==="paused";
+  $("aucBody").innerHTML=`${aucImg(a,"big")}
+    <div class="auc-top" style="margin-top:14px"><small>${esc(a.category)}${a.collection_no?" · #"+esc(a.collection_no):""}</small>${aucBadge(a)}</div>
+    <h2 class="auc-h">${esc(a.title)}</h2>
+    <div class="auc-now"><div><small>${a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current bid")}</small><b>${CFI}${c!=null?cfT(c):"—"}</b>${a.leader?`<em>@${esc(a.status==="ended"?(a.winner||a.leader):a.leader)}</em>`:""}</div><div><small>${L("Kalan süre","Time left")}</small><b class="auc-t" data-auct="${a.id}">${aucLeft(a)}</b></div></div>
+    ${a.status==="ended"&&a.i_won?`<div class="auc-won">🏆 <b>AUCTION WON</b><br>${L(`Tebrikler! Bu dijital varlığı ${cfT(c)} ile kazandın.`,`Congratulations! You won this digital asset for ${cfT(c)}.`)}</div>`:""}
+    <div class="au-b" style="margin:12px 0 4px">${live?`<button type="button" class="btn btn-accent" data-bid="${a.id}">${a.my_bid!=null&&!a.i_lead?L("Teklifi artır","Increase Bid"):"BID NOW"}</button>`:""}<button type="button" class="btn btn-ghost" data-aucw="${a.id}">${a.watching?"★ "+L("İzleniyor","Watching"):"☆ Watchlist"}</button></div>
+    <div class="wd-cap" style="margin:10px 0"><span class="muted">${L("CF bakiyen","Your CF balance")}</span><b>${CFI}<span data-cfbal>${cfT(CF?CF.available:0)}</span></b></div>
+    ${a.description?`<div class="sec-t" style="margin:16px 0 6px">${L("Açıklama","Description")}</div><p class="about" style="margin:0">${esc(a.description)}</p>`:""}
+    <div class="adm-kv" style="margin-top:14px"><span>${L("Kategori","Category")}</span><b>${esc(a.category)}</b><span>${L("Koleksiyon no","Collection no.")}</span><b>${esc(a.collection_no||"—")}</b><span>${L("Adet","Editions")}</span><b>${nfmt(a.editions)}</b>
+      <span>${L("Yayınlanma","Published")}</span><b>${dtT(a.created_at)}</b><span>${L("Başlangıç","Start")}</span><b>${dtT(a.starts_at)}</b><span>${L("Bitiş","End")}</span><b>${a.status==="paused"?L("Durduruldu","Paused"):dtT(a.ends_at)}</b>
+      <span>${L("Başlangıç fiyatı","Starting bid")}</span><b>${cfT(a.start_price)}</b><span>${L("Asgari artış","Min. increment")}</span><b>${cfT(a.min_increment)}</b></div>
+    ${a.terms?`<div class="sec-t" style="margin:14px 0 6px">${L("Koşullar ve haklar","Terms & rights")}</div><p class="about" style="margin:0;font-size:13.5px">${esc(a.terms)}</p>`:""}
+    <div class="sec-t" style="margin:18px 0 6px">${L("Teklif geçmişi","Bid history")} <span class="muted" style="font-weight:500">· ${nfmt(a.bid_count)}</span></div>
+    ${a.bids.length?a.bids.map((b,i)=>`<div class="auc-bid${i?"":" top"}${b.mine?" mine":""}"><span>${i?"":"👑 "}@${esc(b.username)}${b.mine?L(" (sen)"," (you)"):""}</span><small>${new Date(b.created_at).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",second:"2-digit"})}</small><b>${cfT(b.amount)}</b></div>`).join(""):`<div class="hint">${L("Henüz teklif yok. İlk teklifi sen ver.","No bids yet. Be the first.")}</div>`}
+    ${st.admin&&open_?`<div class="sec-t" style="margin:18px 0 6px">${L("Yönetici","Admin")}</div><div class="adm-acts">${a.status==="live"?`<button type="button" data-auca="pause">⏸ ${L("Durdur","Pause")}</button>`:`<button type="button" data-auca="resume">▶️ ${L("Devam ettir","Resume")}</button>`}<button type="button" data-auca="end">🏁 ${L("Sonuçlandır","Finalize now")}</button><button type="button" data-auca="cancel" style="color:var(--down)">✖ ${L("İptal et","Cancel")}</button></div><div class="err" id="aucaErr"></div>`:""}`}
+$("aucBack").onclick=closeAuc;
+// teklif
+let bidStep=0;
+function openBid(id){const a=(aucData&&aucData.id===id?aucData:AUC.find(x=>x.id===id)||MYA.find(x=>x.id===id));if(!a)return;if(!aucData||aucData.id!==id){aucData={...a,bids:[]};aucOpen=aucOpen||null}bidStep=0;openSheet("bid");$("bidAmt").value=inp(aucMin(a),aucMin(a)%1?2:0);renderBid();loadCF().then(renderBid)}
+function renderBid(){const a=aucData;if(!a)return;const c=aucCur(a),mn=aucMin(a),av=CF?+CF.available:0,lead=a.i_lead?+a.current_bid:0,v=auPP($("bidAmt").value),need=Math.max(0,v-lead),short=v>=mn&&need>av;
+  $("bidT").textContent=a.title;$("bidCur").innerHTML=CFI+(c!=null?cfT(c):"—");$("bidMin").innerHTML=CFI+cfT(mn);$("bidBal").innerHTML=CFI+cfT(av);
+  $("bidForm").hidden=bidStep===1;$("bidConf").hidden=bidStep!==1;$("bidShort").hidden=!short;$("bidGo").hidden=short;
+  $("bidGo").textContent=bidStep?"CONFIRM BID":L("Devam","Continue");
+  if(bidStep===1)$("bidConfT").innerHTML=`<b>${L(`${cfT(v)} teklif veriyorsun.`,`You are bidding ${cfT(v)}.`)}</b><br>${L("Onayladığında, teklifin en yüksek teklif olursa bu tutar kullanılabilir CF bakiyenden ayrılır. Teklifin geçilirse serbest kalır; açık artırmayı kazanırsan bakiyenden düşer.","By confirming, this amount will be reserved from your available CF balance if your bid becomes the winning bid. It is released if you are outbid and deducted if you win.")}`}
+$("bidAmt").addEventListener("input",()=>{$("bidErr").textContent="";renderBid()});
+$("bidBack").onclick=()=>{bidStep=0;renderBid()};
+$("bidGo").onclick=()=>{const a=aucData,v=auPP($("bidAmt").value),mn=aucMin(a);$("bidErr").textContent="";
+  if(!(v>=mn))return $("bidErr").textContent=L(`En düşük teklif ${cfT(mn)}`,`Minimum bid is ${cfT(mn)}`);
+  if(!bidStep){bidStep=1;renderBid();return}
+  busy($("bidGo"),async()=>{const r=await call("place_bid",{p_id:a.id,p_amount:v},"bidErr");if(r.err){bidStep=0;if(aucOpen)await loadAuc(a.id,true);else await loadAuctions(true);renderBid();return}
+    closeSheet();toast(L(`Teklifin alındı: ${cfT(v)}`,`Bid placed: ${cfT(v)}`));loadCF();if(aucOpen)loadAuc(a.id,true);if(view==="auction")loadAuctions(true);if(openId==="myauc")loadMyAuc()})};
+// CF satın alma
+function openCFBuy(){$("cfAmt").value="";$("cfErr").textContent="";renderCFBuy();loadCF().then(renderCFBuy)}
+function renderCFBuy(){const px=CF?+CF.price:50,v=auPP($("cfAmt").value);$("cfRate").textContent=`1 CF = ${usd(px,px%1?2:0)}`;$("cfHave").innerHTML=CFI+cfT(CF?CF.cf:0);$("cfUsd").textContent=usd(st.usdt);$("cfCost").textContent=v>0?usd(v*px):"—"}
+$("cfAmt").addEventListener("input",()=>{$("cfErr").textContent="";renderCFBuy()});
+$("cfPre").addEventListener("click",e=>{const b=e.target.closest("[data-cfp]");if(!b)return;$("cfAmt").value=b.dataset.cfp;renderCFBuy()});
+$("cfGo").onclick=()=>busy($("cfGo"),async()=>{const v=auPP($("cfAmt").value);if(!(v>0))return $("cfErr").textContent=L("Bir miktar gir","Enter an amount");
+  const r=await call("buy_cf",{p_cf:v},"cfErr");if(r.err)return;closeSheet();await loadAll();await loadCF();toast(L(`${cfT(v)} alındı`,`Bought ${cfT(v)}`));if(aucOpen)loadAuc(aucOpen,true)});
+// My Auctions
+async function loadMyAuc(){const r=await sb.rpc("my_auctions");MYA=r.error?[]:r.data||[];if(MYA[0])aucOff=Date.parse(MYA[0].now)-Date.now();renderMyAuc()}
+function openMyAuc(){myAucTab="active";$("myAucList").innerHTML=`<div class="empty">${L("Yükleniyor…","Loading…")}</div>`;loadMyAuc();aucStart()}
+function renderMyAuc(){[...$("myAucTabs").children].forEach(b=>b.classList.toggle("on",b.dataset.mt===myAucTab));
+  const f={active:a=>a.my_bid!=null&&a.status!=="ended",won:a=>a.status==="ended"&&a.i_won,lost:a=>a.status==="ended"&&a.my_bid!=null&&!a.i_won,watch:a=>a.watching}[myAucTab],list=MYA.filter(f);
+  $("myAucList").innerHTML=list.length?list.map(a=>{const c=aucCur(a),stt=a.status==="ended"?(a.i_won?L("Kazandın","Won"):L("Kaybettin","Lost")):a.status==="paused"?L("Durduruldu","Paused"):a.my_bid==null?L("İzleniyor","Watching"):a.i_lead?L("En yüksek teklif","Leading"):L("Teklifin geçildi","Outbid");
+    return `<div class="my-auc" data-auc="${a.id}">${aucImg(a,"sm")}<div class="mid"><b>${esc(a.title)}</b>${a.my_bid!=null?`<small>${L("Teklifin","Your Bid")}: ${cfT(a.my_bid)}</small>`:""}<small>${a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current Bid")}: ${c!=null?cfT(c):"—"}</small><small>${L("Durum","Status")}: <span class="${a.i_lead||a.i_won?"up":a.my_bid!=null?"down":""}">${stt}</span> · <span data-auct="${a.id}">${aucLeft(a)}</span></small></div>
+      ${a.status==="live"&&a.my_bid!=null&&!a.i_lead?`<button type="button" class="comm-btn" data-bid="${a.id}">${L("Teklifi artır","Increase Bid")}</button>`:a.status==="live"&&a.my_bid==null?`<button type="button" class="comm-btn" data-bid="${a.id}">Bid</button>`:""}</div>`}).join(""):`<div class="empty" style="padding:26px 10px">${{active:L("Aktif teklifin yok.","No active bids."),won:L("Henüz kazandığın açık artırma yok.","No won auctions yet."),lost:L("Kaybettiğin açık artırma yok.","No lost auctions."),watch:L("İzleme listen boş. Bir açık artırmada ★ simgesine dokun.","Your watchlist is empty. Tap ★ on an auction.")}[myAucTab]}</div>`}
+$("myAucTabs").addEventListener("click",e=>{const b=e.target.closest("[data-mt]");if(b){myAucTab=b.dataset.mt;renderMyAuc()}});
+// ortak tıklamalar
+document.addEventListener("click",async e=>{
+  const w=e.target.closest("[data-aucw]");if(w){e.stopPropagation();const r=await call("toggle_watch",{p_id:w.dataset.aucw});if(r.err)return;toast(r.data?L("İzleme listesine eklendi","Added to watchlist"):L("İzleme listesinden çıkarıldı","Removed from watchlist"));if(aucOpen)loadAuc(aucOpen,true);if(view==="auction")loadAuctions(true);if(openId==="myauc")loadMyAuc();return}
+  const b=e.target.closest("[data-bid]");if(b){e.stopPropagation();const id=b.dataset.bid;if(openId==="myauc"){closeSheet();aucOpen=id;aucData=null;$("aucPage").hidden=false;document.documentElement.style.overflow="hidden";await loadAuc(id)}openBid(id);return}
+  const ac=e.target.closest("[data-auca]");if(ac&&aucOpen){const k=ac.dataset.auca;if((k==="end"||k==="cancel")&&ac.dataset.sure!=="1"){ac.dataset.sure="1";ac.textContent=L("Emin misin?","Are you sure?");return}
+    busy(ac,async()=>{const r=await call("admin_auction_action",{p_id:aucOpen,p_action:k},"aucaErr");if(r.err)return;toast(L("İşlem tamam","Done"));if(k==="cancel"){closeAuc();loadAuctions(true)}else loadAuc(aucOpen)});return}
+  const c=e.target.closest("[data-auc]");if(c&&!e.target.closest("button:not(.btn-ghost)")){if(openId==="myauc")closeSheet();openAuc(c.dataset.auc);return}
+  if(e.target.closest("[data-buycf]")){openSheet("cf");return}});
+// yönetici: açık artırma oluştur
+let anImg="";
+function openAucNew(){anImg="";$("anErr").textContent="";["anTitle","anDesc","anTerms","anNo"].forEach(i=>$(i).value="");$("anCat").value="Art";$("anStart").value="500";$("anInc").value="50";$("anEd").value="1";
+  const loc=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,16);$("anFrom").value=loc(new Date());$("anTo").value=loc(new Date(Date.now()+864e5));$("anPrev").innerHTML=""}
+$("anFile").addEventListener("change",e=>{const f=e.target.files&&e.target.files[0];e.target.value="";if(!f)return;const url=URL.createObjectURL(f),img=new Image();
+  img.onload=()=>{const k=Math.min(1,900/Math.max(img.naturalWidth,img.naturalHeight)),c=document.createElement("canvas");c.width=Math.round(img.naturalWidth*k);c.height=Math.round(img.naturalHeight*k);c.getContext("2d").drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);
+    let q=.85,d=c.toDataURL("image/jpeg",q);while(d.length>560000&&q>.4){q-=.1;d=c.toDataURL("image/jpeg",q)}anImg=d;$("anPrev").innerHTML=`<img src="${d}" alt="">`};img.onerror=()=>{$("anErr").textContent=L("Bu dosya açılamadı.","Couldn't open this file.")};img.src=url});
+$("anGo").onclick=()=>busy($("anGo"),async()=>{$("anErr").textContent="";const fr=$("anFrom").value,to=$("anTo").value;if(!to)return $("anErr").textContent=L("Bitiş zamanını seç","Choose an end time");
+  const r=await call("admin_create_auction",{p_title:$("anTitle").value,p_description:$("anDesc").value,p_image:anImg||null,p_category:$("anCat").value,p_start_price:auPP($("anStart").value),p_min_increment:auPP($("anInc").value),
+    p_starts_at:fr?new Date(fr).toISOString():null,p_ends_at:new Date(to).toISOString(),p_editions:parseInt($("anEd").value,10)||1,p_terms:$("anTerms").value,p_collection_no:$("anNo").value||null},"anErr");if(r.err)return;
+  closeSheet();toast(L("Açık artırma oluşturuldu","Auction created"));if(view==="auction")loadAuctions();else go("auction")});
 // banner
 let bnSel="";
 function openBanner(){bnSel=st.banner||"";$("bnErr").textContent="";const own=/^data:/.test(bnSel);bnTab(own?"own":tierCls(bnSel)?"tier":"cat");bnDraw()}
@@ -2752,11 +2937,11 @@ $("rewList").addEventListener("click",e=>{const b=e.target.closest("[data-claim]
 
 // ---------- navigation
 function go(v,tok){
-  view=v;["home","detail","search","rank","profile"].forEach(s=>$("s-"+s).hidden=s!==v);
+  view=v;["home","detail","search","rank","profile","auction"].forEach(s=>$("s-"+s).hidden=s!==v);
   $("dAct").hidden=v!=="detail";$("nav").hidden=v==="detail";
   [...$("nav").children].forEach(b=>b.classList.toggle("on",b.dataset.go===v));
   if(tok){cur=tok;renderDetail()}
-  if(v==="search")renderSearch();if(v==="rank"){renderRank();loadLB();if(rTab==="feed")showFeed()}if(v==="profile")renderProfile();
+  if(v==="search")renderSearch();if(v==="rank"){renderRank();loadLB();if(rTab==="feed")showFeed()}if(v==="profile")renderProfile();if(v==="auction")showAuction();
   window.scrollTo(0,0);
 }
 let prev="home";
@@ -2799,7 +2984,7 @@ async function renderAdmin(){const b=$("admBody");if(!st.admin){b.innerHTML=`<di
   if(admView==="coin")return renderAdmCoin();
   b.innerHTML=`<h3>Yönetim paneli</h3><div class="sub">COINFORCE genel durumu ve kullanıcı yönetimi.</div><div id="admStats"><div class="empty">Yükleniyor…</div></div>
     <div class="sec-t" style="margin:6px 0 6px">Hızlı işlemler</div>
-    <div class="adm-acts"><button type="button" data-adm="deposit">💵 Bakiye yükle</button><button type="button" data-adm="withdraw">🏦 Çekim talepleri</button>${st.campMgr?'<button type="button" data-adm="campnew">🏆 Yeni kampanya</button>':""}<button type="button" data-adm="campaigns">📋 Kampanyalar</button><button type="button" data-adm="airdrop">🪂 Airdrop</button></div>
+    <div class="adm-acts"><button type="button" data-adm="deposit">💵 Bakiye yükle</button><button type="button" data-adm="withdraw">🏦 Çekim talepleri</button>${st.campMgr?'<button type="button" data-adm="campnew">🏆 Yeni kampanya</button>':""}<button type="button" data-adm="campaigns">📋 Kampanyalar</button><button type="button" data-adm="airdrop">🪂 Airdrop</button><button type="button" data-adm="aucnew">🔨 Create Auction</button></div>
     <div class="sec-t" style="margin:6px 0 6px;display:flex;justify-content:space-between;align-items:center">COINFORCE coinleri<button type="button" class="r-link" data-admcoin="">+ Yeni coin</button></div>
     <div id="admCoins"><div class="empty">Yükleniyor…</div></div>
     <div class="sec-t" style="margin:6px 0 6px">Kullanıcılar</div>
@@ -3014,7 +3199,7 @@ function payReturn(){if(!PAY_IN)return;try{history.replaceState(null,"",location
 
 // ---------- sheets
 let openId=null;
-function openSheet(id){closeSheet(true);openId=id;$("sh-"+id).classList.add("show");$("scrim").classList.add("show");if(id==="swap")renderSwap();if(id==="history")renderHistory();if(id==="edit")fillEdit();if(id==="rewards")renderRewards();if(id==="notifs")renderNotifs();if(id==="campaigns")renderCampList();if(id==="campnew")fillCampNew();if(id==="deposit")renderDep();if(id==="commnew")fillCommNew();if(id==="recv"){recvSym=null;recvQ="";renderRecv()}if(id==="send"){sendSym=null;renderSend();loadPending()}if(id==="alert")openAlert();if(id==="withdraw")openWithdraw();if(id==="pnl")renderPnl();if(id==="admin")openAdmin();if(id==="banner")openBanner();if(id==="airdrop")openAirdrop();if(id==="card")openCard();if(id==="settings"){$("logoutWho").textContent="@"+(st.prof.handle||"");$("resetConfirm").hidden=true;$("setThemeVal").textContent=themeName()}}
+function openSheet(id){closeSheet(true);openId=id;$("sh-"+id).classList.add("show");$("scrim").classList.add("show");if(id==="swap")renderSwap();if(id==="history")renderHistory();if(id==="edit")fillEdit();if(id==="rewards")renderRewards();if(id==="notifs")renderNotifs();if(id==="campaigns")renderCampList();if(id==="campnew")fillCampNew();if(id==="deposit")renderDep();if(id==="commnew")fillCommNew();if(id==="recv"){recvSym=null;recvQ="";renderRecv()}if(id==="send"){sendSym=null;renderSend();loadPending()}if(id==="alert")openAlert();if(id==="withdraw")openWithdraw();if(id==="pnl")renderPnl();if(id==="admin")openAdmin();if(id==="banner")openBanner();if(id==="airdrop")openAirdrop();if(id==="cf")openCFBuy();if(id==="myauc")openMyAuc();if(id==="aucnew")openAucNew();if(id==="card")openCard();if(id==="settings"){$("logoutWho").textContent="@"+(st.prof.handle||"");$("resetConfirm").hidden=true;$("setThemeVal").textContent=themeName()}}
 function closeSheet(keepScrim){if(openId==="airdrop")qrStop();if(openId)$("sh-"+openId).classList.remove("show");openId=null;if(!keepScrim)$("scrim").classList.remove("show")}
 $("scrim").onclick=()=>closeSheet();
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
