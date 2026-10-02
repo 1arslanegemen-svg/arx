@@ -2796,10 +2796,13 @@ function aucCard(a){const c=aucCur(a),live=a.status==="live";return `<article cl
   <div class="auc-px"><div><small>${a.status==="ended"?L("Kazanan teklif","Winning bid"):L("Güncel teklif","Current bid")}</small><b>${CFI}${c!=null?cfT(c):"—"}</b></div><div><small>${L("Başlangıç","Starting bid")}</small><span>${cfT(a.start_price)}</span></div></div>
   <div class="auc-meta"><span>${nfmt(a.bid_count)} ${L("teklif","bids")} · ${nfmt(a.bidders)} ${L("kişi","bidders")}</span><span class="auc-t" data-auct="${a.id}">${aucLeft(a)}</span></div>
   ${live?`<button type="button" class="btn btn-accent full" data-bid="${a.id}">BID NOW</button>`:`<button type="button" class="btn btn-ghost full">${L("Detayları gör","View details")}</button>`}</div></article>`}
-async function loadAuctions(silent){const r=await sb.rpc("auctions_list");if(r.error){if(!silent)$("aucList").innerHTML=`<div class="empty">${esc(errText(r.error))}</div>`;return}AUC=r.data||[];if(AUC[0])aucOff=Date.parse(AUC[0].now)-Date.now();renderAuctions()}
+const aucSig=l=>JSON.stringify(l.map(a=>[a.id,a.status,a.current_bid,a.bid_count,a.bidders,a.ends_at,a.i_lead,a.i_won,a.my_bid,a.watching,a.title,a.image&&a.image.length]));let aucSigL="",myaSigL="";
+async function loadAuctions(silent){const r=await sb.rpc("auctions_list");if(r.error){if(!silent)$("aucList").innerHTML=`<div class="empty">${esc(errText(r.error))}</div>`;return}AUC=r.data||[];if(AUC[0])aucOff=Date.parse(AUC[0].now)-Date.now();const sg=aucSig(AUC)+"|"+(st.admin?1:0)+LANG;if(silent&&sg===aucSigL)return;aucSigL=sg;renderAuctions()}
 function renderAuctions(){const live=AUC.filter(a=>a.status!=="ended"),done=AUC.filter(a=>a.status==="ended");
   $("aucList").innerHTML=(live.length?live.map(aucCard).join(""):`<div class="empty" style="padding:30px 10px">${L("Şu an aktif açık artırma yok.","No active auctions right now.")}</div>`)+(done.length?`<div class="sec-t" style="margin:22px 0 10px">${L("Sonuçlananlar","Ended")}</div>`+done.map(aucCard).join(""):"");
-  $("aucNew").hidden=!st.admin}
+  $("aucNew").hidden=!st.admin;
+  document.querySelectorAll("#aucList .auc-card").forEach(c=>{const a=AUC.find(x=>x.id===c.dataset.auc),k=a?a.id+"|"+(a.image||"").length:"",im=c.querySelector(".auc-img");if(!im)return;if(aucImgs[k]&&aucImgs[k]!==im)im.replaceWith(aucImgs[k]);else aucImgs[k]=im})}
+const aucImgs={};
 function aucTickUI(){document.querySelectorAll("[data-auct]").forEach(e=>{const a=(aucData&&aucData.id===e.dataset.auct?aucData:null)||AUC.find(x=>x.id===e.dataset.auct)||MYA.find(x=>x.id===e.dataset.auct);if(a){e.textContent=aucLeft(a);e.classList.toggle("soon",a.status==="live"&&Date.parse(a.ends_at)-aucNow()<3e5)}})}
 function aucStart(){clearInterval(aucPoll);clearInterval(aucClock);aucClock=setInterval(aucTickUI,1000);aucPoll=setInterval(()=>{if(document.hidden)return;if(aucOpen)loadAuc(aucOpen,true);else if(view==="auction")loadAuctions(true);else if(openId!=="myauc"){clearInterval(aucPoll);clearInterval(aucClock)}},5000)}
 function showAuction(){loadCF();loadAuctions();aucStart()}
@@ -2815,6 +2818,7 @@ function aucWon(a){let d=$("wonDlg");if(!d){d=document.createElement("div");d.id
   $("wonMsg").textContent=L(`Tebrikler! Bu dijital varlığı ${cfT(a.current_bid)} ile kazandın.`,`Congratulations! You won this digital asset for ${cfT(a.current_bid)}.`);d.classList.add("show")}
 const dtT=t=>new Date(t).toLocaleString(LOC,{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
 function renderAuc(){const a=aucData,c=aucCur(a),live=a.status==="live",open_=a.status==="live"||a.status==="paused";
+  const oldImg=$("aucBody").querySelector(".auc-img.big"),keep=oldImg&&oldImg.dataset.k===a.id+"|"+(a.image||"").length?oldImg:null;
   $("aucBody").innerHTML=`${aucImg(a,"big")}
     <div class="auc-top" style="margin-top:14px"><small>${esc(a.category)}${a.collection_no?" · #"+esc(a.collection_no):""}</small>${aucBadge(a)}</div>
     <h2 class="auc-h">${esc(a.title)}</h2>
@@ -2829,7 +2833,8 @@ function renderAuc(){const a=aucData,c=aucCur(a),live=a.status==="live",open_=a.
     ${a.terms?`<div class="sec-t" style="margin:14px 0 6px">${L("Koşullar ve haklar","Terms & rights")}</div><p class="about" style="margin:0;font-size:13.5px">${esc(a.terms)}</p>`:""}
     <div class="sec-t" style="margin:18px 0 6px">${L("Teklif geçmişi","Bid history")} <span class="muted" style="font-weight:500">· ${nfmt(a.bid_count)}</span></div>
     ${a.bids.length?a.bids.map((b,i)=>`<div class="auc-bid${i?"":" top"}${b.mine?" mine":""}"><span>${i?"":"👑 "}@${esc(b.username)}${b.mine?L(" (sen)"," (you)"):""}</span><small>${new Date(b.created_at).toLocaleString(LOC,{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit",second:"2-digit"})}</small><b>${cfT(b.amount)}</b></div>`).join(""):`<div class="hint">${L("Henüz teklif yok. İlk teklifi sen ver.","No bids yet. Be the first.")}</div>`}
-    ${st.admin&&open_?`<div class="sec-t" style="margin:18px 0 6px">${L("Yönetici","Admin")}</div><div class="adm-acts">${a.status==="live"?`<button type="button" data-auca="pause">⏸ ${L("Durdur","Pause")}</button>`:`<button type="button" data-auca="resume">▶️ ${L("Devam ettir","Resume")}</button>`}<button type="button" data-auca="end">🏁 ${L("Sonuçlandır","Finalize now")}</button><button type="button" data-auca="cancel" style="color:var(--down)">✖ ${L("İptal et","Cancel")}</button></div><div class="err" id="aucaErr"></div>`:""}`}
+    ${st.admin&&open_?`<div class="sec-t" style="margin:18px 0 6px">${L("Yönetici","Admin")}</div><div class="adm-acts">${a.status==="live"?`<button type="button" data-auca="pause">⏸ ${L("Durdur","Pause")}</button>`:`<button type="button" data-auca="resume">▶️ ${L("Devam ettir","Resume")}</button>`}<button type="button" data-auca="end">🏁 ${L("Sonuçlandır","Finalize now")}</button><button type="button" data-auca="cancel" style="color:var(--down)">✖ ${L("İptal et","Cancel")}</button></div><div class="err" id="aucaErr"></div>`:""}`;
+  const ni=$("aucBody").querySelector(".auc-img.big");if(ni){if(keep)ni.replaceWith(keep);else ni.dataset.k=a.id+"|"+(a.image||"").length}}
 $("aucBack").onclick=closeAuc;
 // teklif
 let bidStep=0;
@@ -2854,7 +2859,7 @@ $("cfPre").addEventListener("click",e=>{const b=e.target.closest("[data-cfp]");i
 $("cfGo").onclick=()=>busy($("cfGo"),async()=>{const v=auPP($("cfAmt").value);if(!(v>0))return $("cfErr").textContent=L("Bir miktar gir","Enter an amount");
   const r=await call("buy_cf",{p_cf:v},"cfErr");if(r.err)return;closeSheet();await loadAll();await loadCF();toast(L(`${cfT(v)} alındı`,`Bought ${cfT(v)}`));if(aucOpen)loadAuc(aucOpen,true)});
 // My Auctions
-async function loadMyAuc(){const r=await sb.rpc("my_auctions");MYA=r.error?[]:r.data||[];if(MYA[0])aucOff=Date.parse(MYA[0].now)-Date.now();renderMyAuc()}
+async function loadMyAuc(){const r=await sb.rpc("my_auctions");MYA=r.error?[]:r.data||[];if(MYA[0])aucOff=Date.parse(MYA[0].now)-Date.now();myaSigL=aucSig(MYA);renderMyAuc()}
 function openMyAuc(){myAucTab="active";$("myAucList").innerHTML=`<div class="empty">${L("Yükleniyor…","Loading…")}</div>`;loadMyAuc();aucStart()}
 function renderMyAuc(){[...$("myAucTabs").children].forEach(b=>b.classList.toggle("on",b.dataset.mt===myAucTab));
   const f={active:a=>a.my_bid!=null&&a.status!=="ended",won:a=>a.status==="ended"&&a.i_won,lost:a=>a.status==="ended"&&a.my_bid!=null&&!a.i_won,watch:a=>a.watching}[myAucTab],list=MYA.filter(f);
