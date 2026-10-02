@@ -884,6 +884,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 
 /* ---- hacim çerçeveleri */
 .fr-wrap{position:relative;flex:none;display:inline-grid}
+.av.has-fr{overflow:visible;position:relative}
 .fr{position:absolute;inset:-25%;pointer-events:none}.fr svg{width:100%;height:100%;display:block;overflow:visible}
 .fr-glow{position:absolute;inset:-3px;border-radius:50%;pointer-events:none}
 .fr-gold+.fr-glow{box-shadow:0 0 14px 3px rgba(242,193,78,.6);animation:frPulse 2s ease-in-out infinite}
@@ -1897,9 +1898,11 @@ function laurel(n){const col=["#f2b705","#b8c2cc","#d0803a"][n-1];
   return `<span class="laurel"><svg viewBox="0 0 40 30" aria-hidden="true">${leaf}<g transform="translate(40 0) scale(-1 1)">${leaf}</g></svg><b style="color:${col}">${n}</b></span>`}
 let VIP=new Set(),BOT=new Set(),CEO=new Set();
 const vipTag=(id,sm)=>CEO.has(id)?`<span class="ceo-tag${sm?" sm":""}" title="COINFORCE CEO"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 12H5z"/></svg>CEO</span>`:BOT.has(id)?`<span class="bot-tag${sm?" sm":""}" title="Otomatik işlem yapan bot hesabı">🤖 BOT</span>`:VIP.has(id)?`<span class="vip${sm?" sm":""}" title="Yönetici"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 12H5z"/></svg>VIP++</span>`:"";
-async function loadVIP(){sb.rpc("ceo_users").then(({data,error})=>{if(!error&&Array.isArray(data)&&data.length){CEO=new Set(data.map(x=>typeof x==="string"?x:x.ceo_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank();if(userData&&CEO.has(userData.id))renderUser();if(view==="profile")renderProfile()}});sb.rpc("bot_users").then(({data,error})=>{if(!error&&Array.isArray(data)&&data.length){BOT=new Set(data.map(x=>typeof x==="string"?x:x.bot_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank();if(userData&&BOT.has(userData.id))renderUser()}});const {data,error}=await sb.rpc("vip_users");if(!error&&Array.isArray(data)){VIP=new Set(data.map(x=>typeof x==="string"?x:x.vip_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank()}}
+async function loadVIP(){loadFrames();sb.rpc("ceo_users").then(({data,error})=>{if(!error&&Array.isArray(data)&&data.length){CEO=new Set(data.map(x=>typeof x==="string"?x:x.ceo_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank();if(userData&&CEO.has(userData.id))renderUser();if(view==="profile")renderProfile()}});sb.rpc("bot_users").then(({data,error})=>{if(!error&&Array.isArray(data)&&data.length){BOT=new Set(data.map(x=>typeof x==="string"?x:x.bot_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank();if(userData&&BOT.has(userData.id))renderUser()}});const {data,error}=await sb.rpc("vip_users");if(!error&&Array.isArray(data)){VIP=new Set(data.map(x=>typeof x==="string"?x:x.vip_users||Object.values(x)[0]));renderAll();if(view==="rank")renderRank()}}
 const safeUrl=u=>/^https:\/\//.test(u||"")?String(u).replace(/"/g,"%22"):"";
-const avHTML=(p,style="")=>safeUrl(p.a)?`<span class="av av-photo" style="${style}"><img class="av-img" src="${safeUrl(p.a)}" alt="" decoding="async"></span>`:`<span class="av av-g" style="background-color:${colorFor(p.h)};${style}">${esc(initial(p.n))}</span>`;
+let FRM={};const frOf=h=>FRM[String(h||"").toLowerCase()]||"",frIn=h=>{const k=frOf(h);return k?`<span class="fr fr-${k}">${frameSVG(k)}</span>`:""};
+const avHTML=(p,style="")=>safeUrl(p.a)?`<span class="av av-photo${frOf(p.h)?" has-fr":""}" style="${style}"><img class="av-img" src="${safeUrl(p.a)}" alt="" decoding="async">${frIn(p.h)}</span>`:`<span class="av av-g${frOf(p.h)?" has-fr":""}" style="background-color:${colorFor(p.h)};${style}">${esc(initial(p.n))}${frIn(p.h)}</span>`;
+function loadFrames(){sb.rpc("frame_users").then(({data,error})=>{if(error||!Array.isArray(data))return;const m={};data.forEach(x=>{if(tierOk(x.frame))m[String(x.username).toLowerCase()]=x.frame});const ch=JSON.stringify(m)!==JSON.stringify(FRM);FRM=m;if(ch){renderAll();if(view==="rank")renderRank()}})}
 function setAv(el,url,ini){if(!el)return;const u=safeUrl(url),key=u||("i:"+ini);if(el.dataset.av===key)return;el.dataset.av=key;el.classList.toggle("has-photo",!!u);el.innerHTML=u?`<img class="av-img" src="${u}" alt="" decoding="async">`:esc(ini)}
 function renderRank(){
   $("fCount").textContent=st.friends.length;
@@ -2614,7 +2617,7 @@ function renderFrames(){$("edVol").textContent=`· hacmin ${usd(myVol(),0)}`;$("
   $("edFrames").innerHTML=`<button type="button" data-frame="" class="${st.frame?"":"on"}"><span class="tg-av"></span>Yok<small>&nbsp;</small></button>`+TIERS.map(([k,n,v])=>`<button type="button" data-frame="${k}" class="${st.frame===k?"on":""}"><span class="tg-av"><span class="fr fr-${k}">${frameSVG(k)}</span><span class="fr-glow"></span></span>${n}<small>${volTxt(v)}</small>${myVol()<v?LOCK:""}</button>`).join("")}
 $("edFrames").addEventListener("click",e=>{const b=e.target.closest("[data-frame]");if(!b)return;const k=b.dataset.frame,t=TIERS.find(x=>x[0]===k);
   if(t&&myVol()<t[2]){$("frErr").textContent=`${t[1]} çerçeve için ${volTxt(t[2])} hacim gerekiyor. Şu anki hacmin: ${usd(myVol(),0)}`;return}
-  busy(b,async()=>{const r=await call("set_frame",{p_frame:k||null},"frErr");if(r.err)return;st.frame=k;renderFrames();renderProfile();toast(k?`${t[1]} çerçeve takıldı`:"Çerçeve kaldırıldı")})});
+  busy(b,async()=>{const r=await call("set_frame",{p_frame:k||null},"frErr");if(r.err)return;st.frame=k;renderFrames();renderProfile();loadFrames();toast(k?`${t[1]} çerçeve takıldı`:"Çerçeve kaldırıldı")})});
 // banner
 let bnSel="";
 function openBanner(){bnSel=st.banner||"";$("bnErr").textContent="";const own=/^data:/.test(bnSel);bnTab(own?"own":tierCls(bnSel)?"tier":"cat");bnDraw()}
