@@ -653,7 +653,7 @@ nav.bar .mid-btn span{width:46px;height:46px;border-radius:16px;background:linea
 .p-tool svg{width:21px;height:21px}
 .p-idrow{display:flex;align-items:flex-end;justify-content:space-between;margin-top:-46px;margin-bottom:12px;position:relative}
 .p-avatar{overflow:visible;position:relative;width:88px;height:88px;border-radius:50%;background:linear-gradient(145deg,var(--accent),var(--accent-2));border:4px solid var(--bg);display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:32px;color:var(--accent-ink)}
-.p-avatar .fr,.p-avatar .fr-glow{inset:-9px}
+.p-avatar .fr{inset:-29%}.p-avatar .fr-glow{inset:-6px}
 .p-avatar i{z-index:2;position:absolute;right:-2px;bottom:2px;width:26px;height:26px;border-radius:50%;background:var(--fg);color:var(--bg);display:grid;place-items:center;border:3px solid var(--bg)}
 .p-avatar i svg{width:12px;height:12px}
 .btn-rew{position:relative;display:flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);font-weight:700;padding:11px 18px;border-radius:14px;margin-bottom:34px}
@@ -884,20 +884,13 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 
 /* ---- hacim çerçeveleri */
 .fr-wrap{position:relative;flex:none;display:inline-grid}
-.fr{position:absolute;inset:-7px;border-radius:50%;pointer-events:none;-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px));mask:radial-gradient(farthest-side,transparent calc(100% - 7px),#000 calc(100% - 6px))}
-.fr:empty:not([class*="fr-"]){display:none}
-.fr-glow{position:absolute;inset:-7px;border-radius:50%;pointer-events:none}
-.fr-wood{background:repeating-conic-gradient(#8b5a2b 0 9deg,#6b4220 9deg 15deg,#a9743c 15deg 26deg,#7a4d25 26deg 33deg)}
-.fr-bronze{background:conic-gradient(#cd7f32,#f3c08a,#8c5423,#e09a55,#6e3f18,#cd7f32)}
-.fr-silver{background:conic-gradient(#f8fafc,#8d98a8,#e5eaf1,#6f7a8a,#ffffff,#a3adba,#f8fafc)}
-.fr-gold{background:conic-gradient(#f2c14e,#fff7d1,#b8862b,#ffe08a,#fff,#d79d2e,#f2c14e);animation:frSpin 3.2s linear infinite}
-.fr-gold+.fr-glow{box-shadow:0 0 14px 2px rgba(242,193,78,.65);animation:frPulse 2s ease-in-out infinite}
-.fr-diamond{background:conic-gradient(#bff3ff,#4ca3ff,#fff,#7c5cff,#e8fbff,#38d6ff,#fff,#bff3ff);animation:frSpin 2.4s linear infinite}
-.fr-diamond+.fr-glow{box-shadow:0 0 16px 3px rgba(120,210,255,.75);animation:frPulse 1.6s ease-in-out infinite}
-.fr-magma{background:conic-gradient(#ff3d00,#ffb300,#5a0d00,#ff6a00,#1e0300,#ffd54a,#b31b00,#ff3d00);animation:frSpin 5s linear infinite,frHeat 1.8s ease-in-out infinite}
-.fr-magma+.fr-glow{box-shadow:0 0 18px 4px rgba(255,90,0,.8),0 0 34px 8px rgba(255,40,0,.35);animation:frPulse 1.3s ease-in-out infinite}
-.fr-storm{background:conic-gradient(#00e5ff,#fff,#7c5cff,#ff5fd2,#fff,#3ddc97,#ffe14a,#fff,#00e5ff);animation:frSpin 1.3s linear infinite,frHue 4s linear infinite}
-.fr-storm+.fr-glow{box-shadow:0 0 18px 4px rgba(0,229,255,.8);animation:frFlash 2.6s steps(1) infinite,frHue 4s linear infinite}
+.fr{position:absolute;inset:-25%;pointer-events:none}.fr svg{width:100%;height:100%;display:block;overflow:visible}
+.fr-glow{position:absolute;inset:-3px;border-radius:50%;pointer-events:none}
+.fr-gold+.fr-glow{box-shadow:0 0 14px 3px rgba(242,193,78,.6);animation:frPulse 2s ease-in-out infinite}
+.fr-diamond+.fr-glow{box-shadow:0 0 16px 4px rgba(120,210,255,.7);animation:frPulse 1.6s ease-in-out infinite}
+.fr-magma+.fr-glow{box-shadow:0 0 18px 5px rgba(255,90,0,.75),0 0 34px 9px rgba(255,40,0,.3);animation:frPulse 1.3s ease-in-out infinite}
+.fr-storm{animation:frHue 4s linear infinite}
+.fr-storm+.fr-glow{box-shadow:0 0 18px 5px rgba(0,229,255,.8);animation:frFlash 2.6s steps(1) infinite,frHue 4s linear infinite}
 @keyframes frSpin{to{transform:rotate(360deg)}}
 @keyframes frPulse{50%{opacity:.35}}
 @keyframes frHeat{50%{filter:brightness(1.35) saturate(1.3)}}
@@ -918,7 +911,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 .tier-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:6px 0 14px}
 .tier-grid button{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 4px 8px;border-radius:14px;background:var(--surface2);border:2px solid transparent;color:var(--fg);font-size:11.5px;font-weight:700}
 .tier-grid button.on{border-color:var(--accent)}
-.tier-grid .tg-av{position:relative;width:38px;height:38px;border-radius:50%;background:var(--bg);margin:6px}
+.tier-grid .tg-av{position:relative;width:34px;height:34px;border-radius:50%;background:var(--bg);margin:11px 8px 9px}
 .tier-grid small{font-weight:500;color:var(--muted);font-size:10.5px}
 .tier-grid .lock,.bn-grid .lock{position:absolute;inset:0;border-radius:12px;background:rgba(8,10,16,.62);display:grid;place-items:center;color:#fff}
 .tier-grid .lock svg,.bn-grid .lock svg{width:20px;height:20px}
@@ -2078,11 +2071,54 @@ const TIERS=[["wood","Tahta",500],["bronze","Bronz",1e4],["silver","Silver",1e5]
 const tierOk=k=>TIERS.some(t=>t[0]===k),tierCls=b=>{const m=String(b||"").match(/^tier:([a-z]+)$/);return m&&tierOk(m[1])?"tb-"+m[1]:""};
 const myVol=()=>st.vol?+st.vol.total:0,volTxt=v=>"$"+(v>=1e6?fmtN(v/1e6,v%1e6?1:0)+"M":v>=1e3?fmtN(v/1e3,0)+"K":fmtN(v,0));
 const LOCK=`<span class="lock"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10V8a6 6 0 0 1 12 0v2h1a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zm2 0h8V8a4 4 0 0 0-8 0z"/></svg></span>`;
+let frN=0;
+function frameSVG(k){if(!tierOk(k))return"";const id="fg"+(++frN),P=(a,r)=>[60+r*Math.cos(a*Math.PI/180),60+r*Math.sin(a*Math.PI/180)].map(v=>v.toFixed(1)).join(" "),
+  each=(n,f,off=0)=>Array.from({length:n},(_,i)=>f(off+i*360/n,i)).join(""),
+  grad=(stops,rot)=>`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">${stops.map((c,i)=>`<stop offset="${(i/(stops.length-1)).toFixed(2)}" stop-color="${c}"/>`).join("")}${rot?`<animateTransform attributeName="gradientTransform" type="rotate" from="0 .5 .5" to="360 .5 .5" dur="${rot}s" repeatCount="indefinite"/>`:""}</linearGradient>`,
+  ring=(w=7)=>`<circle cx="60" cy="60" r="43.5" fill="none" stroke="url(#${id})" stroke-width="${w}"/>`,
+  spark=(a,r,s,d,b)=>`<path transform="translate(${P(a,r)}) scale(${s})" d="M0-5 1.2-1.2 5 0 1.2 1.2 0 5-1.2 1.2-5 0-1.2-1.2z" fill="#fff"><animate attributeName="opacity" values="0;1;0" dur="${d}s" begin="${b}s" repeatCount="indefinite"/></path>`;
+  let d="",g="";
+  if(k==="wood"){d=grad(["#b07a40","#6b4220","#9a6a38","#4d2e15"]);
+    g=each(8,a=>`<rect x="-5" y="-55" width="10" height="13" rx="2" transform="rotate(${a} 60 60) translate(60 60)" fill="#7a4d25" stroke="#3d2410" stroke-width="1"/>`,22.5)+ring(8)
+     +each(14,a=>`<path d="M${P(a,40.5)}L${P(a+9,46.5)}" stroke="#3d2410" stroke-width=".9" opacity=".6"/>`)
+     +each(4,a=>`<circle cx="${P(a,43.5).split(" ")[0]}" cy="${P(a,43.5).split(" ")[1]}" r="2.2" fill="#3d2410"/>`,45)
+     +[[-128,1],[52,1]].map(([a])=>`<g transform="rotate(${a+90} 60 60)"><path d="M60 14q-9-3-11-11q9 1 11 11zM60 14q9-3 11-11q-9 1-11 11zM60 16q-3-9 0-15q3 6 0 15z" fill="#5fae4e" stroke="#2f6b2a" stroke-width=".8"/></g>`).join("")}
+  else if(k==="bronze"){d=grad(["#f3c08a","#cd7f32","#6e3f18","#e09a55","#8c5423"]);
+    g=each(12,a=>`<path transform="rotate(${a} 60 60)" d="M55 16h10l2-9h-14z" fill="url(#${id})" stroke="#4a2a0e" stroke-width=".9"/>`)+ring(8)
+     +each(12,a=>`<circle cx="${P(a,43.5).split(" ")[0]}" cy="${P(a,43.5).split(" ")[1]}" r="1.7" fill="#4a2a0e"/><circle cx="${P(a,43.5).split(" ")[0]}" cy="${P(a,43.5).split(" ")[1]}" r=".7" fill="#f3c08a"/>`,15)
+     +each(4,a=>`<path transform="rotate(${a} 60 60)" d="M60 0l7 10-7 8-7-8z" fill="url(#${id})" stroke="#4a2a0e" stroke-width="1"/>`)}
+  else if(k==="silver"){d=grad(["#ffffff","#8d98a8","#e5eaf1","#5c6675","#f8fafc"]);
+    const wing=`<path d="M18 60q-16-6-17-24q8 9 16 10q-10-8-9-22q7 11 14 14q-6-9-3-19q8 12 9 26z" fill="url(#${id})" stroke="#4a5362" stroke-width="1"/>`;
+    g=wing+`<g transform="translate(120 0) scale(-1 1)">${wing}</g>`+ring(7)
+     +`<path d="M60 4l8 10-8 10-8-10z" fill="#dff3ff" stroke="#4a5362" stroke-width="1"/><path d="M52 14h16M60 4v20" stroke="#8d98a8" stroke-width=".7"/>`
+     +`<path d="M48 104q12 8 24 0l-4 10q-8 4-16 0z" fill="url(#${id})" stroke="#4a5362" stroke-width="1"/>`+each(3,(a,i)=>spark(a,50,.5,2.4,i*.8),30)}
+  else if(k==="gold"){d=grad(["#fff7d1","#f2c14e","#b8862b","#ffe08a","#d79d2e"],4);
+    g=`<g><animateTransform attributeName="transform" type="rotate" from="0 60 60" to="360 60 60" dur="24s" repeatCount="indefinite"/>${each(16,(a,i)=>`<path transform="rotate(${a} 60 60)" d="M57 15h6l-3-${i%2?8:14}z" fill="url(#${id})" stroke="#7a5a12" stroke-width=".6"/>`)}</g>`+ring(8)
+     +`<circle cx="60" cy="60" r="47.5" fill="none" stroke="#fff7d1" stroke-width=".8" opacity=".8"/>`
+     +`<path d="M42 16l-3-15 10 8 11-12 11 12 10-8-3 15z" fill="url(#${id})" stroke="#7a5a12" stroke-width="1.2" stroke-linejoin="round"/><circle cx="60" cy="-1" r="2.6" fill="#ff5a6e"/><circle cx="39" cy="1" r="2" fill="#5ee0c4"/><circle cx="81" cy="1" r="2" fill="#5ee0c4"/><rect x="42" y="14" width="36" height="4" rx="1.5" fill="#b8862b"/>`
+     +each(6,(a,i)=>spark(a,54,.9,1.8,i*.3),20)}
+  else if(k==="diamond"){d=grad(["#e8fbff","#4ca3ff","#ffffff","#7c5cff","#38d6ff"],3);
+    g=each(12,(a,i)=>{const L=[20,11,15][i%3];return `<path transform="rotate(${a} 60 60)" d="M60 ${17-L}l5 ${L*.55}-5 ${L*.45+4}-5-${L*.45+4}z" fill="url(#${id})" stroke="#1f5fbf" stroke-width=".8" stroke-linejoin="round"><animate attributeName="opacity" values="1;.55;1" dur="${1.6+i%3*.5}s" begin="${i*.17}s" repeatCount="indefinite"/></path><path transform="rotate(${a} 60 60)" d="M60 ${17-L}v${L+3}" stroke="#fff" stroke-width=".6" opacity=".8"/>`})
+     +ring(7)+`<circle cx="60" cy="60" r="40.5" fill="none" stroke="#fff" stroke-width=".8" opacity=".8"/>`+each(7,(a,i)=>spark(a,55,1,1.4,i*.2),12)}
+  else if(k==="magma"){d=grad(["#2a0a04","#4a1408","#1a0502","#3a0e06"]);
+    const rock=(x,s,c)=>`<path transform="translate(${x} 12) scale(${s})" d="M-6-2l3-5 6-1 5 4-1 6-6 3-6-2z" fill="${c}" stroke="#ff7a1a" stroke-width=".7"/>`;
+    g=each(5,(a,i)=>`<circle cx="${60+[-22,-9,4,16,26][i]}" cy="14" r="${[5,7,6,8,5][i]}" fill="#d9c9c0" opacity="0"><animate attributeName="cy" values="16;-12" dur="${2.6+i*.35}s" begin="${i*.55}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.55;0" dur="${2.6+i*.35}s" begin="${i*.55}s" repeatCount="indefinite"/><animate attributeName="r" values="3;9" dur="${2.6+i*.35}s" begin="${i*.55}s" repeatCount="indefinite"/></circle>`)
+     +each(9,(a,i)=>`<path transform="rotate(${a} 60 60)" d="M54 18l2-${[9,5,12][i%3]} 5-3 4 4 1 ${[9,5,12][i%3]}z" fill="url(#${id})" stroke="#140402" stroke-width=".8"/>`,20)
+     +ring(9)+`<circle cx="60" cy="60" r="43.5" fill="none" stroke="#ff6a00" stroke-width="2.4" stroke-dasharray="7 5 2 9 12 4" stroke-linecap="round"><animate attributeName="stroke-dashoffset" from="0" to="-78" dur="6s" repeatCount="indefinite"/><animate attributeName="stroke" values="#ff3d00;#ffd54a;#ff3d00" dur="1.8s" repeatCount="indefinite"/></circle>`
+     +`<path d="M44 100q2 9 0 14q-4-5 0-14zM62 103q3 10 0 16q-5-6 0-16zM77 99q2 7 0 11q-3-4 0-11z" fill="#ff6a00"><animate attributeName="fill" values="#ff3d00;#ffb300;#ff3d00" dur="1.4s" repeatCount="indefinite"/></path>`
+     +`<g><animateTransform attributeName="transform" type="rotate" from="0 60 60" to="360 60 60" dur="9s" repeatCount="indefinite"/>${rock(60,1,"#2a0a04")}<g transform="rotate(130 60 60)">${rock(60,.75,"#3a0e06")}</g><g transform="rotate(235 60 60)">${rock(60,1.15,"#1a0502")}</g></g>`
+     +each(6,(a,i)=>`<circle r="1.1" fill="#ffd54a"><animate attributeName="cx" values="${P(a,46).split(" ")[0]};${P(a+14,60).split(" ")[0]}" dur="${1.5+i*.2}s" begin="${i*.3}s" repeatCount="indefinite"/><animate attributeName="cy" values="${P(a,46).split(" ")[1]};${P(a+14,60).split(" ")[1]}" dur="${1.5+i*.2}s" begin="${i*.3}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="${1.5+i*.2}s" begin="${i*.3}s" repeatCount="indefinite"/></circle>`,200)}
+  else{d=grad(["#00e5ff","#ffffff","#7c5cff","#ff5fd2","#ffe14a"],1.6);
+    g=each(7,(a,i)=>`<path transform="rotate(${a} 60 60)" d="M60 17l-4-7 5-1-5-9 9 7-5 1 3 9z" fill="#fff" stroke="url(#${id})" stroke-width="1.2" stroke-linejoin="round"><animate attributeName="opacity" values="0;1;.2;1;0;0" keyTimes="0;.08;.14;.2;.3;1" dur="${1.5+i%3*.6}s" begin="${i*.23}s" repeatCount="indefinite"/></path>`,10)
+     +ring(6)+`<circle cx="60" cy="60" r="48" fill="none" stroke="url(#${id})" stroke-width="1.6" stroke-dasharray="14 9 4 22"><animateTransform attributeName="transform" type="rotate" from="360 60 60" to="0 60 60" dur="2.2s" repeatCount="indefinite"/></circle>`
+     +`<circle cx="60" cy="60" r="39.5" fill="none" stroke="#fff" stroke-width="1" stroke-dasharray="3 14 9 6" opacity=".9"><animateTransform attributeName="transform" type="rotate" from="0 60 60" to="360 60 60" dur="1.4s" repeatCount="indefinite"/></circle>`
+     +each(5,(a,i)=>spark(a,56,.8,.9,i*.21),40)}
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><defs>${d}</defs>${g}</svg>`}
 function setTb(el,b){TIERS.forEach(t=>el.classList.remove("tb-"+t[0]));const c=tierCls(b);if(c)el.classList.add(c)}
 function banCss(b){b=String(b||"");const m=b.match(/^cat:([a-z0-9]+)$/);if(m&&BAN_CAT.some(x=>x[0]===m[1]))return `background:#131824 url("banners/${m[1]}.svg?v=1") center/cover no-repeat`;
   if(/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(b))return `background:#131824 url("${b}") center/cover no-repeat`;return""}
 function bannerFor(id,uname){const n=String(uname||"").toLowerCase();return CEO.has(id)||n==="coinforcedeluxe"?"ban-ceo":BOT.has(id)||n==="coinforce_bot"?"ban-bot":n==="egmnnarsln"?"ban-partner":n==="pedrigavifrenki"?"ban-wheel":""}
-function renderProfile(){const bn=me?bannerFor(me.id,st.prof.handle):"";$("pBand").classList.toggle("ban-ceo",bn==="ban-ceo");$("pBand").classList.toggle("ban-partner",bn==="ban-partner");$("pBand").classList.toggle("ban-wheel",bn==="ban-wheel");$("pBand").style.cssText=banCss(st.banner);setTb($("pBand"),st.banner);$("pFrame").className="fr"+(st.frame?" fr-"+st.frame:"");$("pAdmin").hidden=!st.admin;$("setAdmin").hidden=!st.admin;
+function renderProfile(){const bn=me?bannerFor(me.id,st.prof.handle):"";$("pBand").classList.toggle("ban-ceo",bn==="ban-ceo");$("pBand").classList.toggle("ban-partner",bn==="ban-partner");$("pBand").classList.toggle("ban-wheel",bn==="ban-wheel");$("pBand").style.cssText=banCss(st.banner);setTb($("pBand"),st.banner);if($("pFrame").dataset.k!==(st.frame||"")){$("pFrame").dataset.k=st.frame||"";$("pFrame").className="fr"+(st.frame?" fr-"+st.frame:"");$("pFrame").innerHTML=frameSVG(st.frame)}$("pAdmin").hidden=!st.admin;$("setAdmin").hidden=!st.admin;
   const p=st.prof,ini=(p.name||"?").trim().charAt(0).toLocaleUpperCase("tr-TR")||"?";
   setAv($("pAv"),st.prof.avatar,ini);setAv($("navAv"),st.prof.avatar,ini);
   $("pName").innerHTML=esc(p.name)+(me?vipTag(me.id):"");$("pFollowing").textContent=cnt(st.friends.length+(p.gb||0));$("pFollowers").textContent=cnt((st.followers||0)+(p.fb||0));$("pHandle").textContent="@"+p.handle;
@@ -2492,7 +2528,7 @@ function uRecent(){const r=userData.recent||[];if(!r.length)return `<div class="
 function renderUser(){const u=userData;if(!u)return;const n=u.full_name||u.username,url=safeUrl(u.avatar_url),hold=uDur(u.avg_hold);
   const nO=(u.open||[]).length;
   const bcss=banCss(u.banner),tcl=tierCls(u.banner),ban=tcl?"ban-user "+tcl:bcss?"ban-user":bannerFor(u.id,u.username);
-  $("userBody").innerHTML=`${ban?`<div class="up-banner ${ban}" style="${bcss.replace(/"/g,"&quot;")}" role="img" aria-label="${ban==="ban-ceo"?"COINFORCE CEO":ban==="ban-partner"?"COINFORCE Partner":ban==="ban-wheel"?"Banner":"COINFORCE Bot"}"></div>`:""}<div class="up-top${ban?" has-ban":""}"><div class="fr-wrap"><div class="up-av" style="background:${url?"var(--surface2)":colorFor(u.username)}">${url?`<img class="av-img" src="${url}" alt="">`:esc(initial(n))}</div>${u.frame?`<span class="fr fr-${u.frame}"></span><span class="fr-glow"></span>`:""}</div>
+  $("userBody").innerHTML=`${ban?`<div class="up-banner ${ban}" style="${bcss.replace(/"/g,"&quot;")}" role="img" aria-label="${ban==="ban-ceo"?"COINFORCE CEO":ban==="ban-partner"?"COINFORCE Partner":ban==="ban-wheel"?"Banner":"COINFORCE Bot"}"></div>`:""}<div class="up-top${ban?" has-ban":""}"><div class="fr-wrap"><div class="up-av" style="background:${url?"var(--surface2)":colorFor(u.username)}">${url?`<img class="av-img" src="${url}" alt="">`:esc(initial(n))}</div>${u.frame?`<span class="fr fr-${u.frame}">${frameSVG(u.frame)}</span><span class="fr-glow"></span>`:""}</div>
       <button type="button" class="btn ${u.is_following?"btn-ghost":"btn-accent"} up-fol" id="userFollow" data-id="${u.id}" data-f="${u.is_following?1:0}">${u.is_following?"Takiptesin":"Takip et"}</button></div>
     <div class="up-name">${esc(n)}${vipTag(u.id)}</div><div class="up-handle">@${esc(u.username)}</div>
     ${u.bio?`<p class="up-bio" translate="no">${esc(u.bio)}</p>`:""}
@@ -2575,7 +2611,7 @@ $("cnGo").onclick=()=>busy($("cnGo"),async()=>{const title=$("cnTitle").value.tr
   $("cnTitle").value="";$("cnDesc").value="";closeSheet();await loadAll();toast("Kampanya başladı: "+title)});
 // çerçeveler
 function renderFrames(){$("edVol").textContent=`· hacmin ${usd(myVol(),0)}`;$("frErr").textContent="";
-  $("edFrames").innerHTML=`<button type="button" data-frame="" class="${st.frame?"":"on"}"><span class="tg-av"></span>Yok<small>&nbsp;</small></button>`+TIERS.map(([k,n,v])=>`<button type="button" data-frame="${k}" class="${st.frame===k?"on":""}"><span class="tg-av"><span class="fr fr-${k}" style="inset:-6px"></span><span class="fr-glow" style="inset:-6px"></span></span>${n}<small>${volTxt(v)}</small>${myVol()<v?LOCK:""}</button>`).join("")}
+  $("edFrames").innerHTML=`<button type="button" data-frame="" class="${st.frame?"":"on"}"><span class="tg-av"></span>Yok<small>&nbsp;</small></button>`+TIERS.map(([k,n,v])=>`<button type="button" data-frame="${k}" class="${st.frame===k?"on":""}"><span class="tg-av"><span class="fr fr-${k}">${frameSVG(k)}</span><span class="fr-glow"></span></span>${n}<small>${volTxt(v)}</small>${myVol()<v?LOCK:""}</button>`).join("")}
 $("edFrames").addEventListener("click",e=>{const b=e.target.closest("[data-frame]");if(!b)return;const k=b.dataset.frame,t=TIERS.find(x=>x[0]===k);
   if(t&&myVol()<t[2]){$("frErr").textContent=`${t[1]} çerçeve için ${volTxt(t[2])} hacim gerekiyor. Şu anki hacmin: ${usd(myVol(),0)}`;return}
   busy(b,async()=>{const r=await call("set_frame",{p_frame:k||null},"frErr");if(r.err)return;st.frame=k;renderFrames();renderProfile();toast(k?`${t[1]} çerçeve takıldı`:"Çerçeve kaldırıldı")})});
