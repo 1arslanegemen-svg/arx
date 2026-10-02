@@ -927,7 +927,7 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 .auc-hero p{margin:6px 0 4px;font-size:14px;color:var(--fg)}.auc-hero small{color:var(--muted);font-size:12px;letter-spacing:.04em}
 .auc-wal{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line);margin-bottom:16px}
 .auc-wal small{display:block;color:var(--muted);font-size:12px}.auc-wal b{display:flex;align-items:center;font-size:18px;margin-top:2px}
-.auc-wal-b{display:flex;gap:8px}.auc-wal-b .btn{padding:10px 12px;margin:0;font-size:13px}
+.auc-wal-b{display:flex;gap:8px}.auc-wal-b .btn{padding:10px 12px;margin:0;font-size:13px;white-space:nowrap}.auc-wal b{font-size:17px;white-space:nowrap}
 .auc-card{position:relative;border-radius:22px;overflow:hidden;background:var(--surface);border:1px solid var(--line);margin-bottom:16px;cursor:pointer}
 .auc-img{position:relative;aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden}.auc-img span{font-family:var(--display);font-size:54px;font-weight:800;color:rgba(255,255,255,.35)}
 .auc-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -953,6 +953,21 @@ nav.bar button.on .nav-av{box-shadow:0 0 0 2px var(--surface2),0 0 0 4px var(--a
 .won-box{border-color:rgba(242,193,78,.5)}.won-cup{font-size:54px;animation:wonPop .6s ease-out}.won-box h3{letter-spacing:.08em;color:#f2c14e}
 @keyframes wonPop{from{transform:scale(.3) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
 nav.bar button svg{width:22px;height:22px}
+.alb{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.alb .mid{flex:1;min-width:0}.alb .mid b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:14.5px}.alb small{display:block;color:var(--muted);font-size:12.5px}
+.alb .rt{text-align:right;white-space:nowrap}.alb .rt b{display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums}
+.alb-rk{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:12.5px;flex:none;background:var(--surface2);color:var(--muted)}
+.alb-rk.r1{background:linear-gradient(145deg,#fff1b8,#f2c14e,#b8862b);color:#3a2603}.alb-rk.r2{background:linear-gradient(145deg,#fff,#aab3c0,#6f7a8a);color:#1b2230}.alb-rk.r3{background:linear-gradient(145deg,#f3c08a,#cd7f32,#7a4a1c);color:#2e1a0b}.alb-rk.r10{background:var(--accent-soft);color:var(--accent)}
+.pa-rail{display:flex;gap:12px;overflow-x:auto;padding:12px 2px 6px;scrollbar-width:none}.pa-rail::-webkit-scrollbar{display:none}
+.pa{--c1:#3a4356;--c2:#232b3b;--ink:var(--muted);position:relative;flex:0 0 76px;display:flex;flex-direction:column;align-items:center;padding:4px 4px 0;border-radius:16px 16px 12px 12px;background:linear-gradient(160deg,var(--c1),var(--c2));color:var(--fg)}
+.pa .pa-img{width:68px;height:68px;aspect-ratio:1;border-radius:12px;flex:none}.pa .pa-img span{font-size:22px}
+.pa-rk{display:block;width:100%;text-align:center;font-weight:900;font-size:13px;line-height:22px;color:var(--ink);letter-spacing:.02em}
+.pa em{position:absolute;top:100%;left:0;right:0;margin-top:3px;font-style:normal;font-size:10.5px;color:var(--muted);text-align:center;white-space:nowrap}
+.pa-rail{padding-bottom:22px}
+.pa.r1{--c1:#fff1b8;--c2:#b8862b;--ink:#3a2603;box-shadow:0 0 14px rgba(242,193,78,.55)}.pa.r1::before{content:"👑";position:absolute;top:-13px;font-size:16px}
+.pa.r2{--c1:#ffffff;--c2:#6f7a8a;--ink:#1b2230;box-shadow:0 0 10px rgba(200,210,225,.35)}
+.pa.r3{--c1:#f3c08a;--c2:#7a4a1c;--ink:#2e1a0b;box-shadow:0 0 10px rgba(205,127,50,.35)}
+.pa.r10{--c1:#a78bfa;--c2:#5ee0c4;--ink:#120b24}
 </style>
 
 </head>
@@ -1159,6 +1174,7 @@ nav.bar button svg{width:22px;height:22px}
   <div class="auc-wal"><div><small data-en="CF Balance">CF Bakiyesi</small><b><svg class="cf-ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#a78bfa"/><text x="12" y="15.6" text-anchor="middle" font-size="9.5" font-weight="900" fill="#120b24" font-family="Inter,Arial,sans-serif">CF</text></svg><span data-cfbal>0 CF</span></b></div>
     <div class="auc-wal-b"><button type="button" class="btn btn-ghost" data-open="myauc">My Auctions</button><button type="button" class="btn btn-accent" data-buycf>Buy CF</button></div></div>
   <div id="aucList"><div class="empty">Yükleniyor…</div></div>
+  <div id="aucLB"></div>
 </div>
 <div class="screen" id="s-profile" hidden>
   <div class="cols p-cols"><div class="col-a">
@@ -1206,6 +1222,7 @@ nav.bar button svg{width:22px;height:22px}
     </div>
     <div class="promo-art" id="promoArt" aria-hidden="true"></div>
   </div>
+  <div id="pAucs"></div>
   <button type="button" class="ed-ban" data-open="myauc" style="margin:0 0 12px"><span style="font-size:20px">🔨</span><b>My Auctions<small style="display:block;font-weight:500;color:var(--muted)">Active Bids · Won · Lost · Watchlist</small></b><b data-cfbal style="flex:none;font-size:13px">0 CF</b></button>
   <div class="grid2 p-dep"><button class="btn btn-accent" type="button" data-open="recv">Yatır</button><button class="btn btn-ghost" type="button" data-open="send">Gönder</button></div>
   </div></div>
@@ -2237,7 +2254,8 @@ function setTb(el,b){TIERS.forEach(t=>el.classList.remove("tb-"+t[0]));const c=t
 function banCss(b){b=String(b||"");const m=b.match(/^cat:([a-z0-9]+)$/);if(m&&BAN_CAT.some(x=>x[0]===m[1]))return `background:#131824 url("banners/${m[1]}.svg?v=1") center/cover no-repeat`;
   if(/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(b))return `background:#131824 url("${b}") center/cover no-repeat`;return""}
 function bannerFor(id,uname){const n=String(uname||"").toLowerCase();return CEO.has(id)||n==="coinforcedeluxe"?"ban-ceo":BOT.has(id)||n==="coinforce_bot"?"ban-bot":n==="egmnnarsln"?"ban-partner":n==="pedrigavifrenki"?"ban-wheel":""}
-function renderProfile(){const bn=me?bannerFor(me.id,st.prof.handle):"";$("pBand").classList.toggle("ban-ceo",bn==="ban-ceo");$("pBand").classList.toggle("ban-partner",bn==="ban-partner");$("pBand").classList.toggle("ban-wheel",bn==="ban-wheel");$("pBand").style.cssText=banCss(st.banner);setTb($("pBand"),st.banner);if($("pFrame").dataset.k!==(st.frame||"")){$("pFrame").dataset.k=st.frame||"";$("pFrame").className="fr"+(st.frame?" fr-"+st.frame:"");$("pFrame").innerHTML=frameSVG(st.frame)}$("pAdmin").hidden=!st.admin;$("setAdmin").hidden=!st.admin;
+let paAt=0;
+function renderProfile(){if(me&&Date.now()-paAt>15000){paAt=Date.now();loadPA(me.id,"pAucs")}const bn=me?bannerFor(me.id,st.prof.handle):"";$("pBand").classList.toggle("ban-ceo",bn==="ban-ceo");$("pBand").classList.toggle("ban-partner",bn==="ban-partner");$("pBand").classList.toggle("ban-wheel",bn==="ban-wheel");$("pBand").style.cssText=banCss(st.banner);setTb($("pBand"),st.banner);if($("pFrame").dataset.k!==(st.frame||"")){$("pFrame").dataset.k=st.frame||"";$("pFrame").className="fr"+(st.frame?" fr-"+st.frame:"");$("pFrame").innerHTML=frameSVG(st.frame)}$("pAdmin").hidden=!st.admin;$("setAdmin").hidden=!st.admin;
   const p=st.prof,ini=(p.name||"?").trim().charAt(0).toLocaleUpperCase("tr-TR")||"?";
   setAv($("pAv"),st.prof.avatar,ini);setAv($("navAv"),st.prof.avatar,ini);
   $("pName").innerHTML=esc(p.name)+(me?vipTag(me.id):"");$("pFollowing").textContent=cnt(st.friends.length+(p.gb||0));$("pFollowers").textContent=cnt((st.followers||0)+(p.fb||0));$("pHandle").textContent="@"+p.handle;
@@ -2610,7 +2628,7 @@ async function openUser(id){if(!id)return;if(me&&id===me.id){closeSheet();closeU
 function closeUser(){if($("userPage").hidden)return;$("userPage").hidden=true;userOpen=null;if($("commPage").hidden)document.documentElement.style.overflow=""}
 async function loadUser(id){const [pr,ch,bn,fm]=await Promise.all([sb.rpc("public_profile",{p_user:id}),sb.rpc("profile_chart",{p_user:id,p_range:uRange}),sb.rpc("get_banner",{p_id:id}),sb.rpc("get_frame",{p_id:id})]);
   if(userOpen!==id)return;if(pr.error){$("userBody").innerHTML=`<div class="empty" style="margin-top:40px">${esc(errText(pr.error))}</div>`;return}
-  userData=pr.data;userData.banner=bn.error?"":bn.data||"";userData.frame=!fm.error&&tierOk(fm.data)?fm.data:"";uChart=ch.error?[]:(ch.data||[]);renderUser()}
+  userData=pr.data;userData.banner=bn.error?"":bn.data||"";userData.frame=!fm.error&&tierOk(fm.data)?fm.data:"";uChart=ch.error?[]:(ch.data||[]);renderUser();loadPA(id,"upAucs")}
 async function loadUserChart(){const id=userOpen;const {data,error}=await sb.rpc("profile_chart",{p_user:id,p_range:uRange});if(userOpen!==id)return;uChart=error?[]:(data||[]);uHover=null;renderUserChart()}
 function chartPts(){const u=userData;const pts=uChart.map(r=>({t:new Date(r.at).getTime(),v:+r.equity}));if(u&&u.equity!=null)pts.push({t:Date.now(),v:+u.equity});return pts}
 function renderUserChart(){const u=userData,box=$("upChartBox");if(!u||!box)return;const pts=chartPts();
@@ -2658,6 +2676,7 @@ function renderUser(){const u=userData;if(!u)return;const n=u.full_name||u.usern
       ${hold?`<span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${hold} ort. vadeli süresi</span>`:""}
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9h13l-3-3M20 15H7l3 3"/></svg>${u.trades} işlem</span>
       <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Katılım ${new Date(u.created_at).toLocaleDateString(LOC,{month:"long",year:"numeric"})}</span></div>
+    <div id="upAucs"></div>
     <div class="up-eqrow"><div><div class="up-eq" id="upEq"></div><div class="up-chg" id="upChg"></div></div>
       <div class="up-rng" id="upRng">${[["24h","24s"],["7d","7g"],["30d","30g"]].map(([k,l])=>`<button type="button" data-ur="${k}" class="${k===uRange?"on":""}">${l}</button>`).join("")}</div></div>
     <div id="upChartBox" style="position:relative"></div>
@@ -2800,14 +2819,20 @@ function aucCard(a){const c=aucCur(a),live=a.status==="live";return `<article cl
   ${live?`<button type="button" class="btn btn-accent full" data-bid="${a.id}">BID NOW</button>`:`<button type="button" class="btn btn-ghost full">${L("Detayları gör","View details")}</button>`}</div></article>`}
 const aucSig=l=>JSON.stringify(l.map(a=>[a.id,a.status,a.current_bid,a.bid_count,a.bidders,a.ends_at,a.i_lead,a.i_won,a.my_bid,a.watching,a.title,a.image&&a.image.length]));let aucSigL="",myaSigL="";
 async function loadAuctions(silent){const r=await sb.rpc("auctions_list");if(r.error){if(!silent)$("aucList").innerHTML=`<div class="empty">${esc(errText(r.error))}</div>`;return}AUC=r.data||[];if(AUC[0])aucOff=Date.parse(AUC[0].now)-Date.now();const sg=aucSig(AUC)+"|"+(st.admin?1:0)+LANG;if(silent&&sg===aucSigL)return;aucSigL=sg;renderAuctions()}
-function renderAuctions(){const live=AUC.filter(a=>a.status!=="ended"),done=AUC.filter(a=>a.status==="ended");
-  $("aucList").innerHTML=(live.length?live.map(aucCard).join(""):`<div class="empty" style="padding:30px 10px">${L("Şu an aktif açık artırma yok.","No active auctions right now.")}</div>`)+(done.length?`<div class="sec-t" style="margin:22px 0 10px">${L("Sonuçlananlar","Ended")}</div>`+done.map(aucCard).join(""):"");
+function renderAuctions(){const live=AUC.filter(a=>a.status!=="ended"),done=AUC.filter(a=>a.status==="ended"&&!a.winner);
+  $("aucList").innerHTML=(live.length?live.map(aucCard).join(""):`<div class="empty" style="padding:30px 10px">${L("Şu an aktif açık artırma yok.","No active auctions right now.")}</div>`)+(done.length?`<div class="sec-t" style="margin:22px 0 10px">${L("Teklif almadan bitenler","Ended without bids")}</div>`+done.map(aucCard).join(""):"");
   $("aucNew").hidden=!st.admin;
   document.querySelectorAll("#aucList .auc-card").forEach(c=>{const a=AUC.find(x=>x.id===c.dataset.auc),k=a?a.id+"|"+(a.image||"").length:"",im=c.querySelector(".auc-img");if(!im)return;if(aucImgs[k]&&aucImgs[k]!==im)im.replaceWith(aucImgs[k]);else aucImgs[k]=im})}
 const aucImgs={};
 function aucTickUI(){document.querySelectorAll("[data-auct]").forEach(e=>{const a=(aucData&&aucData.id===e.dataset.auct?aucData:null)||AUC.find(x=>x.id===e.dataset.auct)||MYA.find(x=>x.id===e.dataset.auct);if(a){e.textContent=aucLeft(a);e.classList.toggle("soon",a.status==="live"&&Date.parse(a.ends_at)-aucNow()<3e5)}})}
-function aucStart(){clearInterval(aucPoll);clearInterval(aucClock);aucClock=setInterval(aucTickUI,1000);aucPoll=setInterval(()=>{if(document.hidden)return;if(aucOpen)loadAuc(aucOpen,true);else if(view==="auction")loadAuctions(true);else if(openId!=="myauc"){clearInterval(aucPoll);clearInterval(aucClock)}},5000)}
-function showAuction(){loadCF();loadAuctions();aucStart()}
+function aucStart(){clearInterval(aucPoll);clearInterval(aucClock);aucClock=setInterval(aucTickUI,1000);aucPoll=setInterval(()=>{if(document.hidden)return;if(aucOpen)loadAuc(aucOpen,true);else if(view==="auction"){loadAuctions(true);loadAucLB()}else if(openId!=="myauc"){clearInterval(aucPoll);clearInterval(aucClock)}},5000)}
+let ALB=[],albSig="";
+const rkCls=r=>r===1?"r1":r===2?"r2":r===3?"r3":r<=10?"r10":"rx";
+async function loadAucLB(){const r=await sb.rpc("auction_leaderboard");if(r.error)return;ALB=r.data||[];const sg=JSON.stringify(ALB.map(x=>[x.id,x.rank,x.price_cf,x.price_usd]))+LANG;if(sg===albSig)return;albSig=sg;
+  $("aucLB").innerHTML=ALB.length?`<div class="sec-t" style="margin:24px 0 4px">🏆 Leaderboard</div><div class="sub" style="margin-bottom:8px">${L("Satılan varlıklar, en pahalıdan en ucuza.","Sold assets, most expensive first.")}</div>`+ALB.map(x=>`<div class="alb" data-auc="${x.id}"><span class="alb-rk ${rkCls(+x.rank)}">${x.rank}</span>${aucImg(x,"sm wl")}<div class="mid"><b>${esc(x.title)}</b><small>@${esc(x.winner)}</small></div><div class="rt"><b>${CFI}${cfT(x.price_cf)}</b><small>${usd(+x.price_usd)}</small></div></div>`).join(""):""}
+function paHTML(list){return list.length?`<div class="sec-t" style="margin:14px 0 2px;font-size:15px">Auctions <span class="muted" style="font-weight:500">· ${list.length}</span></div><div class="pa-rail">${list.map(x=>`<button type="button" class="pa ${rkCls(+x.rank)}" data-auc="${x.id}" title="${esc(x.title)}">${aucImg(x,"pa-img")}<span class="pa-rk">#${x.rank}</span><em>${cfT(x.price_cf)}</em></button>`).join("")}</div>`:""}
+async function loadPA(uid,el){const r=await sb.rpc("user_auctions",{p_user:uid});const e=$(el);if(!e||r.error)return;if(el==="upAucs"&&userOpen!==uid)return;const h=paHTML(r.data||[]);if(e.dataset.h!==h){e.dataset.h=h;e.innerHTML=h}}
+function showAuction(){loadCF();loadAuctions();loadAucLB();aucStart()}
 // detay
 function openAuc(id){closeSheet();aucOpen=id;aucData=null;$("aucBody").innerHTML=`<div class="empty" style="margin-top:40px">${L("Yükleniyor…","Loading…")}</div>`;$("aucPage").hidden=false;$("aucPage").scrollTop=0;document.documentElement.style.overflow="hidden";loadAuc(id);aucStart()}
 function closeAuc(){if($("aucPage").hidden)return;$("aucPage").hidden=true;aucOpen=null;aucData=null;document.documentElement.style.overflow="";if(view==="auction")loadAuctions(true)}
@@ -2875,7 +2900,7 @@ document.addEventListener("click",async e=>{
   const b=e.target.closest("[data-bid]");if(b){e.stopPropagation();const id=b.dataset.bid;if(openId==="myauc"){closeSheet();aucOpen=id;aucData=null;$("aucPage").hidden=false;document.documentElement.style.overflow="hidden";await loadAuc(id)}openBid(id);return}
   const ac=e.target.closest("[data-auca]");if(ac&&aucOpen){const k=ac.dataset.auca;if((k==="end"||k==="cancel")&&ac.dataset.sure!=="1"){ac.dataset.sure="1";ac.textContent=L("Emin misin?","Are you sure?");return}
     busy(ac,async()=>{const r=await call("admin_auction_action",{p_id:aucOpen,p_action:k},"aucaErr");if(r.err)return;toast(L("İşlem tamam","Done"));if(k==="cancel"){closeAuc();loadAuctions(true)}else loadAuc(aucOpen)});return}
-  const c=e.target.closest("[data-auc]");if(c&&!e.target.closest("button:not(.btn-ghost)")){if(openId==="myauc")closeSheet();openAuc(c.dataset.auc);return}
+  const c=e.target.closest("[data-auc]");if(c&&!e.target.closest("button:not(.btn-ghost):not(.pa)")){if(openId==="myauc")closeSheet();closeUser();openAuc(c.dataset.auc);return}
   if(e.target.closest("[data-buycf]")){openSheet("cf");return}});
 // yönetici: açık artırma oluştur
 let anImg="";
